@@ -1,0 +1,13 @@
+{
+    "editor.formatOnSave": true,
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4,
+    "editor.formatOnType": true,
+    "editor.defaultFormatter": "ms-dotnettools.csharp",
+    "editor.rulers": [300],
+    "csharp.format.enable": true,
+    "csharp.format.comments": false,
+    "csharp.organizeImportsOnFormat": true,
+    "files.trimTrailingWhitespace": true
+}

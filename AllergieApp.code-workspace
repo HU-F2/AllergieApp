@@ -18,6 +18,7 @@
 			"Ardalis",
 			"buildtransitive",
 			"contentfiles",
+			"dotnet",
 			"groepcode",
 			"maxlength",
 			"Npgsql",

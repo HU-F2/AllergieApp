@@ -28,10 +28,15 @@ namespace AllergieAppBackend
             // services.AddControllers()
             //     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RecipeValidator>());
 
+            services.AddControllers();
+
             services.AddFluentValidationAutoValidation()
                     .AddFluentValidationClientsideAdapters();
 
             services.AddValidatorsFromAssemblyContaining<RecipeValidator>();
+
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
@@ -42,8 +47,6 @@ namespace AllergieAppBackend
             services.AddScoped<IRecipeRepository, RecipeRepository>();
             services.AddScoped<IRecipeService, RecipeService>();
             services.AddScoped<DataSeeder>();
-
-            services.AddSwaggerGen();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -55,14 +58,17 @@ namespace AllergieAppBackend
                 app.UseSwaggerUI();
             }
 
-            using var scope = app.ApplicationServices.CreateScope();
-            var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-            seeder.Seed();
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                dbContext.Database.Migrate();
+                var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+                seeder.Seed();
+            }
 
+            app.UseHttpsRedirection();
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
