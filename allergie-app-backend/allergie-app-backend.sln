@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllergieAppBackend", "AllergieAppBackend.csproj", "{CC3DF9CD-E4D9-C2AB-F984-304972865CED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC3DF9CD-E4D9-C2AB-F984-304972865CED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC3DF9CD-E4D9-C2AB-F984-304972865CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC3DF9CD-E4D9-C2AB-F984-304972865CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC3DF9CD-E4D9-C2AB-F984-304972865CED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1727A502-C6BC-4736-BB27-36F6D9E15136}
+	EndGlobalSection
+EndGlobal

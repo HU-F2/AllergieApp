@@ -1,0 +1,14 @@
+appsettings.json
+{
+    "ConnectionStrings": {
+        "DefaultConnection": "" // vul dit zelf in. 
+    },
+    "Logging": {
+        "LogLevel": {
+        "Default": "Information",
+        "Microsoft.AspNetCore": "Warning"
+        }
+    },
+    "AllowedHosts": "*"
+}
+  

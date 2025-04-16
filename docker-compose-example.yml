@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres
+    environment:
+      # Database naam
+      POSTGRES_DB: allergen_db
+      POSTGRES_USER: # vul dit zelf in.  
+      POSTGRES_PASSWORD: # vul dit zelf in.
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: # vul dit zelf in.  
+      PGADMIN_DEFAULT_PASSWORD: # vul dit zelf in.  
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
+  backend:
+    build:
+      context: ./allergie-app-backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./allergie-app-backend:/allergie-app-backend
+    command: dotnet watch run --project AllergieAppBackend.csproj
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./allergie-app-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./allergie-app-frontend:/allergie-app-frontend
+    command: npm run dev
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

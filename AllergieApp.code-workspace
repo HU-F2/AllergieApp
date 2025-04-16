@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"path": "../AllergieApp/allergie-app-backend"
+		},
+		{
+			"path": "../AllergieApp/allergie-app-frontend"
+		},
+		{
+			"path": "../AllergieApp"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "interactive",
+		"java.compile.nullAnalysis.mode": "disabled",
+		"cSpell.words": [
+			"appsettings",
+			"Ardalis",
+			"buildtransitive",
+			"contentfiles",
+			"groepcode",
+			"maxlength",
+			"Npgsql",
+			"Serilog",
+			"Swashbuckle",
+			"xunit"
+		]
+	}
+}
