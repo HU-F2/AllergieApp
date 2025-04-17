@@ -11,8 +11,6 @@
 		}
 	],
 	"settings": {
-		"java.configuration.updateBuildConfiguration": "interactive",
-		"java.compile.nullAnalysis.mode": "disabled",
 		"cSpell.words": [
 			"appsettings",
 			"Ardalis",
@@ -25,6 +23,6 @@
 			"Serilog",
 			"Swashbuckle",
 			"xunit"
-		]
+		],
 	}
 }

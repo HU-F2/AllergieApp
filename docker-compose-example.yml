@@ -30,6 +30,8 @@ services:
     volumes:
       - ./allergie-app-backend:/allergie-app-backend
     command: dotnet watch run --project AllergieAppBackend.csproj
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development # Als je in development modes wilt runnen.
     depends_on:
       - db
 

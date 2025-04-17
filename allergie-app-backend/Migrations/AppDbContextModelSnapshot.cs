@@ -65,21 +65,6 @@ namespace AllergieAppBackend.Migrations
                     b.ToTable("Ingredients");
                 });
 
-            modelBuilder.Entity("AllergieAppBackend.Models.IngredientAllergen", b =>
-                {
-                    b.Property<int>("IngredientId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("AllergenId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("IngredientId", "AllergenId");
-
-                    b.HasIndex("AllergenId");
-
-                    b.ToTable("IngredientAllergens");
-                });
-
             modelBuilder.Entity("AllergieAppBackend.Models.Recipe", b =>
                 {
                     b.Property<int>("Id")
@@ -101,21 +86,6 @@ namespace AllergieAppBackend.Migrations
                     b.ToTable("Recipes");
                 });
 
-            modelBuilder.Entity("AllergieAppBackend.Models.RecipeIngredient", b =>
-                {
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("IngredientId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("RecipeId", "IngredientId");
-
-                    b.HasIndex("IngredientId");
-
-                    b.ToTable("RecipeIngredients");
-                });
-
             modelBuilder.Entity("AllergieAppBackend.Models.Allergen", b =>
                 {
                     b.HasOne("AllergieAppBackend.Models.Ingredient", null)
@@ -128,44 +98,6 @@ namespace AllergieAppBackend.Migrations
                     b.HasOne("AllergieAppBackend.Models.Recipe", null)
                         .WithMany("Ingredients")
                         .HasForeignKey("RecipeId");
-                });
-
-            modelBuilder.Entity("AllergieAppBackend.Models.IngredientAllergen", b =>
-                {
-                    b.HasOne("AllergieAppBackend.Models.Allergen", "Allergen")
-                        .WithMany()
-                        .HasForeignKey("AllergenId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AllergieAppBackend.Models.Ingredient", "Ingredient")
-                        .WithMany()
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Allergen");
-
-                    b.Navigation("Ingredient");
-                });
-
-            modelBuilder.Entity("AllergieAppBackend.Models.RecipeIngredient", b =>
-                {
-                    b.HasOne("AllergieAppBackend.Models.Ingredient", "Ingredient")
-                        .WithMany()
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AllergieAppBackend.Models.Recipe", "Recipe")
-                        .WithMany()
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingredient");
-
-                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("AllergieAppBackend.Models.Ingredient", b =>
