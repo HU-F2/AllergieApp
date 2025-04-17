@@ -2,3 +2,5 @@ docker-compose.yml
 appsettings.json
 
 allergie-app-frontend/dist/**/*.*
+
+node_modules

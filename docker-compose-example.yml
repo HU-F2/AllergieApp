@@ -35,17 +35,5 @@ services:
     depends_on:
       - db
 
-  frontend:
-    build:
-      context: ./allergie-app-frontend
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./allergie-app-frontend:/allergie-app-frontend
-    command: npm run dev
-    depends_on:
-      - backend
-
 volumes:
   postgres_data:

@@ -1,23 +1,16 @@
 {
-    "name": "frontend",
+    "name": "allergie-app-frontend",
     "version": "1.0.0",
-    "main": "index.js",
+    "main": "dist/main.js",
     "scripts": {
-        "watch": "npx nodemon --watch 'src/**/*.ts' --exec 'tsc' --ext ts",
-        "start": "live-server --port=8080",
-        "dev": "concurrently \"npm run watch\" \"npm run start\""
+        "start": "tsc && electron ."
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "description": "",
     "devDependencies": {
-        "concurrently": "^9.1.2",
-        "live-server": "^1.2.2",
-        "nodemon": "^3.1.9",
-        "typescript": "^5.7.3"
+        "@types/electron": "^1.4.38",
+        "electron": "^29.4.6",
+        "electron-reload": "^2.0.0-alpha.1"
     },
     "dependencies": {
-        "frontend": "file:"
+        "allergie-app-frontend": "file:"
     }
 }

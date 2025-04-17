@@ -1,1 +1,0 @@
-// tsconfig will give error if there are no typescript files in src. so therefor this temp empty typoscript file. 

@@ -1,0 +1,9 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 1rem;
+    background-color: #f7f7f7;
+}
+nav button {
+    margin-right: 1rem;
+}

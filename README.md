@@ -1,5 +1,14 @@
 # AllergieApp
 
+### frontend opstarten
+Frontend draait niet met docker. Je moet `npm` geïnstalleerd hebben.
+1. ga naar de frontend folder in de console
+2. run het commando:
+
+```sh
+   npm start
+```
+
 ### Database (server) toevoegen aan pgAdmin
 1. start de pgAdmin docker container
 2. Ga naar de pgAdmin url in de browser en log in.
