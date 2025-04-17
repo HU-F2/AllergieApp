@@ -1,7 +1,5 @@
 using Xunit;
 using Moq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using AllergieAppBackend.Services;
 using AllergieAppBackend.Repositories;
 using AllergieAppBackend.Models;

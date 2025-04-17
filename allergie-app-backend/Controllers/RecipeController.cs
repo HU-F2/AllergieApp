@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using AllergieAppBackend.DTOs;
 using AllergieAppBackend.Services;
 using AutoMapper;

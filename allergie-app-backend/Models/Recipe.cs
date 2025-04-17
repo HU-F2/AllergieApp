@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace AllergieAppBackend.Models
 {
     public class Recipe

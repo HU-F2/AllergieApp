@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace AllergieAppBackend.DTOs
 {
     public class RecipeDto
