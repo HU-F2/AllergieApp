@@ -1,16 +1,26 @@
 {
-    "name": "allergie-app-frontend",
+    "name": "allergie-app",
     "version": "1.0.0",
-    "main": "dist/main.js",
+    "type": "module",
     "scripts": {
-        "start": "tsc && electron ."
+        "generate-config": "tsc src/generate-config.ts && node dist/generate-config.js",
+        "build": "npm run generate-config && tsc",
+        "start:electron": "npm run build && electron dist/main.js",
+        "start:liveserver": "npm run build && live-server src/views --port=4000",
+        "start": "node start.js"
     },
     "devDependencies": {
-        "@types/electron": "^1.4.38",
-        "electron": "^29.4.6",
-        "electron-reload": "^2.0.0-alpha.1"
+        "@types/express": "^5.0.1",
+        "@types/node": "^22.14.1",
+        "concurrently": "^8.2.2",
+        "dotenv": "^16.5.0",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.8.3"
     },
     "dependencies": {
-        "allergie-app-frontend": "file:"
+        "allergie-app": "file:",
+        "concurrently": "^8.2.2",
+        "electron": "^35.2.0",
+        "express": "^5.1.0"
     }
 }

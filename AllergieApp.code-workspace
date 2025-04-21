@@ -18,6 +18,7 @@
 			"contentfiles",
 			"dotnet",
 			"groepcode",
+			"liveserver",
 			"maxlength",
 			"Npgsql",
 			"Serilog",

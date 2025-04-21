@@ -39,6 +39,29 @@ namespace AllergieAppBackend
 			services.AddScoped<IRecipeRepository, RecipeRepository>();
 			services.AddScoped<IRecipeService, RecipeService>();
 			services.AddScoped<DataSeeder>();
+
+			services.AddCors(options =>
+			{
+				options.AddPolicy("AllowElectron", builder =>
+				{
+					builder
+						.WithOrigins("http://localhost:4000")
+						.AllowAnyHeader()
+						.AllowAnyMethod();
+						// .AllowCredentials();
+				});
+			});
+
+			services.AddCors(options =>
+			{
+				options.AddPolicy("AllowAll", builder =>
+				{
+					builder
+						.AllowAnyOrigin()
+						.AllowAnyHeader()
+						.AllowAnyMethod();
+				});
+			});
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -47,7 +70,11 @@ namespace AllergieAppBackend
 			{
 				app.UseDeveloperExceptionPage();
 				app.UseSwagger();
-				app.UseSwaggerUI();
+				app.UseSwaggerUI(c =>
+				{
+					c.SwaggerEndpoint("/swagger/v1/swagger.json", "Allergie API V1");
+					c.RoutePrefix = "swagger";
+				});
 			}
 
 			using (var scope = app.ApplicationServices.CreateScope())
@@ -72,10 +99,19 @@ namespace AllergieAppBackend
 				}
 			}
 
-			// app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
-			app.UseHttpsRedirection();
+			// app.UseHttpsRedirection();
 			app.UseRouting();
+			app.UseCors("AllowAll");
+			// app.UseCors("AllowElectron");
+			app.Use(async (context, next) =>
+			{
+				if (context.Request.Method == "OPTIONS")
+				{
+					context.Response.StatusCode = 204;
+					return;
+				}
+				await next();
+			});
 			app.UseAuthorization();
 			app.UseEndpoints(endpoints =>
 			{

@@ -1,26 +1,46 @@
 import { app, BrowserWindow } from 'electron';
-import * as path from 'path';
+import { startServer } from './server.js';
+import { Server } from 'http';
+
+let mainWindow: BrowserWindow | null = null;
+let serverInstance: Server;
 
 function createWindow() {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1000,
-    height: 800,
+    height: 8000,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-    },
+      contextIsolation: true,
+      nodeIntegration: false
+    }
   });
 
-  mainWindow.loadFile(path.join(__dirname, '../src/views/index.html'));
+  const startUrl = 'http://localhost:4000';
+  mainWindow.loadURL(startUrl);
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
 }
 
 app.whenReady().then(() => {
+  serverInstance = startServer();
   createWindow();
 
-  app.on('activate', function () {
+  app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
 
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit();
+app.on('window-all-closed', () => {
+  if (serverInstance) {
+    serverInstance.close(() => {
+      console.log('Server is gestopt');
+    });
+  }
+
+  // macOS specifieke exit regel
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
