@@ -66,13 +66,13 @@ Below is the structure of the project:
 ```plaintext
 AllergieApp/
 │
-├── docker-compose-example.yml  # Docker configuration file for the backend
-├── docker-compose.yml          # Create this by copying docker-compose-example and filling in the required values
-├── PollenFrontend/             # Frontend application
-├── PollenApi/                  # Backend API
+├── docker-compose-example.yml     # Docker configuration file for the backend
+├── docker-compose.yml             # Create this by copying docker-compose-example and filling in the required values
+├── PollenFrontend/                # Frontend application
+├── PollenApi/                     # Backend API
 │    ├───appsettings-example.json  # .net Backend settings
 │    └───appsettings.json          # Create this by copying appsetings-example.json and filling in the required values
-└── PollenApi.Tests/            # Backend API tests
+└── PollenApi.Tests/               # Backend API tests
 ```
 
 ## 💡 Notes
