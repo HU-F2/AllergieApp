@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using PollenApi.Models;
+using PollenBackend.Models;
 
-namespace PollenApi.Data
+namespace PollenBackend.Data
 {
     public class AppDbContext : DbContext
     {

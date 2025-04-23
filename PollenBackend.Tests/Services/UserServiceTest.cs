@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using PollenApi.Data;
-using PollenApi.Models;
-using PollenApi.Services;
+using PollenBackend.Data;
+using PollenBackend.Models;
+using PollenBackend.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace PollenApi.Tests.Services
+namespace PollenBackend.Tests.Services
 {
     public class UserServiceTests
     {
@@ -24,13 +24,16 @@ namespace PollenApi.Tests.Services
             _dbContext = new AppDbContext(options);
             _userService = new UserService(_dbContext);
             
-            _dbContext.Users.AddRange(new List<User>
+            if (!_dbContext.Users.Any())
             {
-                new User { Username = "user1" },
-                new User { Username = "user2" }
-            });
+                _dbContext.Users.AddRange(new List<User>
+                {
+                    new User { Username = "user1" },
+                    new User { Username = "user2" }
+                });
+                _dbContext.SaveChanges();
+            }
 
-            _dbContext.SaveChanges();
         }
 
         [Fact]

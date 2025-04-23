@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using PollenApi.Data;
-using PollenApi.Services;
+using PollenBackend.Data;
+using PollenBackend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

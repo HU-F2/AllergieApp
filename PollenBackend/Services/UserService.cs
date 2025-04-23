@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using PollenApi.Data;
-using PollenApi.Models;
+using PollenBackend.Data;
+using PollenBackend.Models;
 
-namespace PollenApi.Services
+namespace PollenBackend.Services
 {
     public interface IUserService
     {

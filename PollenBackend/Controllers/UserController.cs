@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using PollenApi.Models;
-using PollenApi.Services;
+using PollenBackend.Models;
+using PollenBackend.Services;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PollenApi.Controllers
+namespace PollenBackend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

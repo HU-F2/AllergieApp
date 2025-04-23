@@ -1,5 +1,5 @@
 
-namespace PollenApi.Models
+namespace PollenBackend.Models
 {
     public class User
     {

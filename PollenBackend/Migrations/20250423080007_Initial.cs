@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace PollenApi.Migrations
+namespace PollenBackend.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

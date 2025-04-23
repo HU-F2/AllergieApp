@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PollenApi\PollenApi.csproj" />
+    <ProjectReference Include="..\PollenBackend\PollenBackend.csproj" />
   </ItemGroup>
 
 </Project>
