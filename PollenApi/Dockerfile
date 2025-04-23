@@ -1,20 +1,14 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+# Use .NET 9 SDK for building and hot reload
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS dev
 
+# Set working directory inside container
 WORKDIR /app
 
-COPY PollenApi.csproj ./
-RUN dotnet restore
+# Copy everything into the container
+COPY . ./
 
-COPY . .
-
-RUN dotnet publish PollenApi.csproj -c Release -o /app/out
-
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-
-WORKDIR /app
-
-COPY --from=build /app/out .
-
+# Expose the port your app will run on
 EXPOSE 5000
 
-ENTRYPOINT ["dotnet", "PollenApi.dll"]
+# Run with hot reload using dotnet watch
+ENTRYPOINT ["dotnet", "watch", "run", "--urls=http://0.0.0.0:5000"]

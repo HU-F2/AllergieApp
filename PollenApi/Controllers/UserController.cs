@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PollenApi.Models;
+using PollenApi.Services;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,17 +10,18 @@ namespace PollenApi.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        // Fake in-memory user list for demo purposes
-        private static List<User> _users = new List<User>
+        private readonly IUserService _userService;
+
+        public UsersController(IUserService userService)
         {
-            new User { Username = "john_doe" },
-            new User { Username = "jane_smith"}
-        };
+            _userService = userService;
+        }
 
         [HttpGet]
-        public ActionResult<IEnumerable<User>> Get()
+        public async Task<ActionResult<List<User>>> Get()
         {
-            return Ok(_users);
+            var users = await _userService.GetUsers();
+            return Ok(users);
         }
     }
 }

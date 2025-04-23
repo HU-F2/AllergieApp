@@ -15,9 +15,9 @@ const Home = (props: Props) => {
     useEffect(() => {
         // Check if geolocation is available
         async function getLocation() {
-            const res = await fetch('https://ipapi.co/json/');
-            const data = await res.json();
-            setLocation({ latitude: data.latitude, longitude: data.longitude });
+            // const res = await fetch('https://ipapi.co/json/');
+            // const data = await res.json();
+            // setLocation({ latitude: data.latitude, longitude: data.longitude });
         }
         getLocation();
     }, []);

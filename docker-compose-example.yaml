@@ -1,28 +1,33 @@
-version: '3.4'
-
 services:
-  pollenapi:
-    image: pollenapi
-    build:
-      context: ./PollenApi
-      dockerfile: Dockerfile
-    ports:
-      - "5000:8080"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    depends_on:
-      - db
+    pollenapi:
+        image: pollenapi
+        build:
+            context: ./PollenApi
+            dockerfile: Dockerfile
+        volumes:
+            - ./PollenApi:/app # Mount the local source code
+            - pollenapi_build:/app/bin # Persistent build artifacts
+            - pollenapi_obj:/app/obj # Persistent object files
+        ports:
+            - '5000:5000'
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+        depends_on:
+            - db
+        command: dotnet watch run --urls=http://0.0.0.0:5000
 
-  db:
-    image: postgres
-    environment:
-      POSTGRES_DB: pollenapi
-      POSTGRES_USER: # Vul dit zelf in
-      POSTGRES_PASSWORD: # Vul dit zelf in
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    db:
+        image: postgres
+        environment:
+            POSTGRES_DB: pollenapi
+            POSTGRES_USER: # Vul dit zelf in
+            POSTGRES_PASSWORD: # Vul dit zelf in
+        ports:
+            - '5432:5432'
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  postgres_data:
+    postgres_data: {} # Volume for PostgreSQL data
+    pollenapi_build: {} # Volume for build artifacts
+    pollenapi_obj: {} # Volume for object files
