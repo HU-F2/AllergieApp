@@ -1,0 +1,101 @@
+## Ignore Visual Studio temporary files, build results, and
+## user-specific files
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+*.log
+
+# Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+*.sln.iml
+
+# ASP.NET
+appsettings.*.json
+appsettings.json
+secrets.json
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# DotCover
+*.dotCover
+
+# Azure
+PublishProfiles/
+*.azurePubxml
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+*.psmdcp
+*.nuproj
+packages/
+*.symbols.nupkg
+
+# npm / yarn
+node_modules/
+package-lock.json
+yarn.lock
+
+# Logs
+*.log
+*.tlog
+*.vshost.*
+
+# Others
+*.dbmdl
+*.bak
+*.tmp
+*.cache
+*.sqlite
+*.sdf
+
+# Test Results
+TestResults/
+*.coverage
+*.coveragexml
+
+# Configuration files
+launchSettings.json
+
+# Local tools
+.tools/
+.tool-manifest
+
+# Auto-generated files
+Generated_Code/
+Generated/
+
+# Backup & patch files
+*.orig
+*.rej
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+# Rider dotnet tool settings
+.idea/.idea.DotNetRunConfigurations.xml
