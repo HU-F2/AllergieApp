@@ -16,11 +16,13 @@ app.whenReady().then(() => {
   } else {
     win.loadFile("dist/index.html");
   }
-  session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {
-    if (permission === "geolocation") {
-      callback(true);
-    } else {
-      callback(false);
+  session.defaultSession.setPermissionRequestHandler(
+    (webContents, permission, callback) => {
+      if (permission === "geolocation") {
+        callback(true);
+      } else {
+        callback(false);
+      }
     }
-  });
+  );
 });
