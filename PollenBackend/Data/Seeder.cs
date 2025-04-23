@@ -23,6 +23,15 @@ namespace PollenBackend.Data
 
                 _context.SaveChanges();
             }
+
+            if(!_context.Locations.Any()){
+                _context.Locations.AddRange(
+                    new Location{Name="Hoevelaken", Latitude=52.17524495883361F, Longitude=5.460534964428301F},
+                    new Location{Name="Vreeland", Latitude=52.22853344210912F, Longitude=5.029018155942634F}
+                );
+                
+                _context.SaveChanges();
+            }
         }
     }
 }

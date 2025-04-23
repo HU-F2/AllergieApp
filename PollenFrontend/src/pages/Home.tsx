@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useFetchUsers } from '../services/userService';
+import { useFetchPollenMap } from '../services/pollenService';
+import { PollenMap } from '../components/PollenMap';
 
 type Props = {};
 
@@ -30,7 +32,8 @@ const Home = (props: Props) => {
         <div>
             <h1>Home page</h1>
             <NavLink to="/about">Go to the about page</NavLink>
-            <h1>Current Location</h1>
+            <PollenMap />
+            {/* <h1>Current Location</h1>
             {data.map((user) => (
                 <div key={user.id}>{user.username}</div>
             ))}
@@ -41,7 +44,7 @@ const Home = (props: Props) => {
                 </div>
             ) : (
                 <p>Loading location...</p>
-            )}
+            )} */}
         </div>
     );
 };
