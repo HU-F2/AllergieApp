@@ -16,7 +16,6 @@ namespace PollenApi.Services
 
         private readonly AppDbContext _dbContext;
 
-        // Inject ApplicationDbContext through constructor
         public UserService(AppDbContext dbContext)
         {
             _dbContext = dbContext;
