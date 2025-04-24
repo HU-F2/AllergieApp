@@ -1,7 +1,4 @@
-// src/pages/Home.tsx
-
 import { NavLink } from 'react-router-dom';
-import { PollenMap } from '../components/PollenMap';
 
 const Home = () => {
     return (
