@@ -1,0 +1,32 @@
+{
+	"folders": [
+		{
+			"path": "./PollenBackend.Tests"
+		},
+		{
+			"path": "./PollenBackend"
+		},
+		{
+			"path": "./PollenFrontend"
+		},
+		{
+			"path": "./"
+		}
+	],
+	"settings": {
+		"cSpell.words": [
+			"appsettings",
+			"Ardalis",
+			"buildtransitive",
+			"contentfiles",
+			"dotnet",
+			"groepcode",
+			"liveserver",
+			"maxlength",
+			"Npgsql",
+			"Serilog",
+			"Swashbuckle",
+			"xunit"
+		],
+	}
+}

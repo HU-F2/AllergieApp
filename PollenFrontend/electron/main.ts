@@ -3,6 +3,9 @@ import { app, BrowserWindow, session } from 'electron';
 app.whenReady().then(() => {
     const win = new BrowserWindow({
         title: 'Pollen Applicatie',
+        width: 800,
+        height: 600,
+        fullscreen: false, 
         webPreferences: {
             nodeIntegration: false, // Important for security
             contextIsolation: true, // Prevents access to Electron's internals from the renderer
