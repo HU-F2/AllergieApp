@@ -15,10 +15,12 @@ namespace PollenBackend.Services
     {
 
         private readonly AppDbContext _dbContext;
+        private readonly HttpClient _httpClient;
 
-        public LocationService(AppDbContext dbContext)
+        public LocationService(AppDbContext dbContext, HttpClient httpClient)
         {
             _dbContext = dbContext;
+            _httpClient = httpClient;
         }
 
         public async Task<IEnumerable<Location>> GetLocations()
@@ -28,41 +30,35 @@ namespace PollenBackend.Services
 
         public async Task<IEnumerable<Location>> GetMunicipality()
         {
+            // Api docs: https://api.pdok.nl/kadaster/bestuurlijkegebieden/ogc/v1/api
             var baseUrl = "https://api.pdok.nl/kadaster/bestuurlijkegebieden/ogc/v1/collections/gemeentegebied/items";
             var query = "?limit=342&crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FOGC%2F1.3%2FCRS84&bbox-crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FOGC%2F1.3%2FCRS84";
             string fullUrl = baseUrl + query;
             
-            using HttpClient client = new HttpClient();
 
-            HttpResponseMessage response = await client.GetAsync(fullUrl);
+            HttpResponseMessage response = await _httpClient.GetAsync(fullUrl);
             
             if (!response.IsSuccessStatusCode)
             {
-                // Failed
+                Console.WriteLine($"Location API request failed: {await response.Content.ReadAsStringAsync()}");
+                throw new HttpRequestException($"Request to Location API failed with status code {(int)response.StatusCode}");
             }
             
-
             string responseBody = await response.Content.ReadAsStringAsync(); 
             var locations = ConvertGeoJsonToLocations(responseBody);
-            // foreach(var location in locations){
-            //     Console.Out.WriteLine("Name: " + location.Name);
-            //     Console.Out.WriteLine("Coordinate count: " + location.Coordinates.Count);
-            //     Console.Out.WriteLine("Longitude: " + location.Longitude);
-            //     Console.Out.WriteLine("Latitude: " + location.Latitude);
-            // }
             
             return locations;
         }
 
         public static List<Location> ConvertGeoJsonToLocations(string geoJson)
         {
+            // Api docs: https://api.pdok.nl/kadaster/bestuurlijkegebieden/ogc/v1/api
             using var doc = JsonDocument.Parse(geoJson);
             var root = doc.RootElement;
 
             var features = root.GetProperty("features");
             var locations = new List<Location>();
             
-
             foreach (var feature in features.EnumerateArray())
             {
                 var id = feature.GetProperty("id").GetString();
@@ -80,7 +76,7 @@ namespace PollenBackend.Services
 
                 if (type == "Polygon")
                 {
-                    var outerRing = coordinatesRoot[0]; // first ring
+                    var outerRing = coordinatesRoot[0];
                     foreach (var point in outerRing.EnumerateArray())
                     {
                         float lon = point[0].GetSingle();
@@ -90,9 +86,9 @@ namespace PollenBackend.Services
                 }
                 else if (type == "MultiPolygon")
                 {
-                    foreach (var polygon in coordinatesRoot.EnumerateArray()) // each polygon
+                    foreach (var polygon in coordinatesRoot.EnumerateArray())
                     {
-                        var outerRing = polygon[0]; // outer ring
+                        var outerRing = polygon[0];
                         foreach (var point in outerRing.EnumerateArray())
                         {
                             float lon = point[0].GetSingle();

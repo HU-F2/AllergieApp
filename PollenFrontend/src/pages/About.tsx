@@ -1,8 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-type Props = {};
-
-const About = (props: Props) => {
+const About = () => {
     return (
         <div>
             <h1>About page</h1>

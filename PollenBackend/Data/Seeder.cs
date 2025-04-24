@@ -1,17 +1,20 @@
 using PollenBackend.Models;
+using PollenBackend.Services;
 
 namespace PollenBackend.Data
 {
     public class Seeder
     {
         private readonly AppDbContext _context;
+        private readonly ILocationService _locationService;
 
-        public Seeder(AppDbContext context)
+        public Seeder(AppDbContext context,ILocationService locationService)
         {
             _context = context;
+            _locationService = locationService;
         }
 
-        public void Seed()
+        public async Task Seed()
         {
             if (!_context.Users.Any())
             {
@@ -25,10 +28,8 @@ namespace PollenBackend.Data
             }
 
             if(!_context.Locations.Any()){
-                _context.Locations.AddRange(
-                    new Location{Name="Hoevelaken", Latitude=52.17524495883361F, Longitude=5.460534964428301F},
-                    new Location{Name="Vreeland", Latitude=52.22853344210912F, Longitude=5.029018155942634F}
-                );
+                var locations = await _locationService.GetMunicipality();
+                _context.Locations.AddRange(locations);
                 
                 _context.SaveChanges();
             }
