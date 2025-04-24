@@ -98,3 +98,8 @@ dotnet run
 ```
 
 Note: You must have .NET SDK installed to run the backend outside of Docker.
+
+## Design
+
+![Component Diagram zoomed out](https://github.com/user-attachments/assets/ae7b68bf-f032-4220-ad24-877476916643)
+
