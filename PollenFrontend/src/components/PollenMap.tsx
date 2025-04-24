@@ -22,9 +22,6 @@ export const PollenMap = () => {
     const [currentTime, setCurrentTime] = useState(0);
     const center: LatLngExpression = [52.1, 5.1];
 
-    // if (!data) {
-    //     return <div>Loading...</div>;
-    // }
     const polygonCoordinates = data?.map(
         ({ location, hourly: { birch_pollen } }) => {
             const { coordinates } = location;
