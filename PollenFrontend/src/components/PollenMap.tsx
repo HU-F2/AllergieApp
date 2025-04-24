@@ -52,7 +52,7 @@ export const PollenMap = () => {
                 [coord.latitude, coord.longitude] as LatLngExpression // flip [lng, lat] to [lat, lng]
         ),
         // Get color from the pollen data
-        color: getColor(pollenDataPoint.hourly.grass_pollen[currentTime]),
+        color: getColor(pollenDataPoint.hourly.birch_pollen[currentTime]),
     }));
 
     // console.log(polygonCoordinates);
@@ -67,7 +67,7 @@ export const PollenMap = () => {
             <MapContainer
                 center={center}
                 zoom={7}
-                style={{ height: '100vh', width: '100vw' }}
+                style={{ height: '75vh', width: '100vw' }}
                 scrollWheelZoom={true} // add this to avoid warnings
             >
                 <TileLayer
