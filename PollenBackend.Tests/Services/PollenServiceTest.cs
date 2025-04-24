@@ -1,18 +1,9 @@
-using Microsoft.EntityFrameworkCore;
 using Moq;
-using PollenBackend.Data;
 using PollenBackend.Models;
 using PollenBackend.Services;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
 using System.Text;
 using System.Net;
 using Moq.Protected;
-using System.Net.Http;
-using System.IO;
-using System.Threading;
 
 namespace PollenBackend.Tests.Services
 {

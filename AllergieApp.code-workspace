@@ -1,0 +1,35 @@
+{
+	"folders": [
+		{
+			"path": "./PollenBackend.Tests"
+		},
+		{
+			"path": "./PollenBackend"
+		},
+		{
+			"path": "./PollenFrontend"
+		},
+		{
+			"path": "./"
+		}
+	],
+	"settings": {
+		"cSpell.words": [
+			"appsettings",
+			"Ardalis",
+			"buildtransitive",
+			"contentfiles",
+			"dotnet",
+			"groepcode",
+			"liveserver",
+			"maxlength",
+			"Npgsql",
+			"Serilog",
+			"Swashbuckle",
+			"xunit"
+		],
+		"testExplorer.useNativeTesting": false,
+		"dotnet-test-explorer.testProjectPath": "**/*[Tt]ests/*.csproj",
+		"dotnet-test-explorer.autoDetect": true
+	}
+}
