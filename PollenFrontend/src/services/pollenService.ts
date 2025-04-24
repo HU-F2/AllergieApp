@@ -38,4 +38,9 @@ const fetchPollenMap = async (): Promise<PollenData[]> => {
 };
 
 export const useFetchPollenMap = () =>
-    useQuery({ queryKey: ['pollen'], queryFn: fetchPollenMap });
+    useQuery({
+        queryKey: ['pollen'],
+        queryFn: fetchPollenMap,
+        retry: false,
+        staleTime: Infinity,
+    });

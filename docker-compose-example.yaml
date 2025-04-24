@@ -1,13 +1,13 @@
 services:
-    pollenapi:
-        image: pollenapi
+    pollenbackend:
+        image: pollenbackend
         build:
-            context: ./PollenApi
+            context: ./PollenBackend
             dockerfile: Dockerfile
         volumes:
-            - ./PollenApi:/app # Mount the local source code
-            - pollenapi_build:/app/bin # Persistent build artifacts
-            - pollenapi_obj:/app/obj # Persistent object files
+            - ./PollenBackend:/app # Mount the local source code
+            - pollenbackend_build:/app/bin # Persistent build artifacts
+            - pollenbackend_obj:/app/obj # Persistent object files
         ports:
             - '5000:5000'
         environment:
@@ -29,5 +29,5 @@ services:
 
 volumes:
     postgres_data: {} # Volume for PostgreSQL data
-    pollenapi_build: {} # Volume for build artifacts
-    pollenapi_obj: {} # Volume for object files
+    pollenbackend_build: {} # Volume for build artifacts
+    pollenbackend_obj: {} # Volume for object files

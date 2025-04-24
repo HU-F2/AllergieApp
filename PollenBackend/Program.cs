@@ -4,8 +4,6 @@ using PollenBackend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 builder.Services.AddCors(options =>
@@ -30,16 +28,15 @@ builder.Services.AddScoped<Seeder>();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateAsyncScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    dbContext.Database.Migrate();
-    
+    await dbContext.Database.MigrateAsync();
+
     var seeder = scope.ServiceProvider.GetRequiredService<Seeder>();
-    seeder.Seed();
+    await seeder.Seed();
 }
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -49,7 +46,6 @@ app.UseCors("AllowAll");
 
 app.UseRouting();
 
-// Map controllers
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
