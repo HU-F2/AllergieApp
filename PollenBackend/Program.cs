@@ -24,6 +24,9 @@ builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IPollenService, PollenService>();
 builder.Services.AddControllers();
 
+builder.Services.AddHttpClient<IPollenService, PollenService>();
+builder.Services.AddHttpClient<ILocationService, LocationService>();
+
 builder.Services.AddScoped<Seeder>();
 
 var app = builder.Build();

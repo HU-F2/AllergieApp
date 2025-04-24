@@ -16,10 +16,12 @@ namespace PollenBackend.Services
     {
 
         private readonly AppDbContext _dbContext;
+        private readonly HttpClient _httpClient;
 
-        public LocationService(AppDbContext dbContext)
+        public LocationService(AppDbContext dbContext, HttpClient httpClient)
         {
             _dbContext = dbContext;
+            _httpClient = httpClient;
         }
 
         public async Task<IEnumerable<Location>> GetLocations()
@@ -34,9 +36,8 @@ namespace PollenBackend.Services
             var query = "?limit=342&crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FOGC%2F1.3%2FCRS84&bbox-crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FOGC%2F1.3%2FCRS84";
             string fullUrl = baseUrl + query;
             
-            using HttpClient client = new HttpClient();
 
-            HttpResponseMessage response = await client.GetAsync(fullUrl);
+            HttpResponseMessage response = await _httpClient.GetAsync(fullUrl);
             
             if (!response.IsSuccessStatusCode)
             {

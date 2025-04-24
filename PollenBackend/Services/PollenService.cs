@@ -20,11 +20,13 @@ namespace PollenBackend.Services
 
         private readonly AppDbContext _dbContext;
         private readonly ILocationService _locationService;
+        private readonly HttpClient _httpClient;
 
-        public PollenService(AppDbContext dbContext, ILocationService locationService)
+        public PollenService(AppDbContext dbContext, ILocationService locationService, HttpClient httpClient)
         {
             _dbContext = dbContext;
             _locationService = locationService;
+            _httpClient = httpClient;
         }
 
         public async Task<IEnumerable<PollenData>> GetPollenMap()
@@ -44,8 +46,7 @@ namespace PollenBackend.Services
             string fullUrl = baseUrl + query;
 
             // Make API request
-            using HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(fullUrl);
+            HttpResponseMessage response = await _httpClient.GetAsync(fullUrl);
 
             if (!response.IsSuccessStatusCode)  
             {
