@@ -18,12 +18,12 @@ namespace PollenBackend.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Apply value conversion for the Coordinates property
+            // Save coordinates in db
             modelBuilder.Entity<Location>()
                 .Property(l => l.Coordinates)
                 .HasConversion(
-                    v => JsonConvert.SerializeObject(v), // Serialize list to JSON
-                    v => JsonConvert.DeserializeObject<List<Coordinate>>(v) // Deserialize JSON back to list
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<List<Coordinate>>(v) ?? new List<Coordinate>{}
                 );
         }
     }

@@ -15,7 +15,7 @@ export const TimeSlider = ({ times, onTimeChange }: TimeSliderProps) => {
     };
 
     return (
-        <div style={{ padding: '1rem' }}>
+        <div style={{ padding: '1rem', width: '100%' }}>
             <input
                 type="range"
                 min={0}

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Diagnostics;
 using System.Text.Json;
 using PollenBackend.Data;
 using PollenBackend.Models;
@@ -31,6 +29,8 @@ namespace PollenBackend.Services
 
         public async Task<IEnumerable<PollenData>> GetPollenMap()
         {
+            // Api docs: https://open-meteo.com/en/docs/air-quality-api
+
             // Get locations from db
             var locations = (await _locationService.GetLocations()).ToList();
 
@@ -49,21 +49,22 @@ namespace PollenBackend.Services
 
             if (!response.IsSuccessStatusCode)  
             {
-                Console.WriteLine($"Pollen API request failed: {await response.Content.ReadAsStringAsync()}");
-                throw new HttpRequestException($"Request to pollen API failed with status code {(int)response.StatusCode}");
+                var reason = JsonSerializer.Deserialize<JsonElement>(await response.Content.ReadAsStringAsync())
+                    .GetProperty("reason").GetString();
+                throw new HttpRequestException($"Request to pollen API failed: {reason}");
             }
             string responseBody = await response.Content.ReadAsStringAsync();
 
             // Deserialize
-            List<PollenData> data = JsonSerializer.Deserialize<List<PollenData>>(responseBody) ?? new List<PollenData>();
+            List<PollenData> pollenData = JsonSerializer.Deserialize<List<PollenData>>(responseBody) ?? new List<PollenData>();
 
             // Attach locations to data
-            for (int i = 0; i < data.Count && i < locations.Count; i++)
+            for (int i = 0; i < pollenData.Count && i < locations.Count; i++)
             {
-                data[i].Location = locations[i];
+                pollenData[i].Location = locations[i];
             }
 
-            return data;
+            return pollenData;
         }
     }
 }
