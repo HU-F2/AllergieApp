@@ -39,14 +39,3 @@ const fetchPollenMap = async (): Promise<PollenData[]> => {
 
 export const useFetchPollenMap = () =>
     useQuery({ queryKey: ['pollen'], queryFn: fetchPollenMap });
-
-const fetchPollenBorder = async (): Promise<Location[]> => {
-    const response = await fetch('http://localhost:5000/api/pollen/border');
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-    return response.json();
-};
-
-export const useFetchPollenBorder = () =>
-    useQuery({ queryKey: ['border'], queryFn: fetchPollenBorder });

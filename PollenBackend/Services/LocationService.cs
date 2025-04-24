@@ -46,12 +46,12 @@ namespace PollenBackend.Services
 
             string responseBody = await response.Content.ReadAsStringAsync(); 
             var locations = ConvertGeoJsonToLocations(responseBody);
-            foreach(var location in locations){
-                Console.Out.WriteLine("Name: " + location.Name);
-                Console.Out.WriteLine("Coordinate count: " + location.Coordinates.Count);
-                Console.Out.WriteLine("Longitude: " + location.Longitude);
-                Console.Out.WriteLine("Latitude: " + location.Latitude);
-            }
+            // foreach(var location in locations){
+            //     Console.Out.WriteLine("Name: " + location.Name);
+            //     Console.Out.WriteLine("Coordinate count: " + location.Coordinates.Count);
+            //     Console.Out.WriteLine("Longitude: " + location.Longitude);
+            //     Console.Out.WriteLine("Latitude: " + location.Latitude);
+            // }
             
             return locations;
         }

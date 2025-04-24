@@ -23,6 +23,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILocationService, LocationService>();
+builder.Services.AddScoped<IPollenService, PollenService>();
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<Seeder>();

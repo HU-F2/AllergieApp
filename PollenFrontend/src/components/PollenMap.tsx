@@ -1,20 +1,9 @@
-import { MapContainer, TileLayer, Circle, Popup, Polygon } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
-import { useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
-import {
-    useFetchPollenBorder,
-    useFetchPollenMap,
-} from '../services/pollenService';
+import { useState } from 'react';
+import { MapContainer, Polygon, TileLayer } from 'react-leaflet';
+import { useFetchPollenMap } from '../services/pollenService';
 import { TimeSlider } from './TimeSlider';
-
-interface CityPollenData {
-    city: string;
-    latitude: number;
-    longitude: number;
-    birchPollen: number | null;
-    time: string | null;
-}
 
 const getColor = (pollen: number | null | undefined): string => {
     if (pollen === null || pollen === undefined) return 'gray';
@@ -40,28 +29,23 @@ export const PollenMap = () => {
     const [currentTime, setCurrentTime] = useState(0);
     const center: LatLngExpression = [52.1, 5.1];
 
-    // const { data: borderData } = useFetchPollenBorder();
-
     if (!data) {
         return <div>Loading...</div>;
     }
-    const polygonCoordinates = data.map((pollenDataPoint) => ({
-        // Coordinates mapping
-        coordinates: pollenDataPoint.location.coordinates.map(
-            (coord, index) =>
-                [coord.latitude, coord.longitude] as LatLngExpression // flip [lng, lat] to [lat, lng]
-        ),
-        // Get color from the pollen data
-        color: getColor(pollenDataPoint.hourly.grass_pollen[currentTime]),
-    }));
+    const polygonCoordinates = data.map(
+        ({ location, hourly: { birch_pollen } }) => {
+            const { coordinates } = location;
 
-    // console.log(polygonCoordinates);
+            return {
+                coordinates: coordinates.map(
+                    ({ latitude, longitude }) =>
+                        [latitude, longitude] as LatLngExpression
+                ),
+                color: getColor(birch_pollen[currentTime]),
+            };
+        }
+    );
 
-    // useEffect(() => {
-    //     if (data) {
-    //         setCurrentTime(data[0].hourly.time[0]);
-    //     }
-    // }, [data]);
     return (
         <>
             <MapContainer
