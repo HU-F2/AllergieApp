@@ -3,15 +3,16 @@ import { app, BrowserWindow } from 'electron';
 app.whenReady().then(() => {
     const win = new BrowserWindow({
         title: 'Pollen Applicatie',
-        width: 800,
-        height: 600,
-        fullscreen: false, 
+        show: false,
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
             sandbox: true,
         },
     });
+
+    win.maximize();
+    win.show();
 
     if (process.env.VITE_DEV_SERVER_URL) {
         win.loadURL(process.env.VITE_DEV_SERVER_URL);
