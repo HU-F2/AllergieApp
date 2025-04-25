@@ -10,17 +10,15 @@ namespace PollenBackend.Controllers
     [Route("api/pollen")]
     public class PollenController : ControllerBase
     {
-        private readonly ILocationService _locationService;
         private readonly IPollenService _pollenService;
         private readonly IMemoryCache _memoryCache;
-        public PollenController(ILocationService locationService, IPollenService pollenService, IMemoryCache memoryCache)
+        public PollenController(IPollenService pollenService, IMemoryCache memoryCache)
         {
-            _locationService = locationService;
             _pollenService = pollenService;
             _memoryCache = memoryCache;
         }
 
-         [HttpGet("location")]
+        [HttpGet("location")]
         public async Task<ActionResult<PollenData>> GetByLocation([FromQuery] double latitude, [FromQuery] double longitude)
         {
             try
