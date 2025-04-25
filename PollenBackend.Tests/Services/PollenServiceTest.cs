@@ -4,6 +4,8 @@ using PollenBackend.Services;
 using System.Text;
 using System.Net;
 using Moq.Protected;
+using PollenBackend.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace PollenBackend.Tests.Services
 {
