@@ -18,7 +18,6 @@ namespace PollenBackend.Tests.Services
 {
     public class PollenServiceTest
     {
-        // This constructor was not needed because we're mocking everything we need.
         public PollenServiceTest()
         {
         }
@@ -56,8 +55,11 @@ namespace PollenBackend.Tests.Services
 
             var httpClient = new HttpClient(mockHandler.Object);
 
+            // Mock db
+            var mockDbContext = new Mock<AppDbContext>(new DbContextOptions<AppDbContext>());
+
             // Create service and call
-            var pollenService = new PollenService(null, mockLocationService.Object, httpClient);
+            var pollenService = new PollenService(mockDbContext.Object, mockLocationService.Object, httpClient);
             var result = (await pollenService.GetPollenMap()).ToList();
 
             // Tests
@@ -67,8 +69,8 @@ namespace PollenBackend.Tests.Services
             Assert.Equal("Test 2", result[1].Location?.Name);
 
             Assert.NotNull(result[0].Hourly);
-            Assert.NotNull(result[0].Hourly.BirchPollen);
-            Assert.NotNull(result[0].Hourly.GrassPollen);
+            Assert.NotNull(result[0]?.Hourly?.BirchPollen);
+            Assert.NotNull(result[0]?.Hourly?.GrassPollen);
 
         }
 
@@ -96,7 +98,10 @@ namespace PollenBackend.Tests.Services
 
             var httpClient = new HttpClient(mockHandler.Object);
 
-            var pollenService = new PollenService(null, mockLocationService.Object, httpClient);
+            // Mock db
+            var mockDbContext = new Mock<AppDbContext>(new DbContextOptions<AppDbContext>());
+
+            var pollenService = new PollenService(mockDbContext.Object, mockLocationService.Object, httpClient);
             var exception = await Assert.ThrowsAsync<HttpRequestException>(() => pollenService.GetPollenMap());
 
             // Tests

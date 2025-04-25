@@ -32,6 +32,7 @@ export const PollenMap = () => {
                         [latitude, longitude] as LatLngExpression
                 ),
                 color: getColor(birch_pollen[currentTime]),
+                id: location.id,
             };
         }
     );
@@ -50,7 +51,7 @@ export const PollenMap = () => {
                 />
                 {polygonCoordinates?.map((polygon) => (
                     <Polygon
-                        key={polygon.coordinates.length}
+                        key={polygon.id}
                         positions={polygon.coordinates}
                         pathOptions={{ color: polygon.color }}
                         stroke={false}
