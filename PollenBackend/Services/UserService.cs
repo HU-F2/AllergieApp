@@ -10,10 +10,8 @@ namespace PollenBackend.Services
         Task<List<User>> GetUsers();
     }
 
-
     public class UserService : IUserService
     {
-
         private readonly AppDbContext _dbContext;
 
         public UserService(AppDbContext dbContext)

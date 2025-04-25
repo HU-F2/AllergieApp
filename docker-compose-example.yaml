@@ -1,17 +1,13 @@
 services:
     pollenbackend:
-        image: PollenBackend
+        image: pollenbackend
         build:
             context: ./PollenBackend
             dockerfile: Dockerfile
         volumes:
             - ./PollenBackend:/app # Mount the local source code
-            - PollenBackend_build:/app/bin # Persistent build artifacts
-            - PollenBackend_obj:/app/obj # Persistent object files
-        ports:
-            - '5000:5000'
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Development
+            - pollenbackend_build:/app/bin # Persistent build artifacts
+            - pollenbackend_obj:/app/obj # Persistent object files
         depends_on:
             - db
         command: dotnet watch run --urls=http://0.0.0.0:5000
@@ -29,5 +25,5 @@ services:
 
 volumes:
     postgres_data: {} # Volume for PostgreSQL data
-    PollenBackend_build: {} # Volume for build artifacts
-    PollenBackend_obj: {} # Volume for object files
+    pollenbackend_build: {} # Volume for build artifacts
+    pollenbackend_obj: {} # Volume for object files

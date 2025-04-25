@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PollenBackend.Models;
 using PollenBackend.Services;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PollenBackend.Controllers
 {

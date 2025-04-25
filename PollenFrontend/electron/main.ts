@@ -1,33 +1,23 @@
-import { app, BrowserWindow, session } from 'electron';
+import { app, BrowserWindow } from 'electron';
 
 app.whenReady().then(() => {
     const win = new BrowserWindow({
         title: 'Pollen Applicatie',
-        width: 800,
-        height: 600,
-        fullscreen: false, 
+        show: false,
         webPreferences: {
-            nodeIntegration: false, // Important for security
-            contextIsolation: true, // Prevents access to Electron's internals from the renderer
-            sandbox: true, // Adds additional security layer
+            nodeIntegration: false,
+            contextIsolation: true,
+            sandbox: true,
         },
     });
 
-    // You can use `process.env.VITE_DEV_SERVER_URL` when the vite command is called `serve`
+    win.maximize();
+    win.show();
+
     if (process.env.VITE_DEV_SERVER_URL) {
         win.loadURL(process.env.VITE_DEV_SERVER_URL);
     } else {
         // Load your file
         win.loadFile('dist/index.html');
     }
-
-    session.defaultSession.setPermissionRequestHandler(
-        (webContents, permission, callback) => {
-            if (permission === 'geolocation') {
-                callback(true); // Allow geolocation
-            } else {
-                callback(false); // Deny all other permissions
-            }
-        }
-    );
 });
