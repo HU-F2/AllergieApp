@@ -30,9 +30,6 @@
             "Serilog",
             "Swashbuckle",
             "xunit"
-        ],
-        "testExplorer.useNativeTesting": false,
-        "dotnet-test-explorer.testProjectPath": "**/*[Tt]ests/*.csproj",
-        "dotnet-test-explorer.autoDetect": true
+        ]
     }
 }

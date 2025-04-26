@@ -1,9 +1,5 @@
 {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
-    "prettier.configPath": "PollenFrontend/.prettierrc",
-    "dotnet.testExplorer.useNativeTesting": true,
-    "dotnet-test-explorer.testProjectPath": "**/*[Tt]ests/*.csproj",
-    "dotnet.testExplorer.autoDetect": true,
-    "testExplorer.useNativeTesting": true
+    "prettier.configPath": "PollenFrontend/.prettierrc"
 }
