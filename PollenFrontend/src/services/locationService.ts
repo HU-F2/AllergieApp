@@ -16,6 +16,7 @@ async function getLocation() {
         console.error('Error fetching location data:', error);
     }
 }
+
 export const useLocation = () =>
     useQuery({
         queryKey: ['myLocation'],

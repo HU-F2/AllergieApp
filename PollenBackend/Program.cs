@@ -33,6 +33,12 @@ builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    Console.WriteLine("De backend is succesvol gestart en luistert op poort 5000.");
+    Console.Out.Flush();
+});
+
 using (var scope = app.Services.CreateAsyncScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();

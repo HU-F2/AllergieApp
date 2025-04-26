@@ -1,8 +1,10 @@
 import { app, BrowserWindow } from 'electron';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 app.whenReady().then(() => {
     const win = new BrowserWindow({
-        title: 'Pollen Applicatie',
         show: false,
         webPreferences: {
             nodeIntegration: false,
@@ -11,6 +13,7 @@ app.whenReady().then(() => {
         },
     });
 
+    win.setTitle(process.env.VITE_APP_NAME || 'Pollinator');
     win.maximize();
     win.show();
 

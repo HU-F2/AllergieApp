@@ -9,6 +9,9 @@ const Home = () => {
                 <NavLink to="/map" className="link-button green">
                     View Pollen Map
                 </NavLink>
+                <NavLink to="/education" className="link-button green">
+                    View eduction
+                </NavLink>
             </div>
         </div>
     );
