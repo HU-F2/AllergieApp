@@ -7,11 +7,19 @@ export interface PollenData {
         time: string;
         birch_pollen: string;
         grass_pollen: string;
+        alder_pollen: string;
+        mugwort_pollen: string;
+        olive_pollen: string;
+        ragweed_pollen: string;
     };
     hourly: {
         time: string[];
-        birch_pollen: (number | null)[];
-        grass_pollen: (number | null)[];
+        birch_pollen: (number | null)[] | null;
+        grass_pollen: (number | null)[] | null;
+        alder_pollen: (number | null)[] | null;
+        mugwort_pollen: (number | null)[] | null;
+        olive_pollen: (number | null)[] | null;
+        ragweed_pollen: (number | null)[] | null;
     };
     location: Location;
 }
@@ -29,8 +37,10 @@ export type Location = {
     coordinates: Coordinate[];
 };
 
+export const BACKEND_API_URL = 'http://localhost:5000';
+
 const fetchPollenMap = async (): Promise<PollenData[]> => {
-    const response = await fetch('http://localhost:5000/api/pollen/map');
+    const response = await fetch(`${BACKEND_API_URL}/api/pollen/map`);
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }
@@ -43,4 +53,33 @@ export const useFetchPollenMap = () =>
         queryFn: fetchPollenMap,
         retry: false,
         staleTime: Infinity,
+    });
+
+const fetchPollenByLocation = async (
+    latitude: number,
+    longitude: number
+): Promise<PollenData> => {
+    const response = await fetch(
+        `${BACKEND_API_URL}/api/pollen/location?latitude=${latitude}&longitude=${longitude}`
+    );
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+};
+
+export const useFetchPollenByLocation = (coordinate?: Coordinate) =>
+    useQuery({
+        queryKey: ['pollen.location'],
+        queryFn: () => {
+            if (!coordinate) {
+                return Promise.reject('No coordinate provided');
+            }
+            return fetchPollenByLocation(
+                coordinate.latitude,
+                coordinate.longitude
+            );
+        },
+        enabled: Boolean(coordinate),
+        retry: false,
     });

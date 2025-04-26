@@ -29,6 +29,8 @@ builder.Services.AddHttpClient<ILocationService, LocationService>();
 
 builder.Services.AddScoped<Seeder>();
 
+builder.Services.AddMemoryCache();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateAsyncScope())

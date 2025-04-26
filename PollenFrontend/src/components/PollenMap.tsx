@@ -26,12 +26,14 @@ export const PollenMap = () => {
         ({ location, hourly: { birch_pollen } }) => {
             const { coordinates } = location;
 
+            const pollenValue = birch_pollen?.[currentTime] ?? null;
+
             return {
                 coordinates: coordinates.map(
                     ({ latitude, longitude }) =>
                         [latitude, longitude] as LatLngExpression
                 ),
-                color: getColor(birch_pollen[currentTime]),
+                color: getColor(pollenValue),
                 id: location.id,
             };
         }
