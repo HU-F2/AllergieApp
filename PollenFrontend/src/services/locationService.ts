@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 async function getLocation() {
     // https://ip-api.com/docs/api:json
-    const url = `http://ip-api.com/json/`;
+    const url = `${import.meta.env.VITE_IP_API_URL}`;
 
     try {
         const response = await (await fetch(url)).json();

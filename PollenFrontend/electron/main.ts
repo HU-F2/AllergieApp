@@ -13,7 +13,7 @@ app.whenReady().then(() => {
         },
     });
 
-    win.setTitle(process.env.VITE_APP_NAME || 'Pollinator');
+    win.setTitle(process.env.VITE_APP_NAME || 'Polinator');
     win.maximize();
     win.show();
 

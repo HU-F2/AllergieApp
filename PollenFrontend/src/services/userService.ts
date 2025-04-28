@@ -8,7 +8,7 @@ type UserType = {
 };
 
 const fetchUsers = async (): Promise<UserType[]> => {
-    const response = await fetch('http://localhost:5000/api/users');
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/users`);
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }
