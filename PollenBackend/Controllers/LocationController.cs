@@ -21,7 +21,17 @@ namespace PollenBackend.Controllers
         [HttpGet("list")]
         public async Task<ActionResult<Location>> GetLocationsList()
         {
-            var locations = await _locationService.GetLocationsList();
+            const string cacheKey = "LocationsList";
+        
+            if (!_memoryCache.TryGetValue(cacheKey, out List<Location>? locations))
+            {
+                locations = (await _locationService.GetLocationsList()).ToList();
+                
+                _memoryCache.Set(cacheKey, locations, new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTimeOffset.MaxValue
+                });
+            }
 
             return Ok(locations);
         }
