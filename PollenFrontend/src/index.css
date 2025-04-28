@@ -235,7 +235,7 @@ circle {
     margin-bottom: 30px;
 }
 
-.education-section h2 {
+.education-section h2, .education-section h3 {
     color: #4a90e2;
     margin-bottom: 10px;
 }
@@ -243,6 +243,24 @@ circle {
 .education-section p, .education-section ul {
     font-size: 1.1rem;
     line-height: 1.6;
+}
+
+.education-tips .inline-link {
+    color: #1a73e8;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: normal;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    display: inline;
+}
+
+.education-tips .inline-link:hover {
+    text-decoration: none;
+    color: #155ab6;
 }
 
 /* Navbar styling */
