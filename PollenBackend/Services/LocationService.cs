@@ -8,6 +8,7 @@ namespace PollenBackend.Services
     public interface ILocationService
     {
         Task<IEnumerable<Location>> GetLocations();
+        Task<IEnumerable<Location>> GetLocationsList();
         Task<IEnumerable<Location>> GetMunicipality();
     }
 
@@ -125,5 +126,20 @@ namespace PollenBackend.Services
             return locations;
         }
 
+        public async Task<IEnumerable<Location>> GetLocationsList()
+        {
+            var locations = await _dbContext.Locations
+                .Select(location => new Location
+                {
+                    Id = location.Id,
+                    Name = location.Name,
+                    Latitude = location.Latitude,
+                    Longitude = location.Longitude,
+                    Coordinates = null!
+                })
+                .ToListAsync();
+
+            return locations;
+        }
     }
 }

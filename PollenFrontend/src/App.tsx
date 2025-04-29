@@ -1,7 +1,7 @@
-import { Route, Routes } from 'react-router-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
-import Home from './pages/Home';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { LocationProvider } from './contexts/LocationContext';
+import Home from './pages/Home';
 import MapPage from './pages/Map';
 
 function App() {
@@ -9,12 +9,14 @@ function App() {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <Router>
-                <Routes>
-                    <Route path="/" Component={Home} />
-                    <Route path="/map" element={<MapPage />} />
-                </Routes>
-            </Router>
+            <LocationProvider>
+                <Router>
+                    <Routes>
+                        <Route path="/" Component={Home} />
+                        <Route path="/map" element={<MapPage />} />
+                    </Routes>
+                </Router>
+            </LocationProvider>
         </QueryClientProvider>
     );
 }
