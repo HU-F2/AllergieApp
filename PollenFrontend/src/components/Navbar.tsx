@@ -16,7 +16,7 @@ const Navbar = () => {
                     Map
                 </NavLink>
                 <NavLink to="/education" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-                    Education
+                    Educatie
                 </NavLink>
             </div>
         </nav>
