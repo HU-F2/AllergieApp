@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { QUERY_KEYS } from './queryKeys';
 
 export interface PollenData {
     latitude: number;
@@ -47,7 +48,7 @@ const fetchPollenMap = async (): Promise<PollenData[]> => {
 
 export const useFetchPollenMap = () =>
     useQuery({
-        queryKey: ['pollen'],
+        queryKey: QUERY_KEYS.pollen.map,
         queryFn: fetchPollenMap,
         retry: false,
         staleTime: Infinity,
@@ -68,7 +69,7 @@ const fetchPollenByLocation = async (
 
 export const useFetchPollenByLocation = (coordinate?: Coordinate) =>
     useQuery({
-        queryKey: ['pollen.location'],
+        queryKey: QUERY_KEYS.pollen.location(coordinate),
         queryFn: () => {
             if (!coordinate) {
                 return Promise.reject('No coordinate provided');

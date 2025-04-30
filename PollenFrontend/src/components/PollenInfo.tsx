@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import { useLocation } from '../services/locationService';
+import { LocationData } from '../services/locationService';
 import { useFetchPollenByLocation } from '../services/pollenService';
 import Alert from './Alert';
 import PollenIndicator from './PollenIndicator';
 
-const PollenInfo = () => {
-    const { data: locationData } = useLocation();
-    const { data: pollenData } = useFetchPollenByLocation(locationData);
+type Props = {
+    location: LocationData | undefined;
+};
+
+const PollenInfo = ({ location }: Props) => {
+    const { data: pollenData } = useFetchPollenByLocation(location);
     const [alert, setAlert] = useState<string | undefined>(undefined);
 
     const totalPollen = Object.values(PollenType).reduce((sum, type) => {
@@ -14,15 +17,20 @@ const PollenInfo = () => {
         return sum + count;
     }, 0);
 
-    const options = {
+    const dateFormatOptions = {
         weekday: 'long',
         day: 'numeric',
         month: 'long',
     } satisfies Intl.DateTimeFormatOptions;
     const date = new Date();
-    const formattedDate = new Intl.DateTimeFormat('nl-NL', options).format(
-        date
-    );
+    const formattedDate = new Intl.DateTimeFormat(
+        'nl-NL',
+        dateFormatOptions
+    ).format(date);
+
+    if (location == undefined) {
+        return <p>Selecteer een locatie om pollen informatie te bekijken.</p>;
+    }
 
     return (
         <div>
@@ -35,9 +43,7 @@ const PollenInfo = () => {
                 />
             )}
 
-            <h1 style={{ textAlign: 'center' }}>
-                Pollen in {locationData?.city}:
-            </h1>
+            <h1 style={{ textAlign: 'center' }}>Pollen in {location?.name}:</h1>
             <PollenIndicator
                 max={Object.values(pollenMetadata).reduce(
                     (sum, meta) => sum + meta.max,

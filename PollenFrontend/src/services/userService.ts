@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { QUERY_KEYS } from './queryKeys';
 
 type UserType = {
     id: string;
@@ -16,4 +17,4 @@ const fetchUsers = async (): Promise<UserType[]> => {
 };
 
 export const useFetchUsers = () =>
-    useQuery({ queryKey: ['test'], queryFn: fetchUsers });
+    useQuery({ queryKey: QUERY_KEYS.user.all, queryFn: fetchUsers });

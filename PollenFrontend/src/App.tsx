@@ -4,20 +4,23 @@ import Home from './pages/Home';
 import MapPage from './pages/Map';
 import EducationPage from './pages/Education';
 import NotFoundPage from './pages/NotFoundPage';
+import { LocationProvider } from './contexts/LocationContext';
 
 function App() {
     const queryClient = new QueryClient();
 
     return (
         <QueryClientProvider client={queryClient}>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/map" element={<MapPage />} />
-                    <Route path="/education" element={<EducationPage />} />
-                    <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-            </Router>
+            <LocationProvider>
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/map" element={<MapPage />} />
+                        <Route path="/education" element={<EducationPage />} />
+                        <Route path="*" element={<NotFoundPage />} />
+                    </Routes>
+                </Router>
+            </LocationProvider>
         </QueryClientProvider>
     );
 }
