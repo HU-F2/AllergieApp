@@ -336,3 +336,7 @@ circle {
 .back-button:hover {
     color: #1a1acb;
 }
+
+.header-flora-info {
+    margin-bottom: 15px;
+}
