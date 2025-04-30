@@ -17,14 +17,20 @@ const LocationSearch = ({ locations, onSelectLocation }: Props) => {
         const term = e.target.value;
         setSearchTerm(term);
 
-        if (term.trim() !== '') {
-            const filtered = locations.filter((location) =>
-                location.name.toLowerCase().includes(term.toLowerCase())
-            );
-            setFilteredLocations(filtered);
-        } else {
+        if (term === '') {
             setFilteredLocations([]);
+            return;
         }
+
+        const filtered = locations.filter((location) =>
+            location.name.toLowerCase().includes(term.toLowerCase())
+        ).sort((a, b) => {
+            const key = term.toLowerCase();
+            const isGoodMatchA = a.name.toLowerCase().startsWith(key);
+            const isGoodMatchB = b.name.toLowerCase().startsWith(key);
+            return Number(isGoodMatchB) - Number(isGoodMatchA);
+        });
+        setFilteredLocations(filtered);
     };
 
     const handleLocationSelect = (location: LocationData) => {
