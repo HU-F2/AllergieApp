@@ -13,6 +13,7 @@ namespace PollenBackend.Data
 
         public DbSet<Location> Locations { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Flora> Flora { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

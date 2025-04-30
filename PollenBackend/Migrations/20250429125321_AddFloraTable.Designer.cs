@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PollenBackend.Data;
@@ -11,9 +12,11 @@ using PollenBackend.Data;
 namespace PollenBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250429125321_AddFloraTable")]
+    partial class AddFloraTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,15 +34,19 @@ namespace PollenBackend.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AfbeeldingUrl")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Beschrijving")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("HooikoortsInfo")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Naam")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("PollenPeriodeEind")
@@ -47,9 +54,6 @@ namespace PollenBackend.Migrations
 
                     b.Property<DateTime>("PollenPeriodeStart")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Regio")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

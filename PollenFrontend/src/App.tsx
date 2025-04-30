@@ -3,6 +3,8 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { LocationProvider } from './contexts/LocationContext';
 import Home from './pages/Home';
 import MapPage from './pages/Map';
+import FloraPage from './pages/FloraInfo';
+
 
 function App() {
     const queryClient = new QueryClient();
@@ -14,6 +16,7 @@ function App() {
                     <Routes>
                         <Route path="/" Component={Home} />
                         <Route path="/map" element={<MapPage />} />
+                        <Route path="/info" element={<FloraPage />} />
                     </Routes>
                 </Router>
             </LocationProvider>
