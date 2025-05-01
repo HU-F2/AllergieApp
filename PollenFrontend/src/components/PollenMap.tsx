@@ -40,11 +40,11 @@ export const PollenMap = () => {
     );
 
     return (
-        <div className="map-container">
+        <div className="map-container2">
             <MapContainer
                 center={center}
                 zoom={7}
-                style={{ height: '75vh', width: '100vw' }}
+                style={{ height: '75vh', width: '100%' }}
                 scrollWheelZoom={true} // add this to avoid warnings
             >
                 <TileLayer
