@@ -31,7 +31,7 @@ const FloraInfo = () => {
                         <h2>{flora.naam}</h2>
                         <p>{flora.beschrijving}</p>
                         <p><strong>Hooikoorts:</strong> {flora.hooikoortsInfo}</p>
-                        <p><strong>Periode:</strong> {formatDate(flora.pollenPeriodeStart)} - {formatDate(flora.pollenPeriodeEind)}</p>
+                        <p><strong>Pollen periode:</strong> {formatDate(flora.pollenPeriodeStart)} - {formatDate(flora.pollenPeriodeEind)}</p>
                         <p><strong>Regio:</strong> {flora.regio}</p>
                     </div>
                 ))}

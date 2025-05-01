@@ -16,7 +16,7 @@ function App() {
                     <Routes>
                         <Route path="/" Component={Home} />
                         <Route path="/map" element={<MapPage />} />
-                        <Route path="/info" element={<FloraPage />} />
+                        <Route path="/soort-info" element={<FloraPage />} />
                     </Routes>
                 </Router>
             </LocationProvider>

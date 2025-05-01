@@ -14,7 +14,7 @@ const Home = () => {
                 <NavLink to="/map" className="link-button green">
                     Bekijk Pollen Kaart
                 </NavLink>
-                <NavLink to="/info" className="link-button green">
+                <NavLink to="/soort-info" className="link-button green">
                     Bekijk Pollen Informatie
                 </NavLink>
             </div>
