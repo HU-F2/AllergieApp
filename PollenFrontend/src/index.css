@@ -79,28 +79,27 @@ button:focus-visible {
     height: 100vh;
 }
 
+.education-container, .flora-info-container, .map-container, .home-container {
+    margin: 20px;
+}
+
 .map-container2 {
     display: flex;
     align-items: center;
     flex-direction: column;
 }
 
-.home-container {
-    /* min-height: 100vh; */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #f3f4f6;
-    color: #1f2937;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 1rem;
-}
-
 .home-title {
     font-size: 3rem;
     font-weight: bold;
     margin-bottom: 2rem;
+}
+
+.location-input-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
 }
 
 .menu {
@@ -147,9 +146,24 @@ button:focus-visible {
 }
 
 .pollen-indicator-container {
-    width: 100%;
     max-width: 350px;
     margin: 0 auto;
+}
+
+.pollen-summary {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0px;
+    padding-bottom: 1rem;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pollen-summary .date-text {
+    text-transform: capitalize;
+    font-size: 1.2rem;
+    font-style: italic;
 }
 
 .pollen-indicator-svg {
@@ -167,6 +181,22 @@ circle {
     transition:
         cx 0.3s ease,
         cy 0.3s ease;
+}
+
+.no-location-selected {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    padding: 2rem;
+}
+
+.no-location-selected p {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 300px;
 }
 
 /* Alert */
@@ -224,10 +254,6 @@ circle {
 
 .close-btn:hover {
     color: #aaa;
-}
-
-.education-container, .flora-info-container, .map-container {
-    margin: 20px;
 }
 
 .education-tips {

@@ -5,17 +5,8 @@ using PollenBackend.Models;
 
 namespace PollenBackend.Services
 {
-    public interface ILocationService
+    public class LocationService
     {
-        Task<IEnumerable<Location>> GetLocations();
-        Task<IEnumerable<Location>> GetLocationsList();
-        Task<IEnumerable<Location>> GetMunicipality();
-    }
-
-
-    public class LocationService : ILocationService
-    {
-
         private readonly AppDbContext _dbContext;
         private readonly HttpClient _httpClient;
 

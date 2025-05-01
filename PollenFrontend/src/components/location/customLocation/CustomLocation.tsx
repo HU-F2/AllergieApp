@@ -20,13 +20,7 @@ const CustomLocation = () => {
 
     if (permission === 'denied') {
         return (
-            <div
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '1rem',
-                }}
-            >
+            <div className='location-input-container'>
                 <LocationSearch
                     locations={data ?? []}
                     onSelectLocation={handleSelect}
@@ -42,10 +36,18 @@ const CustomLocation = () => {
     }
 
     return (
-        <LocationSearch
-            locations={data ?? []}
-            onSelectLocation={handleSelect}
-        />
+        <div className='location-input-container'>
+            <LocationSearch
+                locations={data ?? []}
+                onSelectLocation={handleSelect}
+            />
+
+            <div>
+                <button onClick={handleAskPermission}>
+                    Wijzig locatie toestemming
+                </button>
+            </div>
+        </div>
     );
 };
 

@@ -4,34 +4,15 @@ using PollenBackend.Models;
 
 namespace PollenBackend.Services
 {
-    public interface IPollenService
+    public class PollenService
     {
-        /// <summary>
-        /// Retrieves the current pollen data for a specific location based on latitude and longitude.
-        /// </summary>
-        /// <returns>A <see cref="PollenData"/> object containing pollen data for the specified location.</returns>
-        /// <exception cref="HttpRequestException">Thrown when the API request fails or if the response is invalid.</exception>
-        public Task<PollenData> GetCurrentPollenFromLocation(double latitude, double longitude);
-
-        /// <summary>
-        /// Retrieves the pollen map data for all locations.
-        /// </summary>
-        /// <returns>A collection of <see cref="PollenData"/> objects.</returns>
-        /// <exception cref="HttpRequestException">Thrown when the API request fails.</exception>
-        Task<IEnumerable<PollenData>> GetPollenMap();
-    }
-
-
-    public class PollenService : IPollenService
-    {
-
         private readonly AppDbContext _dbContext;
-        private readonly ILocationService _locationService;
+        private readonly LocationService _locationService;
         private readonly HttpClient _httpClient;
         // Pollen types that get requested
         private static string POLLEN_TYPES="alder_pollen,birch_pollen,grass_pollen,mugwort_pollen,olive_pollen,ragweed_pollen";
 
-        public PollenService(AppDbContext dbContext, ILocationService locationService, HttpClient httpClient)
+        public PollenService(AppDbContext dbContext, LocationService locationService, HttpClient httpClient)
         {
             _dbContext = dbContext;
             _locationService = locationService;
