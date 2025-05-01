@@ -18,6 +18,9 @@ const Navbar = () => {
                 <NavLink to="/education" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
                     Educatie
                 </NavLink>
+                <NavLink to="/flora-pollen-info" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+                    Flora Pollen Informatie
+                </NavLink>
             </div>
         </nav>
     );

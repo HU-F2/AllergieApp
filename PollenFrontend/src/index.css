@@ -79,7 +79,7 @@ button:focus-visible {
     height: 100vh;
 }
 
-.map-container {
+.map-container2 {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -134,7 +134,7 @@ button:focus-visible {
 }
 
 .map-container h1 {
-    font-size: 14px;
+    font-size: 18px;
 }
 
 /* Pollen Indicator */
@@ -226,8 +226,8 @@ circle {
     color: #aaa;
 }
 
-.education-container {
-    padding: 20px;
+.education-container, .flora-info-container, .map-container {
+    margin: 20px;
 }
 
 .education-tips {
@@ -362,10 +362,6 @@ circle {
     background-color: #d0d0d0;
 }
 
-.flora-info-container {
-    padding: 10px;
-}
-
 .flora-grid {
     display: grid;
     gap: 10px;
@@ -392,7 +388,7 @@ circle {
     color: #1a1acb;
 }
 
-.flora-title {
+.flora-title, .map-title {
     flex: 1;
     text-align: center;
     font-size: 2rem;
@@ -435,5 +431,6 @@ circle {
 }
 
 .header-flora-info {
+    margin-top: 15px;
     margin-bottom: 15px;
 }
