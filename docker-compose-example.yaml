@@ -30,6 +30,10 @@ services:
             - ./PollenBackend:/app # Mount the local source code
             - pollenbackend_build:/app/bin # Persistent build artifacts
             - pollenbackend_obj:/app/obj # Persistent object files
+        ports:
+            - '5000:5000'
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
         depends_on:
             - db
         command: dotnet watch run --urls=http://0.0.0.0:5000
