@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LocationData } from '../services/locationService';
 import { useFetchPollenByLocation } from '../services/pollenService';
 import Alert from './Alert';
@@ -10,7 +10,14 @@ type Props = {
 };
 
 const PollenInfo = ({ location }: Props) => {
-    const { data: pollenData } = useFetchPollenByLocation(location);
+    const { data: pollenData, refetch } = useFetchPollenByLocation(location);
+
+    useEffect(() => {
+        if (location) {
+            refetch();
+        }
+    }, [location, refetch]);
+
     const [alert, setAlert] = useState<string | undefined>(undefined);
 
     const totalPollen = Object.values(PollenType).reduce((sum, type) => {

@@ -2,7 +2,7 @@ import { createContext, ReactNode, useContext, useState } from 'react';
 import LocationPermissionModal from '../components/location/locationPermission/LocationPermissionModal';
 import { LocationData, useLocation } from '../services/locationService';
 
-export type LocationPermissionType = 'allowed' | 'denied' | null;
+export type LocationPermissionType = 'granted' | 'denied' | 'prompt';
 
 type LocationContextType = {
     permission: LocationPermissionType;
@@ -23,11 +23,8 @@ type Props = {
 };
 
 export const LocationProvider = ({ children }: Props) => {
-    const [permission, setPermission] = useState<'allowed' | 'denied' | null>(
-        () =>
-            (sessionStorage.getItem('locationPermission') as
-                | 'allowed'
-                | 'denied') || null
+    const [permission, setPermission] = useState<'granted' | 'denied' | 'prompt'>(
+        () => (sessionStorage.getItem('locationPermission') as | 'granted' | 'denied') || 'prompt'
     );
 
     const [customLocation, setCustomLocation] = useState<
@@ -38,11 +35,13 @@ export const LocationProvider = ({ children }: Props) => {
         data: location,
         isLoading,
         isError,
-    } = useLocation({ enabled: permission === 'allowed' });
+    } = useLocation({
+        enabled: permission === 'granted'
+    });
 
     const handleAllow = () => {
-        sessionStorage.setItem('locationPermission', 'allowed');
-        setPermission('allowed');
+        sessionStorage.setItem('locationPermission', 'granted');
+        setPermission('granted');
     };
 
     const handleDeny = () => {
@@ -52,7 +51,7 @@ export const LocationProvider = ({ children }: Props) => {
 
     const handleResetPermission = () => {
         sessionStorage.removeItem('locationPermission');
-        setPermission(null);
+        setPermission('prompt');
         setCustomLocation(undefined);
     };
 
