@@ -361,3 +361,79 @@ circle {
 .deny-btn:active {
     background-color: #d0d0d0;
 }
+
+.flora-info-container {
+    padding: 10px;
+}
+
+.flora-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.flora-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+.back-button {
+    text-decoration: none;
+    font-size: 1rem;
+    color: #4a4aef;
+    font-weight: 500;
+    padding: 0.5rem;
+}
+
+.back-button:hover {
+    color: #1a1acb;
+}
+
+.flora-title {
+    flex: 1;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1f2c38;
+    margin: 0;
+}
+
+.flora-card {
+    background: #f0f0f0;
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.flora-img {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+.flora-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 200px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.back-button {
+    text-decoration: none;
+    font-size: 18px;
+    color: #4a4aef;
+    margin-left: 1rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.back-button:hover {
+    color: #1a1acb;
+}
+
+.header-flora-info {
+    margin-bottom: 15px;
+}
