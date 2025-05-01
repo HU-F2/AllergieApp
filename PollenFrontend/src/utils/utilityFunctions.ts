@@ -38,6 +38,7 @@ export const formatDutchDate = (date: Date = new Date()): string => {
     return new Intl.DateTimeFormat('nl-NL', options).format(date);
 };
 
+// FIXME: function does not work correct. 
 export const isElectron = () => {
     return typeof window !== 'undefined' && window.process?.versions?.electron !== undefined;
 };
