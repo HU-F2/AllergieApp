@@ -5,9 +5,8 @@
     "type": "module",
     "main": "dist-electron/main.js",
     "scripts": {
-        "dev": "vite --no-open",
-        "build": "vite build && electron-builder",
-        "start": "electron ."
+        "dev:web": "vite --mode web --open",
+        "dev:electron": "vite --mode electron --no-open & electron ."
     },
     "dependencies": {
         "@tanstack/react-query": "^5.74.4",

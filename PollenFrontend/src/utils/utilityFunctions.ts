@@ -37,3 +37,7 @@ export const formatDutchDate = (date: Date = new Date()): string => {
     
     return new Intl.DateTimeFormat('nl-NL', options).format(date);
 };
+
+export const isElectron = () => {
+    return typeof window !== 'undefined' && window.process?.versions?.electron !== undefined;
+};
