@@ -1,10 +1,11 @@
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import { LocationProvider } from './contexts/LocationContext';
 import Home from './pages/Home';
 import MapPage from './pages/Map';
 import FloraPage from './pages/FloraInfo';
-
+import EducationPage from './pages/Education';
+import NotFoundPage from './pages/NotFoundPage';
+import { LocationProvider } from './contexts/LocationContext';
 
 function App() {
     const queryClient = new QueryClient();
@@ -14,9 +15,11 @@ function App() {
             <LocationProvider>
                 <Router>
                     <Routes>
-                        <Route path="/" Component={Home} />
+                        <Route path="/" element={<Home />} />
                         <Route path="/map" element={<MapPage />} />
-                        <Route path="/soort-info" element={<FloraPage />} />
+                        <Route path="/flora-pollen-info" element={<FloraPage />} />
+                        <Route path="/education" element={<EducationPage />} />
+                        <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </Router>
             </LocationProvider>

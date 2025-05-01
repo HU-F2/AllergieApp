@@ -38,10 +38,8 @@ export type Location = {
     coordinates: Coordinate[];
 };
 
-export const BACKEND_API_URL = 'http://localhost:5000';
-
 const fetchPollenMap = async (): Promise<PollenData[]> => {
-    const response = await fetch(`${BACKEND_API_URL}/api/pollen/map`);
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/pollen/map`);
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }
@@ -61,7 +59,7 @@ const fetchPollenByLocation = async (
     longitude: number
 ): Promise<PollenData> => {
     const response = await fetch(
-        `${BACKEND_API_URL}/api/pollen/location?latitude=${latitude}&longitude=${longitude}`
+        `${import.meta.env.VITE_BACKEND_API_URL}/api/pollen/location?latitude=${latitude}&longitude=${longitude}`
     );
     if (!response.ok) {
         throw new Error('Network response was not ok');

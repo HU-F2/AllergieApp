@@ -15,13 +15,19 @@
     ],
     "settings": {
         "cSpell.words": [
+            "Absintpollen",
+            "Ambrosiapollen",
             "appsettings",
             "Ardalis",
             "buildtransitive",
+            "cetirizine",
             "contentfiles",
             "dotnet",
+            "Elzenpollen",
+            "Gezondheidsnet",
             "groepcode",
             "liveserver",
+            "loratadine",
             "maxlength",
             "Npgsql",
             "pollenbackend",
@@ -29,6 +35,7 @@
             "postgresql",
             "Serilog",
             "Swashbuckle",
+            "VITE",
             "xunit"
         ]
     }

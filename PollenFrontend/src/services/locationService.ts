@@ -8,7 +8,8 @@ export type LocationData = {
 };
 
 const getLocation = async (): Promise<LocationData | undefined> => {
-    const url = `http://ip-api.com/json/`;
+    // https://ip-api.com/docs/api:json
+    const url = `${import.meta.env.VITE_IP_API_URL}`;
 
     try {
         const response = await (await fetch(url)).json();
@@ -31,7 +32,7 @@ export const useLocation = (options?: { enabled: boolean }) =>
     });
 
 const fetchLocationsList = async (): Promise<LocationData[]> => {
-    const response = await fetch('http://localhost:5000/api/locations/list');
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/locations/list`);
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }
