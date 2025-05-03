@@ -4,6 +4,12 @@ using PollenBackend.Models;
 
 namespace PollenBackend.Services
 {
+    public interface IUserService
+    {
+        Task<User> CreateUser(string username);
+        Task<List<User>> GetUsers();
+    }
+
     public class UserService
     {
         private readonly AppDbContext _dbContext;

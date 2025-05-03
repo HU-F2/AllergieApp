@@ -4,6 +4,23 @@ using PollenBackend.Models;
 
 namespace PollenBackend.Services
 {
+    public interface IPollenService
+    {
+        /// <summary>
+        /// Retrieves the current pollen data for a specific location based on latitude and longitude.
+        /// </summary>
+        /// <returns>A <see cref="PollenData"/> object containing pollen data for the specified location.</returns>
+        /// <exception cref="HttpRequestException">Thrown when the API request fails or if the response is invalid.</exception>
+        public Task<PollenData> GetCurrentPollenFromLocation(double latitude, double longitude);
+
+        /// <summary>
+        /// Retrieves the pollen map data for all locations.
+        /// </summary>
+        /// <returns>A collection of <see cref="PollenData"/> objects.</returns>
+        /// <exception cref="HttpRequestException">Thrown when the API request fails.</exception>
+        Task<IEnumerable<PollenData>> GetPollenMap();
+    }
+    
     public class PollenService
     {
         private readonly AppDbContext _dbContext;
