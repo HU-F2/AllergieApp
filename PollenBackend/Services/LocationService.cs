@@ -12,7 +12,7 @@ namespace PollenBackend.Services
         Task<IEnumerable<Location>> GetMunicipality();
     }
 
-    public class LocationService
+    public class LocationService : ILocationService
     {
         private readonly AppDbContext _dbContext;
         private readonly HttpClient _httpClient;

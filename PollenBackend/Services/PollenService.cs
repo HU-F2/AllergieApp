@@ -20,16 +20,16 @@ namespace PollenBackend.Services
         /// <exception cref="HttpRequestException">Thrown when the API request fails.</exception>
         Task<IEnumerable<PollenData>> GetPollenMap();
     }
-    
-    public class PollenService
+
+    public class PollenService : IPollenService
     {
         private readonly AppDbContext _dbContext;
-        private readonly LocationService _locationService;
+        private readonly ILocationService _locationService;
         private readonly HttpClient _httpClient;
         // Pollen types that get requested
         private static string POLLEN_TYPES="alder_pollen,birch_pollen,grass_pollen,mugwort_pollen,olive_pollen,ragweed_pollen";
 
-        public PollenService(AppDbContext dbContext, LocationService locationService, HttpClient httpClient)
+        public PollenService(AppDbContext dbContext, ILocationService locationService, HttpClient httpClient)
         {
             _dbContext = dbContext;
             _locationService = locationService;
