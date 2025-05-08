@@ -11,28 +11,15 @@ namespace PollenBackend.Controllers
     public class LocationController : ControllerBase
     {
         private readonly ILocationService _locationService;
-        private readonly IMemoryCache _memoryCache;
-        public LocationController(ILocationService locationService, IMemoryCache memoryCache)
+        public LocationController(ILocationService locationService)
         {
             _locationService = locationService;
-            _memoryCache = memoryCache;
         }
 
         [HttpGet("list")]
         public async Task<ActionResult<Location>> GetLocationsList()
         {
-            const string cacheKey = "LocationsList";
-        
-            if (!_memoryCache.TryGetValue(cacheKey, out List<Location>? locations))
-            {
-                locations = (await _locationService.GetLocationsList()).ToList();
-                
-                _memoryCache.Set(cacheKey, locations, new MemoryCacheEntryOptions
-                {
-                    AbsoluteExpiration = DateTimeOffset.MaxValue
-                });
-            }
-
+            var locations = (await _locationService.GetLocationsList()).ToList();
             return Ok(locations);
         }
     }

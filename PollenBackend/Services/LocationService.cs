@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using PollenBackend.Data;
 using PollenBackend.Models;
 
@@ -18,11 +19,13 @@ namespace PollenBackend.Services
 
         private readonly AppDbContext _dbContext;
         private readonly HttpClient _httpClient;
+        private readonly IMemoryCache _memoryCache;
 
-        public LocationService(AppDbContext dbContext, HttpClient httpClient)
+        public LocationService(AppDbContext dbContext, HttpClient httpClient, IMemoryCache memoryCache)
         {
             _dbContext = dbContext;
             _httpClient = httpClient;
+            _memoryCache = memoryCache;
         }
 
         public async Task<IEnumerable<Location>> GetLocations()
@@ -128,6 +131,13 @@ namespace PollenBackend.Services
 
         public async Task<IEnumerable<Location>> GetLocationsList()
         {
+            const string cacheKey = "LocationsList";
+
+            if (_memoryCache.TryGetValue(cacheKey, out List<Location>? cachedData))
+            {
+                return cachedData!;
+            }
+
             var locations = await _dbContext.Locations
                 .Select(location => new Location
                 {
@@ -138,6 +148,8 @@ namespace PollenBackend.Services
                     Coordinates = null!
                 })
                 .ToListAsync();
+
+            _memoryCache.Set(cacheKey, locations, DateTimeOffset.Now.AddMinutes(60));
 
             return locations;
         }
