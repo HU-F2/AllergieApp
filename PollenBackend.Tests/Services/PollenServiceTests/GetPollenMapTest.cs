@@ -9,7 +9,7 @@ using PollenBackend.Services;
 
 namespace PollenBackend.Tests.Services.PollenServiceTests
 {
-    public class GetPollenMapTest :IMockApiCall
+    public class GetPollenMapTest :MockApiCall
     {
         private readonly Mock<AppDbContext> _mockAppDbContext;
         private readonly Mock<ILocationService> _mockLocationService;
@@ -18,7 +18,7 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
         private readonly PollenService _pollenService;
         public GetPollenMapTest()
         {
-            _mockHandler = new Mock<HttpMessageHandler>(); //From IMockApiCall
+            _mockHandler = new Mock<HttpMessageHandler>(); //From MockApiCall
 
             _mockAppDbContext = new Mock<AppDbContext>(new DbContextOptions<AppDbContext>());
             _mockLocationService = new Mock<ILocationService>();

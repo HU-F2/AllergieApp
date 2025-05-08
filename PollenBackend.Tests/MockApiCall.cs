@@ -4,8 +4,9 @@ using Moq;
 using Moq.Protected;
 
 namespace PollenBackend.Tests{
-    public abstract class IMockApiCall
+    public abstract class MockApiCall
     {
+        // When inheriting make sure you assign _mockHandler your mocked HttpMessageHandler.
         protected Mock<HttpMessageHandler> _mockHandler = null!;
 
         protected void mockApiCall(string directory, string file, HttpStatusCode statusCode)
@@ -19,7 +20,8 @@ namespace PollenBackend.Tests{
                 Content = content
             };
 
-            _mockHandler?
+            // Since SendAsync is protected(we cant change it) we do it like this.
+            _mockHandler
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     "SendAsync",

@@ -25,17 +25,7 @@ namespace PollenBackend.Tests.Controllers.PollenControllerTests
             var sampleLatitude = 51.5074;
             var sampleLongitude = -0.1278;
 
-            var mockPollenData = new PollenData
-            {
-                Latitude = sampleLatitude,
-                Longitude = sampleLongitude,
-                HourlyUnits = new HourlyUnits { Time = "iso8601", BirchPollen = "gr/m3" },
-                Hourly = new HourlyData
-                {
-                    Time = new List<string> { "2025-05-08T12:00" },
-                    BirchPollen = new List<double?> { 10.5 }
-                }
-            };
+            var mockPollenData = new PollenData{};
 
             _mockPollenService
                 .Setup(s => s.GetCurrentPollenFromLocation(sampleLatitude, sampleLongitude))
