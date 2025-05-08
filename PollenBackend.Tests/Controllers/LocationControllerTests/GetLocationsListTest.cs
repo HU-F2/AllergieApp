@@ -3,7 +3,6 @@ using PollenBackend.Models;
 using PollenBackend.Services;
 using PollenBackend.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace PollenBackend.Tests.Controllers.LocationControllerTests
 {
@@ -15,8 +14,7 @@ namespace PollenBackend.Tests.Controllers.LocationControllerTests
         public GetLocationsListTest()
         {
             _mockLocationService = new Mock<ILocationService>();
-            var memoryCache = new MemoryCache(new MemoryCacheOptions());
-            _controller = new LocationController(_mockLocationService.Object,memoryCache);
+            _controller = new LocationController(_mockLocationService.Object);
         }
 
         [Fact]

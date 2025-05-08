@@ -1,30 +1,30 @@
-using Moq;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using PollenBackend.Data;
 using PollenBackend.Models;
 using PollenBackend.Services;
-using System.Text;
-using System.Net;
-using Moq.Protected;
-using PollenBackend.Data;
-using Microsoft.EntityFrameworkCore;
 
-namespace PollenBackend.Tests.Services
+namespace PollenBackend.Tests.Services.LocationServiceTest
 {
-    public class LocationServiceTest
+    public class GetLocationsListTest
     {
-        public LocationServiceTest()
+        private readonly AppDbContext _appDbContext;
+        private readonly IMemoryCache _memoryCache;
+        private readonly LocationService _locationService;
+        public GetLocationsListTest()
         {
+             var dbOptions = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(databaseName: "InMemoryDb")
+                .Options;
+            _appDbContext = new AppDbContext(dbOptions);
+            _memoryCache = new MemoryCache(new MemoryCacheOptions());
+            _locationService = new LocationService(_appDbContext,null!,_memoryCache);
         }
 
         [Fact]
         public async Task GetLocationsList_ShouldReturnLocations_WithLatitudeLongitudeAndNameOnly()
         {
-            // Prepare
-            var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: "InMemoryDb")
-                .Options;
-
-            using var context = new AppDbContext(options);
-
+            // Arrange
             var locations = new List<Location>
             {
                 new Location
@@ -45,15 +45,13 @@ namespace PollenBackend.Tests.Services
                 }
             };
 
-            context.Locations.AddRange(locations);
-            await context.SaveChangesAsync();
+            _appDbContext.Locations.AddRange(locations);
+            await _appDbContext.SaveChangesAsync();
 
-            var locationService = new LocationService(context,null!);
+             // Act
+            var result = await _locationService.GetLocationsList();
 
-            // Act
-            var result = await locationService.GetLocationsList();
-
-            // Test
+            // Assert
             Assert.NotNull(result);
             Assert.Equal(2, result.Count());
 

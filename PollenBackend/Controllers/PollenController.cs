@@ -11,11 +11,9 @@ namespace PollenBackend.Controllers
     public class PollenController : ControllerBase
     {
         private readonly IPollenService _pollenService;
-        private readonly IMemoryCache _memoryCache;
-        public PollenController(IPollenService pollenService, IMemoryCache memoryCache)
+        public PollenController(IPollenService pollenService)
         {
             _pollenService = pollenService;
-            _memoryCache = memoryCache;
         }
 
         [HttpGet("location")]
@@ -23,26 +21,8 @@ namespace PollenBackend.Controllers
         {
             try
             {
-                var cacheKey = $"PollenData-{latitude}-{longitude}";
-
-                if (!_memoryCache.TryGetValue(cacheKey, out PollenData? cachedData))
-                {
-                    Console.Out.WriteLine("New request");
-                    var pollenData = await _pollenService.GetCurrentPollenFromLocation(latitude, longitude);
-
-                    var cacheOptions = new MemoryCacheEntryOptions()
-                        .SetSlidingExpiration(TimeSpan.FromMinutes(60))
-                        .SetAbsoluteExpiration(TimeSpan.FromMinutes(90));
-
-                    _memoryCache.Set(cacheKey, pollenData, cacheOptions);
-
-                    return Ok(pollenData);
-                }
-                else
-                {
-                    Console.Out.WriteLine("Cache hit");
-                    return Ok(cachedData);
-                }
+                var pollenData = await _pollenService.GetCurrentPollenFromLocation(latitude, longitude);
+                return Ok(pollenData);
             }
             catch (HttpRequestException e)
             {

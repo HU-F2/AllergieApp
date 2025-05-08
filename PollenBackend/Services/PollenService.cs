@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Microsoft.Extensions.Caching.Memory;
 using PollenBackend.Data;
 using PollenBackend.Models;
 
@@ -26,18 +27,27 @@ namespace PollenBackend.Services
         private readonly AppDbContext _dbContext;
         private readonly ILocationService _locationService;
         private readonly HttpClient _httpClient;
+        private readonly IMemoryCache _memoryCache;
         // Pollen types that get requested
         private static string POLLEN_TYPES="alder_pollen,birch_pollen,grass_pollen,mugwort_pollen,olive_pollen,ragweed_pollen";
 
-        public PollenService(AppDbContext dbContext, ILocationService locationService, HttpClient httpClient)
+        public PollenService(AppDbContext dbContext, ILocationService locationService, HttpClient httpClient, IMemoryCache memoryCache)
         {
             _dbContext = dbContext;
             _locationService = locationService;
             _httpClient = httpClient;
+            _memoryCache = memoryCache;
         }
 
         public async Task<PollenData> GetCurrentPollenFromLocation(double latitude, double longitude)
         {
+            var cacheKey = $"PollenData-{latitude}-{longitude}";
+
+            if (_memoryCache.TryGetValue(cacheKey, out PollenData? cachedData))
+            {
+                return cachedData!;
+            }
+
             string baseUrl = "https://air-quality-api.open-meteo.com/v1/air-quality";
             string query = $"?latitude={latitude}&longitude={longitude}&current={POLLEN_TYPES}&timezone=Europe%2FBerlin";
             string fullUrl = baseUrl + query;
@@ -54,12 +64,22 @@ namespace PollenBackend.Services
             string responseBody = await response.Content.ReadAsStringAsync();
 
             var pollenData = ParseCurrentPollenData(responseBody);
+
+            // Set cache
+            _memoryCache.Set(cacheKey, pollenData, DateTimeOffset.Now.AddMinutes(60));
+
             return pollenData;
         }
 
         public async Task<IEnumerable<PollenData>> GetPollenMap()
         {
             // Api docs: https://open-meteo.com/en/docs/air-quality-api
+            var cacheKey = $"PollenMap";
+
+            if (_memoryCache.TryGetValue(cacheKey, out List<PollenData>? cachedData))
+            {
+                return cachedData!;
+            }
 
             // Get locations from db
             var locations = (await _locationService.GetLocations()).ToList();
@@ -94,6 +114,8 @@ namespace PollenBackend.Services
             {
                 pollenData[i].Location = locations[i];
             }
+
+            _memoryCache.Set(cacheKey, pollenData, DateTimeOffset.Now.AddMinutes(60));
 
             return pollenData;
         }

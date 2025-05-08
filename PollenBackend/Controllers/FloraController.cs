@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PollenBackend.Data;
-using PollenBackend.Models;
 
 namespace PollenBackend.Controllers
 {
