@@ -70,6 +70,29 @@ button:focus-visible {
     button {
         background-color: #f9f9f9;
     }
+
+    .map-title {
+        color: #1f2c38;
+    }
+    
+    .flora-card {
+        background: #f0f0f0;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    button {
+        background-color: black;
+        color: white;
+    }
+
+    .map-title {
+        color: white;
+    }
+
+    .flora-card {
+        background: #757575;
+    }
 }
 
 #root {
@@ -79,28 +102,36 @@ button:focus-visible {
     height: 100vh;
 }
 
+.education-container, .flora-info-container, .map-container, .home-container {
+    margin: 20px;
+}
+
 .map-container2 {
     display: flex;
     align-items: center;
     flex-direction: column;
 }
 
-.home-container {
-    /* min-height: 100vh; */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #f3f4f6;
-    color: #1f2937;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 1rem;
+.home-container, .education-container, .flora-info-container {
+    display: grid;
+    row-gap: 5px;
 }
 
 .home-title {
     font-size: 3rem;
     font-weight: bold;
     margin-bottom: 2rem;
+}
+
+.location-input-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.location-search-button-container {
+    height: 100%;
 }
 
 .menu {
@@ -147,9 +178,24 @@ button:focus-visible {
 }
 
 .pollen-indicator-container {
-    width: 100%;
     max-width: 350px;
     margin: 0 auto;
+}
+
+.pollen-summary {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0px;
+    padding-bottom: 1rem;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pollen-summary .date-text {
+    text-transform: capitalize;
+    font-size: 1.2rem;
+    font-style: italic;
 }
 
 .pollen-indicator-svg {
@@ -167,6 +213,22 @@ circle {
     transition:
         cx 0.3s ease,
         cy 0.3s ease;
+}
+
+.no-location-selected {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    padding: 2rem;
+}
+
+.no-location-selected p {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 300px;
 }
 
 /* Alert */
@@ -226,14 +288,6 @@ circle {
     color: #aaa;
 }
 
-.education-container, .flora-info-container, .map-container {
-    margin: 20px;
-}
-
-.education-tips {
-    margin-top: 20px;
-}
-
 .education-section {
     margin-bottom: 30px;
 }
@@ -241,11 +295,13 @@ circle {
 .education-section h2, .education-section h3 {
     color: #4a90e2;
     margin-bottom: 10px;
+    margin-top: 0px;
 }
 
 .education-section p, .education-section ul {
     font-size: 1.1rem;
     line-height: 1.6;
+    margin-top: 0px;
 }
 
 .education-tips .inline-link {
@@ -266,7 +322,7 @@ circle {
     color: #155ab6;
 }
 
-/* Navbar styling */
+/* Globaal */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -275,11 +331,6 @@ circle {
     padding: 10px 20px;
     height: 60px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-logo {
-    display: flex;
-    align-items: center;
 }
 
 .navbar-logo-text {
@@ -315,7 +366,7 @@ circle {
     width: 100%;
 }
 
-.navbar a:hover {
+.navbar a:hover, .dropdown-menu a:hover {
     background-color: #3b82f6;
     color: white;
 }
@@ -323,6 +374,55 @@ circle {
 .nav-link.active {
     border-bottom: 2px solid white;
 }
+
+/* Hamburger button */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.hamburger .bar {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    transition: all 0.3s;
+}
+
+/* Mobiel-only menu */
+.dropdown-menu {
+    background-color: #4a90e2;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-menu .nav-link {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Responsiveness */
+@media screen and (max-width: 768px) {
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-only {
+        display: flex;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .mobile-only {
+        display: none;
+    }
+}
+
 /* Buttons */
 .button {
     padding: 10px 20px;
@@ -393,12 +493,10 @@ circle {
     text-align: center;
     font-size: 2rem;
     font-weight: bold;
-    color: #1f2c38;
     margin: 0;
 }
 
 .flora-card {
-    background: #f0f0f0;
     border-radius: 12px;
     padding: 1rem;
     text-align: center;
@@ -431,6 +529,5 @@ circle {
 }
 
 .header-flora-info {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin: 0.3rem 0px
 }
