@@ -1,5 +1,5 @@
 // src/pages/NotFoundPage.tsx
-import Navbar from '../components/Navbar';
+import Navbar from '../components/common/navigation/Navbar';
 import { NavLink } from 'react-router-dom';
 
 const NotFoundPage = () => {

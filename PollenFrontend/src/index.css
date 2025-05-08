@@ -89,6 +89,11 @@ button:focus-visible {
     flex-direction: column;
 }
 
+.home-container, .education-container {
+    display: grid;
+    row-gap: 5px;
+}
+
 .home-title {
     font-size: 3rem;
     font-weight: bold;
@@ -256,10 +261,6 @@ circle {
     color: #aaa;
 }
 
-.education-tips {
-    margin-top: 20px;
-}
-
 .education-section {
     margin-bottom: 30px;
 }
@@ -267,11 +268,13 @@ circle {
 .education-section h2, .education-section h3 {
     color: #4a90e2;
     margin-bottom: 10px;
+    margin-top: 0px;
 }
 
 .education-section p, .education-section ul {
     font-size: 1.1rem;
     line-height: 1.6;
+    margin-top: 0px;
 }
 
 .education-tips .inline-link {

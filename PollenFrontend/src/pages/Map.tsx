@@ -1,5 +1,5 @@
 import { PollenMap } from '../components/PollenMap';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/common/navigation/Navbar';
 
 const MapPage = () => {
     return (
