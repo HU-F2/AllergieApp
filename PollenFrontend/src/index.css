@@ -70,12 +70,28 @@ button:focus-visible {
     button {
         background-color: #f9f9f9;
     }
+
+    .map-title {
+        color: #1f2c38;
+    }
+    
+    .flora-card {
+        background: #f0f0f0;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
     button {
         background-color: black;
         color: white;
+    }
+
+    .map-title {
+        color: white;
+    }
+
+    .flora-card {
+        background: #757575;
     }
 }
 
@@ -477,12 +493,10 @@ circle {
     text-align: center;
     font-size: 2rem;
     font-weight: bold;
-    color: #1f2c38;
     margin: 0;
 }
 
 .flora-card {
-    background: #f0f0f0;
     border-radius: 12px;
     padding: 1rem;
     text-align: center;
