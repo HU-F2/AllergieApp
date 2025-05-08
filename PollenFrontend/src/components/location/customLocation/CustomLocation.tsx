@@ -1,13 +1,10 @@
 import { useLocationContext } from '../../../contexts/LocationContext';
-import {
-    LocationData,
-    useFetchLocationsList,
-} from '../../../services/locationService';
+import { LocationData, useFetchLocationsList } from '../../../services/locationService';
 import LocationSearch from './LocationSearch';
+import LocationPermissionReset from './LocationPermissionReset';
 
 const CustomLocation = () => {
-    const { permission, resetPermission, setCustomLocation } =
-        useLocationContext();
+    const { resetPermission, setCustomLocation } = useLocationContext();
     const { data } = useFetchLocationsList();
 
     const handleSelect = (location: LocationData) => {
@@ -18,35 +15,13 @@ const CustomLocation = () => {
         resetPermission();
     };
 
-    if (permission === 'denied') {
-        return (
-            <div className='location-input-container'>
-                <LocationSearch
-                    locations={data ?? []}
-                    onSelectLocation={handleSelect}
-                />
-
-                <div>
-                    <button onClick={handleAskPermission}>
-                        Wijzig locatie toestemming
-                    </button>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div className='location-input-container'>
             <LocationSearch
                 locations={data ?? []}
                 onSelectLocation={handleSelect}
             />
-
-            <div>
-                <button onClick={handleAskPermission}>
-                    Wijzig locatie toestemming
-                </button>
-            </div>
+            <LocationPermissionReset onClick={handleAskPermission} />
         </div>
     );
 };
