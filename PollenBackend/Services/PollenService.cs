@@ -72,7 +72,9 @@ namespace PollenBackend.Services
 
             // Build URL
             string baseUrl = "https://air-quality-api.open-meteo.com/v1/air-quality";
-            string query = $"?latitude={latitudesParam}&longitude={longitudesParam}&hourly={POLLEN_TYPES}&start_date=2025-04-22&end_date=2025-04-24";
+            string startDate = DateTime.UtcNow.ToString("yyyy-MM-dd");
+            string endDate = DateTime.UtcNow.AddDays(2).ToString("yyyy-MM-dd");
+            string query = $"?latitude={latitudesParam}&longitude={longitudesParam}&hourly={POLLEN_TYPES}&start_date={startDate}&end_date={endDate}";
             string fullUrl = baseUrl + query;
 
             // Make API request
