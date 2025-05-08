@@ -16,7 +16,7 @@ namespace PollenBackend.Tests.Controllers.LocationControllerTests
         {
             _mockLocationService = new Mock<ILocationService>();
             var memoryCache = new MemoryCache(new MemoryCacheOptions());
-            _controller = new LocationController(_mockLocationService.Object,memoryCache);
+            _controller = new LocationController(_mockLocationService.Object);
         }
 
         [Fact]
