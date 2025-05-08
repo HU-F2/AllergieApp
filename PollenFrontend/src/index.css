@@ -96,7 +96,7 @@ button:focus-visible {
     flex-direction: column;
 }
 
-.home-container, .education-container {
+.home-container, .education-container, .flora-info-container {
     display: grid;
     row-gap: 5px;
 }
@@ -515,6 +515,5 @@ circle {
 }
 
 .header-flora-info {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin: 0.3rem 0px
 }
