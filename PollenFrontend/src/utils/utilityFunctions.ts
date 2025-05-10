@@ -1,4 +1,16 @@
 /**
+ * Global type declarations for Electron-specific window variables
+ */
+declare global {
+  interface Window {
+    electronGlobalVariables?: {
+        // Flag indicating if running in desktop environment
+        IN_DESKTOP_ENV?: boolean;
+    };
+  }
+}
+
+/**
  * Converteert een datumstring naar een geformatteerde Nederlandse datum (bijv. "15 januari")
  * @param {string} dateStr - Datumstring in een door Date.parse() herkenbaar formaat (bijv. YYYY-MM-DD)
  * @returns {string} Geformatteerde datum in Nederlands formaat (dag + maand)
@@ -38,7 +50,27 @@ export const formatDutchDate = (date: Date = new Date()): string => {
     return new Intl.DateTimeFormat('nl-NL', options).format(date);
 };
 
-// FIXME: function does not work correct. 
-export const isElectron = () => {
-    return typeof window !== 'undefined' && window.process?.versions?.electron !== undefined;
+/**
+ * Checks if the application is running in an Electron environment
+ * by verifying the presence of Electron-specific global variables.
+ * 
+ * @returns {boolean} True if running in Electron, false otherwise
+ */
+export const isElectron = (): boolean => {
+    return window?.electronGlobalVariables?.IN_DESKTOP_ENV === true;
+};
+
+/**
+ * Checks and logs the Electron environment status
+ * 
+ * @example
+ * checkElectronGlobalVariables();
+ * // Logs: 'Is Electron: true' or 'Electron API not available (probably in browser)'
+ */
+export const checkElectronGlobalVariables = (): void => {
+    if (window.electronGlobalVariables) {
+        console.log('Is Electron:', window.electronGlobalVariables.IN_DESKTOP_ENV);
+    } else {
+        console.log('Electron API not available (probably in browser)');
+    }
 };

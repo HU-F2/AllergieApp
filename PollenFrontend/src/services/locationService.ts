@@ -37,7 +37,6 @@ const getWebLocation = async (): Promise<LocationData> => {
                 const longitude = pos.coords.longitude;
 
                 try {
-                    console.log("coördinaten", latitude, longitude);
                     const res = await fetch(
                         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
                     );

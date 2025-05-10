@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
       plugins: [
         react(),
         ...(isElectron
-            ? [electron({ main: { entry: 'electron/main.ts' }, preload: { input: 'electron/preload.ts' } })]
+            ? [electron({ main: { entry: 'electron/main.ts' } })]
             : []),
       ],
       define: {

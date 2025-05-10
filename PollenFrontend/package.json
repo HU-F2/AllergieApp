@@ -6,7 +6,7 @@
     "main": "dist-electron/main.js",
     "scripts": {
         "dev:web": "vite --mode web --open",
-        "dev:electron": "vite --mode electron --no-open & electron ."
+        "dev:electron": "vite --mode electron --no-open"
     },
     "dependencies": {
         "@tanstack/react-query": "^5.74.4",
