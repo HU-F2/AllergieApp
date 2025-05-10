@@ -70,6 +70,29 @@ button:focus-visible {
     button {
         background-color: #f9f9f9;
     }
+
+    .map-title {
+        color: #1f2c38;
+    }
+    
+    .flora-card {
+        background: #f0f0f0;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    button {
+        background-color: black;
+        color: white;
+    }
+
+    .map-title {
+        color: white;
+    }
+
+    .flora-card {
+        background: #757575;
+    }
 }
 
 #root {
@@ -89,6 +112,11 @@ button:focus-visible {
     flex-direction: column;
 }
 
+.home-container, .education-container, .flora-info-container {
+    display: grid;
+    row-gap: 5px;
+}
+
 .home-title {
     font-size: 3rem;
     font-weight: bold;
@@ -100,6 +128,10 @@ button:focus-visible {
     align-items: center;
     gap: 1rem;
     justify-content: center;
+}
+
+.location-search-button-container {
+    height: 100%;
 }
 
 .menu {
@@ -256,10 +288,6 @@ circle {
     color: #aaa;
 }
 
-.education-tips {
-    margin-top: 20px;
-}
-
 .education-section {
     margin-bottom: 30px;
 }
@@ -267,11 +295,13 @@ circle {
 .education-section h2, .education-section h3 {
     color: #4a90e2;
     margin-bottom: 10px;
+    margin-top: 0px;
 }
 
 .education-section p, .education-section ul {
     font-size: 1.1rem;
     line-height: 1.6;
+    margin-top: 0px;
 }
 
 .education-tips .inline-link {
@@ -292,7 +322,7 @@ circle {
     color: #155ab6;
 }
 
-/* Navbar styling */
+/* Globaal */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -301,11 +331,6 @@ circle {
     padding: 10px 20px;
     height: 60px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-logo {
-    display: flex;
-    align-items: center;
 }
 
 .navbar-logo-text {
@@ -341,7 +366,7 @@ circle {
     width: 100%;
 }
 
-.navbar a:hover {
+.navbar a:hover, .dropdown-menu a:hover {
     background-color: #3b82f6;
     color: white;
 }
@@ -349,6 +374,55 @@ circle {
 .nav-link.active {
     border-bottom: 2px solid white;
 }
+
+/* Hamburger button */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.hamburger .bar {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    transition: all 0.3s;
+}
+
+/* Mobiel-only menu */
+.dropdown-menu {
+    background-color: #4a90e2;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-menu .nav-link {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Responsiveness */
+@media screen and (max-width: 768px) {
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-only {
+        display: flex;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .mobile-only {
+        display: none;
+    }
+}
+
 /* Buttons */
 .button {
     padding: 10px 20px;
@@ -419,12 +493,10 @@ circle {
     text-align: center;
     font-size: 2rem;
     font-weight: bold;
-    color: #1f2c38;
     margin: 0;
 }
 
 .flora-card {
-    background: #f0f0f0;
     border-radius: 12px;
     padding: 1rem;
     text-align: center;
@@ -457,6 +529,5 @@ circle {
 }
 
 .header-flora-info {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin: 0.3rem 0px
 }

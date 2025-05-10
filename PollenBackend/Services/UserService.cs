@@ -1,10 +1,17 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using PollenBackend.Data;
 using PollenBackend.Models;
 
 namespace PollenBackend.Services
 {
-    public class UserService
+    public interface IUserService
+    {
+        Task<User> CreateUser(string username);
+        Task<List<User>> GetUsers();
+    }
+
+    public class UserService : IUserService
     {
         private readonly AppDbContext _dbContext;
 

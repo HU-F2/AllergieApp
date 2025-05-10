@@ -1,5 +1,5 @@
 import EducationTips from '../components/EducationTips.js';
-import Navbar from '../components/Navbar.js';
+import Navbar from '../components/common/navigation/Navbar.js';
 
 const EducationPage = () => {
     return (
