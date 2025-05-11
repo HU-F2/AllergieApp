@@ -29,7 +29,7 @@ namespace PollenBackend.Services
         private readonly HttpClient _httpClient;
         private readonly IMemoryCache _memoryCache;
         // Pollen types that get requested
-        private static string POLLEN_TYPES="alder_pollen,birch_pollen,grass_pollen,mugwort_pollen,olive_pollen,ragweed_pollen";
+        private static string POLLEN_TYPES = "alder_pollen,birch_pollen,grass_pollen,mugwort_pollen,olive_pollen,ragweed_pollen";
 
         public PollenService(AppDbContext dbContext, ILocationService locationService, HttpClient httpClient, IMemoryCache memoryCache)
         {
@@ -55,7 +55,7 @@ namespace PollenBackend.Services
             // Make API request
             HttpResponseMessage response = await _httpClient.GetAsync(fullUrl);
 
-            if (!response.IsSuccessStatusCode)  
+            if (!response.IsSuccessStatusCode)
             {
                 var reason = JsonSerializer.Deserialize<JsonElement>(await response.Content.ReadAsStringAsync())
                     .GetProperty("reason").GetString();
@@ -98,7 +98,7 @@ namespace PollenBackend.Services
             // Make API request
             HttpResponseMessage response = await _httpClient.GetAsync(fullUrl);
 
-            if (!response.IsSuccessStatusCode)  
+            if (!response.IsSuccessStatusCode)
             {
                 var reason = JsonSerializer.Deserialize<JsonElement>(await response.Content.ReadAsStringAsync())
                     .GetProperty("reason").GetString();
@@ -119,6 +119,7 @@ namespace PollenBackend.Services
 
             return pollenData;
         }
+
         private PollenData ParseCurrentPollenData(string responseBody)
         {
             // When requesting the current data the data is organized slightly differently
@@ -160,5 +161,5 @@ namespace PollenBackend.Services
         }
     }
 
-    
+
 }

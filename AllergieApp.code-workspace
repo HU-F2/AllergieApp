@@ -1,13 +1,49 @@
 {
     "folders": [
         {
-            "path": "./PollenBackend.Tests"
+            "path": "./PollenBackend.Tests",
+            "settings": {
+                "editor.formatOnSave": true,
+                "editor.defaultFormatter": "ms-dotnettools.csharp",
+                "[csharp]": {
+                    "editor.defaultFormatter": "ms-dotnettools.csharp",
+                    "editor.formatOnSave": true
+                },
+                "omnisharp.enableEditorConfigSupport": true,
+                "omnisharp.enableRoslynAnalyzers": true,
+                "omnisharp.editorConfigPath": "${workspaceFolder}/.editorconfig"
+            }
         },
         {
-            "path": "./PollenBackend"
+            "path": "./PollenBackend",
+            "settings": {
+                "editor.formatOnSave": true,
+                "editor.defaultFormatter": "ms-dotnettools.csharp",
+                "[csharp]": {
+                    "editor.defaultFormatter": "ms-dotnettools.csharp",
+                    "editor.formatOnSave": true
+                },
+                "omnisharp.enableEditorConfigSupport": true,
+                "omnisharp.enableRoslynAnalyzers": true,
+                "omnisharp.editorConfigPath": "${workspaceFolder}/.editorconfig"
+            }
         },
         {
-            "path": "./PollenFrontend"
+            "path": "./PollenFrontend",
+            "settings": {
+                "editor.formatOnSave": true,
+                "editor.defaultFormatter": "esbenp.prettier-vscode",
+                "prettier.configPath": "${workspaceFolder}/PollenFrontend/.prettierrc",
+                "[javascript]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[typescript]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                },
+                "[vue]": {
+                    "editor.defaultFormatter": "esbenp.prettier-vscode"
+                }
+            }
         },
         {
             "path": "./"
@@ -23,13 +59,17 @@
             "cetirizine",
             "contentfiles",
             "dotnet",
+            "dotnettools",
             "Elzenpollen",
+            "esbenp",
             "Gezondheidsnet",
             "groepcode",
+            "Helperfunctie",
             "liveserver",
             "loratadine",
             "maxlength",
             "Npgsql",
+            "omnisharp",
             "pollenbackend",
             "postgres",
             "postgresql",
@@ -37,6 +77,7 @@
             "Swashbuckle",
             "VITE",
             "xunit"
-        ]
+        ],
+        "editor.formatOnSave": false
     }
 }
