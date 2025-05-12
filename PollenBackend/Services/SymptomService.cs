@@ -4,7 +4,7 @@ namespace PollenBackend.Services
 {
     public interface ISymptomAnalysisService
     {
-        Task<List<AllergySuggestion>> AnalyzeSymptoms(SymptomSubmission submission);
+        Task<List<AllergySuggestion>> AnalyzeSymptoms(List<PollenDataRequest> submission, int minSuggestions = 2, int maxSuggestions = 2);
     }
 
     public class SymptomAnalysisService : ISymptomAnalysisService
@@ -16,69 +16,68 @@ namespace PollenBackend.Services
             _pollenService = pollenService;
         }
 
-        public async Task<List<AllergySuggestion>> AnalyzeSymptoms(SymptomSubmission submission)
+        public async Task<List<AllergySuggestion>> AnalyzeSymptoms(List<PollenDataRequest> submission, int minSuggestions = 2, int maxSuggestions = 2)
         {
-            Dictionary<string, List<double>> pollenLevels = new()
+            var pollenData = await _pollenService.GetPollenDataForDatesAndCoordinates(submission);
+
+            return GetAveragePollenConcentrations(pollenData, minSuggestions, maxSuggestions);
+        }
+
+        private List<AllergySuggestion> GetAveragePollenConcentrations(List<PollenDataPoint> pollenDataPoints, int minSuggestions = 2, int maxSuggestions = 2)
+        {
+            if (pollenDataPoints == null || !pollenDataPoints.Any())
+                return new List<AllergySuggestion>();
+
+            // Initialize dictionary to store all pollen values
+            var pollenLevels = new Dictionary<string, List<double>>()
             {
-                { "birch_pollen", new() },
-                { "grass_pollen", new() },
-                { "alder_pollen", new() },
-                { "mugwort_pollen", new() },
-                { "olive_pollen", new() },
-                { "ragweed_pollen", new() },
+                { "birch_pollen", new List<double>() },
+                { "grass_pollen", new List<double>() },
+                { "alder_pollen", new List<double>() },
+                { "mugwort_pollen", new List<double>() },
+                { "olive_pollen", new List<double>() },
+                { "ragweed_pollen", new List<double>() }
             };
 
-            foreach (var date in submission.SymptomDates)
+            // Collect all non-null pollen values
+            foreach (var dataPoint in pollenDataPoints)
             {
-                var pollenDataList = await _pollenService.GetPollenMap();
-
-                foreach (var p in pollenDataList)
-                {
-                    // Controleer op geldige locatie
-                    if (p.Location == null ||
-                        p.Location.Latitude != submission.Latitude ||
-                        p.Location.Longitude != submission.Longitude)
-                        continue;
-
-                    // Controleer op geldige Hourly-data
-                    if (p.Hourly == null || p.Hourly.Time == null || p.Hourly.Time.Count == 0)
-                        continue;
-
-                    for (int i = 0; i < p.Hourly.Time.Count; i++)
-                    {
-                        if (DateTime.TryParse(p.Hourly.Time[i], out var pollenTime) && pollenTime.Date == date.Date)
-                        {
-                            AddIfValid(pollenLevels["birch_pollen"], p.Hourly.BirchPollen, i);
-                            AddIfValid(pollenLevels["grass_pollen"], p.Hourly.GrassPollen, i);
-                            AddIfValid(pollenLevels["alder_pollen"], p.Hourly.AlderPollen, i);
-                            AddIfValid(pollenLevels["mugwort_pollen"], p.Hourly.MugwortPollen, i);
-                            AddIfValid(pollenLevels["olive_pollen"], p.Hourly.OlivePollen, i);
-                            AddIfValid(pollenLevels["ragweed_pollen"], p.Hourly.RagweedPollen, i);
-                        }
-                    }
-                }
+                AddPollenValue(pollenLevels["birch_pollen"], dataPoint.BirchPollen);
+                AddPollenValue(pollenLevels["grass_pollen"], dataPoint.GrassPollen);
+                AddPollenValue(pollenLevels["alder_pollen"], dataPoint.AlderPollen);
+                AddPollenValue(pollenLevels["mugwort_pollen"], dataPoint.MugwortPollen);
+                AddPollenValue(pollenLevels["olive_pollen"], dataPoint.OlivePollen);
+                AddPollenValue(pollenLevels["ragweed_pollen"], dataPoint.RagweedPollen);
             }
 
-            var averageScores = pollenLevels
+            return GetTopSuggestions(pollenLevels, minSuggestions, maxSuggestions);
+        }
+
+        private void AddPollenValue(List<double> list, double? value)
+        {
+            if (value.HasValue)
+            {
+                list.Add(value.Value);
+            }
+        }
+
+        private List<AllergySuggestion> GetTopSuggestions(Dictionary<string, List<double>> pollenLevels, int minSuggestions = 2, int maxSuggestions = 2)
+        {
+            var nonEmptyTypes = pollenLevels.Values.Count(list => list.Count > 0);
+            if (nonEmptyTypes < minSuggestions)
+                return new List<AllergySuggestion>();
+
+            return pollenLevels
+                .Where(kvp => kvp.Value.Any())
                 .Select(kvp => new AllergySuggestion
                 {
                     PollenType = kvp.Key,
-                    AverageConcentration = kvp.Value.Any() ? kvp.Value.Average() : 0
+                    AverageConcentration = kvp.Value.Average()
                 })
                 .OrderByDescending(p => p.AverageConcentration)
-                .Take(2)
+                .Take(maxSuggestions)
                 .ToList();
-
-            return averageScores;
-        }
-
-        // Helperfunctie om veiliger te indexeren
-        private void AddIfValid(List<double> list, List<double?>? source, int index)
-        {
-            if (source != null && index < source.Count && source[index].HasValue)
-            {
-                list.Add(source[index]!.Value);
-            }
         }
     }
+
 }

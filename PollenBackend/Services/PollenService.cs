@@ -20,6 +20,8 @@ namespace PollenBackend.Services
         /// <returns>A collection of <see cref="PollenData"/> objects.</returns>
         /// <exception cref="HttpRequestException">Thrown when the API request fails.</exception>
         Task<IEnumerable<PollenData>> GetPollenMap();
+
+        Task<List<PollenDataPoint>> GetPollenDataForDatesAndCoordinates(List<PollenDataRequest> requests);
     }
 
     public class PollenService : IPollenService
@@ -118,6 +120,83 @@ namespace PollenBackend.Services
             _memoryCache.Set(cacheKey, pollenData, DateTimeOffset.Now.AddMinutes(60));
 
             return pollenData;
+        }
+
+        public async Task<List<PollenDataPoint>> GetPollenDataForDatesAndCoordinates(List<PollenDataRequest> requests)
+        {
+            var result = new List<PollenDataPoint>();
+
+            // Groepeer op coördinaten om dubbele API-calls te voorkomen
+            var groupedRequests = requests
+                .GroupBy(r => (r.Latitude, r.Longitude))
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(r => r.Date.Date).Distinct().ToList()
+                );
+
+            foreach (var entry in groupedRequests)
+            {
+                var (latitude, longitude) = entry.Key;
+                var requestedDates = entry.Value;
+
+                var cacheKey = $"PollenMap2-{latitude}-{longitude}";
+                if (!_memoryCache.TryGetValue(cacheKey, out PollenData? pollenData))
+                {
+                    // Build URL
+                    string baseUrl = "https://air-quality-api.open-meteo.com/v1/air-quality";
+                    string startDate = requestedDates.Min().ToString("yyyy-MM-dd");
+                    string endDate = requestedDates.Max().ToString("yyyy-MM-dd");
+
+                    string query = $"?latitude={latitude}&longitude={longitude}&hourly={POLLEN_TYPES}&start_date={startDate}&end_date={endDate}&timezone=Europe%2FBerlin";
+                    string fullUrl = baseUrl + query;
+
+                    HttpResponseMessage response = await _httpClient.GetAsync(fullUrl);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var reason = JsonSerializer.Deserialize<JsonElement>(await response.Content.ReadAsStringAsync())
+                            .GetProperty("reason").GetString();
+                        throw new HttpRequestException($"Request to pollen API failed: {reason}");
+                    }
+
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    pollenData = JsonSerializer.Deserialize<PollenData>(responseBody);
+
+                    if (pollenData == null || pollenData.Hourly == null)
+                        continue;
+
+                    _memoryCache.Set(cacheKey, pollenData, DateTimeOffset.Now.AddMinutes(30));
+                }
+
+                if (pollenData?.Hourly?.Time == null) continue;
+
+                for (int i = 0; i < pollenData.Hourly.Time.Count; i++)
+                {
+                    if (!DateTime.TryParse(pollenData.Hourly.Time[i], out var timestamp))
+                        continue;
+
+                    var dateOnly = timestamp.Date;
+                    if (!requestedDates.Contains(dateOnly))
+                        continue;
+
+                    var dataPoint = new PollenDataPoint
+                    {
+                        Date = dateOnly,
+                        Latitude = latitude,
+                        Longitude = longitude,
+                        BirchPollen = pollenData.Hourly.BirchPollen?.ElementAtOrDefault(i),
+                        GrassPollen = pollenData.Hourly.GrassPollen?.ElementAtOrDefault(i),
+                        AlderPollen = pollenData.Hourly.AlderPollen?.ElementAtOrDefault(i),
+                        MugwortPollen = pollenData.Hourly.MugwortPollen?.ElementAtOrDefault(i),
+                        OlivePollen = pollenData.Hourly.OlivePollen?.ElementAtOrDefault(i),
+                        RagweedPollen = pollenData.Hourly.RagweedPollen?.ElementAtOrDefault(i)
+                    };
+
+                    result.Add(dataPoint);
+                }
+            }
+
+            return result;
         }
 
         private PollenData ParseCurrentPollenData(string responseBody)
