@@ -22,10 +22,8 @@ namespace PollenBackend.Services
         Task<IEnumerable<PollenData>> GetPollenMap();
     }
 
-
     public class PollenService : IPollenService
     {
-
         private readonly AppDbContext _dbContext;
         private readonly ILocationService _locationService;
         private readonly HttpClient _httpClient;

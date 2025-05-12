@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Flora, fetchFloraList } from '../services/floraInfoService';
 import FloraGrid from '../components/FloraGrid';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/common/navigation/Navbar';
 
 
 const FloraInfo = () => {
