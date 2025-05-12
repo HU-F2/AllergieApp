@@ -1,6 +1,6 @@
 import { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     LayerGroup,
     LayersControl,
@@ -15,26 +15,21 @@ import { useThrottle } from './hooks/useThrottle';
 
 const getColor = (
     pollen: number | null | undefined,
-    pollenType: PollenTypes
+    pollenType: PollenTypes,
+    max: number = 30
 ): string => {
-    if (pollen === null || pollen === undefined) return 'gray';
+    if (pollen == null) return 'rgb(240,240,240)';
 
-    const clamped = Math.max(0, Math.min(pollen, 50));
-    const normalized = clamped / 50;
-    const exponent = 0.5;
-    const intensity = Math.pow(normalized, exponent);
+    const baseColor = pollenMeta[pollenType].baseColor;
+    const clampedPollen = Math.max(0, Math.min(max, pollen));
+    const t = Math.pow(clampedPollen / max, 0.3);
 
-    const [baseR, baseG, baseB] = pollenMeta[pollenType].baseColor;
+    const startColor: [number, number, number] = [240, 240, 240];
+    const interpolatedColor = startColor.map((start, i) =>
+        Math.round(start + t * (baseColor[i] - start))
+    ) as [number, number, number];
 
-    const lightR = Math.round(baseR + (255 - baseR) * 0.7);
-    const lightG = Math.round(baseG + (255 - baseG) * 0.7);
-    const lightB = Math.round(baseB + (255 - baseB) * 0.7);
-
-    const finalR = Math.round(lightR + (baseR - lightR) * intensity);
-    const finalG = Math.round(lightG + (baseG - lightG) * intensity);
-    const finalB = Math.round(lightB + (baseB - lightB) * intensity);
-
-    return `rgb(${finalR}, ${finalG}, ${finalB})`;
+    return `rgb(${interpolatedColor[0]},${interpolatedColor[1]},${interpolatedColor[2]})`;
 };
 
 const pollenMeta: Record<
@@ -42,8 +37,8 @@ const pollenMeta: Record<
     { name: string; baseColor: [number, number, number] }
 > = {
     birch_pollen: {
-        name: '🌳 Berk 🟥',
-        baseColor: [255, 0, 0],
+        name: '🌳 Berk 🟦',
+        baseColor: [0, 0, 255],
     },
     alder_pollen: {
         name: '🌲 Els 🟧',
@@ -54,8 +49,8 @@ const pollenMeta: Record<
         baseColor: [0, 128, 0],
     },
     mugwort_pollen: {
-        name: '🌾 Bijvoet 🟦',
-        baseColor: [0, 0, 255],
+        name: '🌾 Bijvoet 🟫',
+        baseColor: [150, 75, 0],
     },
     olive_pollen: {
         name: '🫒 Olijf 🟪',
@@ -88,6 +83,7 @@ export const PollenMap = () => {
             id: string;
         }[]
     > | null>(null);
+    const controlRef = useRef<L.Control.Layers | null>(null);
 
     const center: LatLngExpression = [52.1, 5.1];
     const throttledTime = useThrottle(currentTime, 200);
@@ -112,6 +108,16 @@ export const PollenMap = () => {
 
         return coordinatesWithColors;
     };
+
+    useEffect(() => {
+        // Open legend by default
+        const controlContainer = (controlRef.current as any)
+            ?._container as HTMLElement;
+
+        if (controlContainer) {
+            controlContainer.classList.add('leaflet-control-layers-expanded');
+        }
+    }, [controlRef.current]);
 
     useEffect(() => {
         const processData = async () => {
@@ -146,7 +152,7 @@ export const PollenMap = () => {
                     attribution="&copy; OpenStreetMap contributors"
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <LayersControl>
+                <LayersControl ref={controlRef}>
                     {Object.entries(pollenMeta).map(
                         ([pollenType, { name }]) => (
                             <LayersControl.BaseLayer
