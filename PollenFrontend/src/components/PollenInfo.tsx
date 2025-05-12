@@ -3,6 +3,7 @@ import { LocationData } from '../services/locationService';
 import { useFetchPollenByLocation } from '../services/pollenService';
 import Alert from './Alert';
 import PollenIndicator from './PollenIndicator';
+import { formatDutchDate } from '../utils/utilityFunctions';
 
 type Props = {
     location: LocationData | undefined;
@@ -17,19 +18,14 @@ const PollenInfo = ({ location }: Props) => {
         return sum + count;
     }, 0);
 
-    const dateFormatOptions = {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-    } satisfies Intl.DateTimeFormatOptions;
-    const date = new Date();
-    const formattedDate = new Intl.DateTimeFormat(
-        'nl-NL',
-        dateFormatOptions
-    ).format(date);
+    const formattedDate = formatDutchDate(new Date('2023-12-25'));
 
     if (location == undefined) {
-        return <p>Selecteer een locatie om pollen informatie te bekijken.</p>;
+        return (
+            <div className="no-location-selected">
+                <p>Selecteer een locatie om pollen informatie te bekijken.</p>
+            </div>
+        );
     }
 
     return (
@@ -43,35 +39,28 @@ const PollenInfo = ({ location }: Props) => {
                 />
             )}
 
-            <h1 style={{ textAlign: 'center' }}>Pollen in {location?.name}:</h1>
-            <PollenIndicator
-                max={Object.values(pollenMetadata).reduce(
-                    (sum, meta) => sum + meta.max,
-                    0
-                )}
-                min={Object.values(pollenMetadata).reduce(
-                    (sum, meta) => sum + meta.min,
-                    0
-                )}
-                value={totalPollen}
-                name="Totale pollen"
-                onDangerLevelReached={() =>
-                    setAlert(
-                        'De pollen zijn momenteel zeer hoog. \nHet is verstandig om binnen te blijven.'
-                    )
-                }
-            />
-            <p
-                style={{
-                    textAlign: 'center',
-                    textTransform: 'capitalize',
-                    fontSize: '1.2rem',
-                    fontStyle: 'italic',
-                }}
-            >
-                {formattedDate}
-            </p>
-            <h2 style={{ textAlign: 'center' }}>Specifieke pollen</h2>
+            <div className='pollen-summary'>
+                <h1>Pollen in {location?.name}:</h1>
+                <PollenIndicator
+                    max={Object.values(pollenMetadata).reduce(
+                        (sum, meta) => sum + meta.max,
+                        0
+                    )}
+                    min={Object.values(pollenMetadata).reduce(
+                        (sum, meta) => sum + meta.min,
+                        0
+                    )}
+                    value={totalPollen}
+                    name="Totale pollen"
+                    onDangerLevelReached={() =>
+                        setAlert(
+                            'De pollen zijn momenteel zeer hoog. \nHet is verstandig om binnen te blijven.'
+                        )
+                    }
+                />
+                <p className='date-text'>{formattedDate}</p>
+                <h2>Specifieke pollen</h2>
+            </div>
             <div className="pollen-indicators-container">
                 {Object.values(PollenType).map((type) => {
                     const count =

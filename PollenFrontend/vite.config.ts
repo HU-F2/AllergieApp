@@ -5,18 +5,14 @@ import electron from 'vite-plugin-electron/simple'
 export default defineConfig(({ mode }) => {
     // Laad env variabelen voor de huidige mode
     const env = loadEnv(mode, process.cwd());
+    const isElectron = mode === 'electron';
   
     return {
       plugins: [
         react(),
-        electron({
-          main: {
-            entry: 'electron/main.ts',
-          },
-          preload: {
-            input: 'electron/preload.ts',
-          },
-        }),
+        ...(isElectron
+            ? [electron({ main: { entry: 'electron/main.ts' } })]
+            : []),
       ],
       define: {
         'process.env': {

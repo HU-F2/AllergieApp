@@ -30,6 +30,28 @@
     cursor: pointer;
 }
 
+@media (prefers-color-scheme: dark) {
+    .location-suggestions li {
+        color: black;
+    }
+}
+
 .location-suggestions li:hover {
     background-color: #f0f0f0;
+}
+
+.location-permission-reset-container {
+    height: 100%;
+}
+
+.location-permission-reset-container button {
+    height: inherit;
+    border: none;
+    border-radius: 4px;
+    padding: initial;
+    padding: 0px 0.5rem;
+}
+
+.location-permission-reset-container button:hover {
+    background-color: #e4e2e2;
 }

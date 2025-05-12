@@ -1,7 +1,7 @@
-import { NavLink } from 'react-router-dom';
 import CustomLocation from '../components/location/customLocation/CustomLocation';
 import PollenInfo from '../components/PollenInfo';
 import { useLocationContext } from '../contexts/LocationContext';
+import Navbar from '../components/common/navigation/Navbar';
 import WeatherCard from '../components/weatherCard';
 import { getThreeHourForecast, useFetchForecast } from '../services/weatherService';
 import { useEffect, useState } from 'react';
@@ -26,20 +26,10 @@ const Home = () => {
 
     return (
         <div className="home-container">
+            <Navbar />
             <CustomLocation />
             <PollenInfo location={location} />
             <WeatherCard location={location} />
-            <div className="menu">
-                <NavLink to="/map" className="link-button green">
-                    Bekijk Pollen Kaart
-                </NavLink>
-                <NavLink to="/education" className="link-button green">
-                    Bekijk Educatie
-                </NavLink>
-                <NavLink to="/flora-pollen-info" className="link-button green">
-                    Bekijk Flora Pollen Informatie
-                </NavLink>
-            </div>
         </div>
     );
 };
