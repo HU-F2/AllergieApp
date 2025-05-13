@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -33,7 +34,7 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
             // Arrange
             var latitude = 51.5074;
             var longitude = -0.1278;
-            var cacheKey = $"PollenData-{latitude}-{longitude}";
+            var cacheKey = $"PollenData-{latitude.ToString(CultureInfo.InvariantCulture)}-{longitude.ToString(CultureInfo.InvariantCulture)}";
 
             var cachedPollenData = new PollenData
             {
@@ -64,7 +65,7 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
             // Arrange
             var latitude = 51.5074;
             var longitude = -0.1278;
-            var cacheKey = $"PollenData-{latitude}-{longitude}";
+            var cacheKey = $"PollenData-{latitude.ToString(CultureInfo.InvariantCulture)}-{longitude.ToString(CultureInfo.InvariantCulture)}";
 
             mockApiCall("TestData","PollenApiCurrentByLocation.json",HttpStatusCode.OK);
 

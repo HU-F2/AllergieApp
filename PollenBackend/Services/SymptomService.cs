@@ -20,7 +20,21 @@ namespace PollenBackend.Services
         {
             var pollenData = await _pollenService.GetPollenDataForDatesAndCoordinates(submission);
 
-            return GetAveragePollenConcentrations(pollenData, minSuggestions, maxSuggestions);
+            var filteredPollenData = FilterPollenDataBySubmissionDates(submission, pollenData);
+
+            return GetAveragePollenConcentrations(filteredPollenData, minSuggestions, maxSuggestions);
+        }
+
+        private List<PollenDataPoint> FilterPollenDataBySubmissionDates(List<PollenDataRequest> submission, List<PollenDataPoint> pollenData)
+        {
+            if (submission == null || pollenData == null)
+                return new List<PollenDataPoint>();
+
+            var submissionDates = new HashSet<DateTime>(submission.Select(s => s.Date.Date));
+
+            return pollenData
+                .Where(p => submissionDates.Contains(p.Date.Date))
+                .ToList();
         }
 
         private List<AllergySuggestion> GetAveragePollenConcentrations(List<PollenDataPoint> pollenDataPoints, int minSuggestions = 2, int maxSuggestions = 2)
@@ -79,5 +93,4 @@ namespace PollenBackend.Services
                 .ToList();
         }
     }
-
 }

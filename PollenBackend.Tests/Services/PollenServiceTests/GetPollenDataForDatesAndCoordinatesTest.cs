@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using PollenBackend.Data;
+using PollenBackend.Models;
 using PollenBackend.Services;
 
 namespace PollenBackend.Tests.Services.PollenServiceTests

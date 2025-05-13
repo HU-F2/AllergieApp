@@ -1,6 +1,9 @@
-public class PollenDataRequest
+namespace PollenBackend.Models
 {
-    public DateTime Date { get; set; }
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
+    public class PollenDataRequest
+    {
+        public DateTime Date { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+    }
 }

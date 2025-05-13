@@ -17,25 +17,16 @@ namespace PollenBackend.Controllers
         }
 
         [HttpGet("location")]
-        public async Task<ActionResult<PollenData>> GetByLocation(
-            [FromQuery] double latitude,
-            [FromQuery] double longitude
-        )
+        public async Task<ActionResult<PollenData>> GetByLocation([FromQuery] double latitude, [FromQuery] double longitude)
         {
             try
             {
-                var pollenData = await _pollenService.GetCurrentPollenFromLocation(
-                    latitude,
-                    longitude
-                );
+                var pollenData = await _pollenService.GetCurrentPollenFromLocation(latitude, longitude);
                 return Ok(pollenData);
             }
             catch (HttpRequestException e)
             {
-                return StatusCode(
-                    (int)(e.StatusCode ?? HttpStatusCode.ServiceUnavailable),
-                    new { error = e.Message }
-                );
+                return StatusCode((int)(e.StatusCode ?? HttpStatusCode.ServiceUnavailable), new { error = e.Message });
             }
         }
 
@@ -49,10 +40,7 @@ namespace PollenBackend.Controllers
             }
             catch (HttpRequestException e)
             {
-                return StatusCode(
-                    (int)(e.StatusCode ?? HttpStatusCode.ServiceUnavailable),
-                    new { error = e.Message }
-                );
+                return StatusCode((int)(e.StatusCode ?? HttpStatusCode.ServiceUnavailable), new { error = e.Message });
             }
         }
     }

@@ -2,6 +2,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Caching.Memory;
 using PollenBackend.Data;
 using PollenBackend.Models;
+using System.Globalization;
 
 namespace PollenBackend.Services
 {
@@ -43,7 +44,7 @@ namespace PollenBackend.Services
 
         public async Task<PollenData> GetCurrentPollenFromLocation(double latitude, double longitude)
         {
-            var cacheKey = $"PollenData-{latitude}-{longitude}";
+            var cacheKey = $"PollenData-{latitude.ToString(CultureInfo.InvariantCulture)}-{longitude.ToString(CultureInfo.InvariantCulture)}";
 
             if (_memoryCache.TryGetValue(cacheKey, out PollenData? cachedData))
             {
@@ -51,19 +52,14 @@ namespace PollenBackend.Services
             }
 
             string baseUrl = "https://air-quality-api.open-meteo.com/v1/air-quality";
-            string query = $"?latitude={latitude}&longitude={longitude}&current={POLLEN_TYPES}&timezone=Europe%2FBerlin";
+            string query = $"?latitude={latitude.ToString(CultureInfo.InvariantCulture)}&longitude={longitude.ToString(CultureInfo.InvariantCulture)}&current={POLLEN_TYPES}&timezone=Europe%2FBerlin";
             string fullUrl = baseUrl + query;
 
             // Make API request
             HttpResponseMessage response = await _httpClient.GetAsync(fullUrl);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var reason = JsonSerializer.Deserialize<JsonElement>(await response.Content.ReadAsStringAsync())
-                    .GetProperty("reason").GetString();
-                throw new HttpRequestException($"Request to pollen API failed: {reason}");
-            }
             string responseBody = await response.Content.ReadAsStringAsync();
+
+            EnsureSuccessStatusCode(responseBody, response.IsSuccessStatusCode);
 
             var pollenData = ParseCurrentPollenData(responseBody);
 
@@ -87,8 +83,8 @@ namespace PollenBackend.Services
             var locations = (await _locationService.GetLocations()).ToList();
 
             // Prepare coordinates
-            string latitudesParam = string.Join(",", locations.Select(loc => loc.Latitude));
-            string longitudesParam = string.Join(",", locations.Select(loc => loc.Longitude));
+            string latitudesParam = string.Join(",", locations.Select(loc => loc.Latitude.ToString(CultureInfo.InvariantCulture)));
+            string longitudesParam = string.Join(",", locations.Select(loc => loc.Longitude.ToString(CultureInfo.InvariantCulture)));
 
             // Build URL
             string baseUrl = "https://air-quality-api.open-meteo.com/v1/air-quality";
@@ -99,14 +95,9 @@ namespace PollenBackend.Services
 
             // Make API request
             HttpResponseMessage response = await _httpClient.GetAsync(fullUrl);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var reason = JsonSerializer.Deserialize<JsonElement>(await response.Content.ReadAsStringAsync())
-                    .GetProperty("reason").GetString();
-                throw new HttpRequestException($"Request to pollen API failed: {reason}");
-            }
             string responseBody = await response.Content.ReadAsStringAsync();
+
+            EnsureSuccessStatusCode(responseBody, response.IsSuccessStatusCode);
 
             // Deserialize
             List<PollenData> pollenData = JsonSerializer.Deserialize<List<PollenData>>(responseBody) ?? new List<PollenData>();
@@ -139,60 +130,51 @@ namespace PollenBackend.Services
                 var (latitude, longitude) = entry.Key;
                 var requestedDates = entry.Value;
 
-                var cacheKey = $"PollenMap2-{latitude}-{longitude}";
-                if (!_memoryCache.TryGetValue(cacheKey, out PollenData? pollenData))
-                {
-                    // Build URL
-                    string baseUrl = "https://air-quality-api.open-meteo.com/v1/air-quality";
-                    string startDate = requestedDates.Min().ToString("yyyy-MM-dd");
-                    string endDate = requestedDates.Max().ToString("yyyy-MM-dd");
+                // Bepaal welke datums nog niet in de cache zitten
+                var uncachedDates = new List<DateTime>();
 
-                    string query = $"?latitude={latitude}&longitude={longitude}&hourly={POLLEN_TYPES}&start_date={startDate}&end_date={endDate}&timezone=Europe%2FBerlin";
+                foreach (var date in requestedDates)
+                {
+                    string cacheKey = $"PollenDataPoint-{latitude.ToString(CultureInfo.InvariantCulture)}-{longitude.ToString(CultureInfo.InvariantCulture)}-{date:yyyy-MM-dd}";
+
+                    if (_memoryCache.TryGetValue(cacheKey, out List<PollenDataPoint>? cachedData) && cachedData != null)
+                    {
+                        result.AddRange(cachedData);
+                    }
+                    else
+                    {
+                        uncachedDates.Add(date);
+                    }
+                }
+
+                if (uncachedDates.Any())
+                {
+                    // Haal ontbrekende datums op in één API-call
+                    string baseUrl = "https://air-quality-api.open-meteo.com/v1/air-quality";
+                    string startDate = uncachedDates.Min().ToString("yyyy-MM-dd");
+                    string endDate = uncachedDates.Max().ToString("yyyy-MM-dd");
+
+                    string query = $"?latitude={latitude.ToString(CultureInfo.InvariantCulture)}&longitude={longitude.ToString(CultureInfo.InvariantCulture)}&hourly={POLLEN_TYPES}&start_date={startDate}&end_date={endDate}&timezone=Europe%2FBerlin";
                     string fullUrl = baseUrl + query;
 
                     HttpResponseMessage response = await _httpClient.GetAsync(fullUrl);
-
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        var reason = JsonSerializer.Deserialize<JsonElement>(await response.Content.ReadAsStringAsync())
-                            .GetProperty("reason").GetString();
-                        throw new HttpRequestException($"Request to pollen API failed: {reason}");
-                    }
-
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    pollenData = JsonSerializer.Deserialize<PollenData>(responseBody);
 
-                    if (pollenData == null || pollenData.Hourly == null)
-                        continue;
+                    EnsureSuccessStatusCode(responseBody, response.IsSuccessStatusCode);
 
-                    _memoryCache.Set(cacheKey, pollenData, DateTimeOffset.Now.AddMinutes(30));
-                }
+                    List<PollenData> pollenRawData = ParsePollenData(responseBody) ?? new List<PollenData>();
+                    List<PollenDataPoint> dataPoints = ConvertToPollenDataPoints(pollenRawData);
 
-                if (pollenData?.Hourly?.Time == null) continue;
-
-                for (int i = 0; i < pollenData.Hourly.Time.Count; i++)
-                {
-                    if (!DateTime.TryParse(pollenData.Hourly.Time[i], out var timestamp))
-                        continue;
-
-                    var dateOnly = timestamp.Date;
-                    if (!requestedDates.Contains(dateOnly))
-                        continue;
-
-                    var dataPoint = new PollenDataPoint
+                    // Groepeer per datum, sla afzonderlijk op in de cache
+                    var groupedByDate = dataPoints.GroupBy(p => p.Date.Date);
+                    foreach (var group in groupedByDate)
                     {
-                        Date = dateOnly,
-                        Latitude = latitude,
-                        Longitude = longitude,
-                        BirchPollen = pollenData.Hourly.BirchPollen?.ElementAtOrDefault(i),
-                        GrassPollen = pollenData.Hourly.GrassPollen?.ElementAtOrDefault(i),
-                        AlderPollen = pollenData.Hourly.AlderPollen?.ElementAtOrDefault(i),
-                        MugwortPollen = pollenData.Hourly.MugwortPollen?.ElementAtOrDefault(i),
-                        OlivePollen = pollenData.Hourly.OlivePollen?.ElementAtOrDefault(i),
-                        RagweedPollen = pollenData.Hourly.RagweedPollen?.ElementAtOrDefault(i)
-                    };
+                        string cacheKey = $"PollenDataPoint-{latitude.ToString(CultureInfo.InvariantCulture)}-{longitude.ToString(CultureInfo.InvariantCulture)}-{group.Key:yyyy-MM-dd}";
+                        List<PollenDataPoint> dayData = group.ToList();
 
-                    result.Add(dataPoint);
+                        _memoryCache.Set(cacheKey, dayData, DateTimeOffset.Now.AddMinutes(30));
+                        result.AddRange(dayData);
+                    }
                 }
             }
 
@@ -238,7 +220,77 @@ namespace PollenBackend.Services
 
             return pollenData;
         }
+
+        public static List<PollenDataPoint> ConvertToPollenDataPoints(List<PollenData> pollenDataList)
+        {
+            return pollenDataList
+                ?.Where(p => p?.Hourly?.Time != null)
+                .SelectMany(p => p!.Hourly!.Time!
+                    .Select((time, i) =>
+                    {
+                        if (!DateTime.TryParse(time, out DateTime timestamp))
+                        {
+                            return null;
+                        }
+
+                        return new PollenDataPoint
+                        {
+                            Date = timestamp,
+                            Latitude = p.Latitude,
+                            Longitude = p.Longitude,
+                            BirchPollen = GetSafePollenValue(p.Hourly.BirchPollen, i),
+                            GrassPollen = GetSafePollenValue(p.Hourly.GrassPollen, i),
+                            AlderPollen = GetSafePollenValue(p.Hourly.AlderPollen, i),
+                            MugwortPollen = GetSafePollenValue(p.Hourly.MugwortPollen, i),
+                            OlivePollen = GetSafePollenValue(p.Hourly.OlivePollen, i),
+                            RagweedPollen = GetSafePollenValue(p.Hourly.RagweedPollen, i)
+                        };
+                    })
+                    .Where(p => p != null)
+                    .Select(p => p!)) // Null-forgiving operator hier
+                .ToList() ?? new List<PollenDataPoint>();
+        }
+
+        private static double? GetSafePollenValue(List<double?>? pollenList, int index)
+        {
+            return (index >= 0 && pollenList != null && index < pollenList.Count) ? pollenList[index] : null;
+        }
+
+        private void EnsureSuccessStatusCode(string responseContent, Boolean IsSuccessStatusCode)
+        {
+            if (!IsSuccessStatusCode)
+            {
+                string errorReason = "Unknown Reason";
+
+                try
+                {
+                    var jsonDoc = JsonDocument.Parse(responseContent);
+                    if (jsonDoc.RootElement.TryGetProperty("reason", out JsonElement reasonProp))
+                    {
+                        errorReason = reasonProp.GetString() ?? errorReason;
+                    }
+                }
+                catch (JsonException)
+                {
+                    // Als JSON parsing faalt, gebruik dan de raw content
+                    errorReason = responseContent.Length > 200
+                        ? responseContent.Substring(0, 200) + "..."
+                        : responseContent;
+                }
+
+                throw new HttpRequestException($"Request to pollen API failed: {errorReason}");
+            }
+        }
+
+        private List<PollenData> ParsePollenData(string responseBody)
+        {
+            using var doc = JsonDocument.Parse(responseBody);
+
+            return doc.RootElement.ValueKind == JsonValueKind.Array
+                ? doc.RootElement.EnumerateArray()
+                               .Select(x => x.Deserialize<PollenData>()!)
+                               .ToList()
+                : new List<PollenData> { doc.RootElement.Deserialize<PollenData>()! };
+        }
     }
-
-
 }
