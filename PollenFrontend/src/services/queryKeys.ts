@@ -23,4 +23,14 @@ export const QUERY_KEYS = {
             coordinate?.longitude,
         ],
     },
+
+    // Weather-related queries
+    weather: {
+        forecast: (latitude?: number, longitude?: number) => [
+            'weather',
+            'forecast',
+            latitude,
+            longitude,
+        ],
+    },
 };

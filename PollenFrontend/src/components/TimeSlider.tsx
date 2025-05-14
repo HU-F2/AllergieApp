@@ -1,12 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface TimeSliderProps {
     times: string[];
+    currentTime: number;
     onTimeChange: (timeIndex: number) => void;
 }
 
-export const TimeSlider = ({ times, onTimeChange }: TimeSliderProps) => {
+export const TimeSlider = ({
+    times,
+    currentTime,
+    onTimeChange,
+}: TimeSliderProps) => {
     const [index, setIndex] = useState(0);
+
+    useEffect(() => {
+        setIndex(currentTime);
+    }, [currentTime]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newIndex = parseInt(e.target.value);
