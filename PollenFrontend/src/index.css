@@ -74,7 +74,7 @@ button:focus-visible {
     .map-title {
         color: #1f2c38;
     }
-    
+
     .flora-card {
         background: #f0f0f0;
     }
@@ -102,7 +102,10 @@ button:focus-visible {
     height: 100vh;
 }
 
-.education-container, .flora-info-container, .map-container, .home-container {
+.education-container,
+.flora-info-container,
+.map-container,
+.home-container {
     margin: 20px;
 }
 
@@ -112,7 +115,9 @@ button:focus-visible {
     flex-direction: column;
 }
 
-.home-container, .education-container, .flora-info-container {
+.home-container,
+.education-container,
+.flora-info-container {
     display: grid;
     row-gap: 5px;
 }
@@ -292,13 +297,15 @@ circle {
     margin-bottom: 30px;
 }
 
-.education-section h2, .education-section h3 {
+.education-section h2,
+.education-section h3 {
     color: #4a90e2;
     margin-bottom: 10px;
     margin-top: 0px;
 }
 
-.education-section p, .education-section ul {
+.education-section p,
+.education-section ul {
     font-size: 1.1rem;
     line-height: 1.6;
     margin-top: 0px;
@@ -354,7 +361,7 @@ circle {
 }
 
 .nav-link::after {
-    content: "";
+    content: '';
     display: block;
     width: 0;
     height: 2px;
@@ -366,7 +373,8 @@ circle {
     width: 100%;
 }
 
-.navbar a:hover, .dropdown-menu a:hover {
+.navbar a:hover,
+.dropdown-menu a:hover {
     background-color: #3b82f6;
     color: white;
 }
@@ -488,7 +496,8 @@ circle {
     color: #1a1acb;
 }
 
-.flora-title, .map-title {
+.flora-title,
+.map-title {
     flex: 1;
     text-align: center;
     font-size: 2rem;
@@ -529,5 +538,20 @@ circle {
 }
 
 .header-flora-info {
-    margin: 0.3rem 0px
+    margin: 0.3rem 0px;
+}
+
+/* Marker */
+.custom-marker {
+    width: 24px;
+    height: 24px;
+    background-color: #4a90e2;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
+}
+
+.custom-marker:hover {
+    transform: scale(1.2);
 }

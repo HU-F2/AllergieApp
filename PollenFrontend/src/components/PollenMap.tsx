@@ -1,16 +1,20 @@
-import { LatLngExpression } from 'leaflet';
+import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useRef, useState } from 'react';
 import {
     LayerGroup,
     LayersControl,
     MapContainer,
+    Marker,
     Polygon,
     TileLayer,
+    useMap,
     useMapEvents,
 } from 'react-leaflet';
+import { useLocationContext } from '../contexts/LocationContext';
 import { useFetchPollenMap } from '../services/pollenService';
 import { TimeSlider } from './TimeSlider';
+import { useCurrentTime } from './hooks/useCurrentTime';
 import { useThrottle } from './hooks/useThrottle';
 
 const getColor = (
@@ -40,13 +44,13 @@ const pollenMeta: Record<
         name: '🌳 Berk 🟦',
         baseColor: [0, 0, 255],
     },
-    alder_pollen: {
-        name: '🌲 Els 🟧',
-        baseColor: [255, 165, 0],
-    },
     grass_pollen: {
         name: '🌿 Gras 🟩',
         baseColor: [0, 128, 0],
+    },
+    alder_pollen: {
+        name: '🌲 Els 🟧',
+        baseColor: [255, 165, 0],
     },
     mugwort_pollen: {
         name: '🌾 Bijvoet 🟫',
@@ -72,7 +76,7 @@ type PollenTypes =
 
 export const PollenMap = () => {
     const { data } = useFetchPollenMap();
-    const [currentTime, setCurrentTime] = useState(0);
+    // const [currentTime, setCurrentTime] = useState(0);
     const [selectedPollenType, setSelectedPollenType] =
         useState<PollenTypes>('birch_pollen');
     const [polygonCoordinates, setPolygonCoordinates] = useState<Record<
@@ -84,8 +88,12 @@ export const PollenMap = () => {
         }[]
     > | null>(null);
     const controlRef = useRef<L.Control.Layers | null>(null);
+    const { location } = useLocationContext();
 
-    const center: LatLngExpression = [52.1, 5.1];
+    const [center, setCenter] = useState<LatLngExpression>([52.1, 5.1]);
+    const [currentTime, setCurrentTime] = useCurrentTime(
+        data && data[0] ? data[0].hourly.time : []
+    );
     const throttledTime = useThrottle(currentTime, 200);
 
     const asyncProcessDataForType = (pollenType: PollenTypes) => {
@@ -108,6 +116,11 @@ export const PollenMap = () => {
 
         return coordinatesWithColors;
     };
+
+    useEffect(() => {
+        // Center map
+        setCenter([location?.latitude ?? 52.1, location?.longitude ?? 5.1]);
+    }, [location]);
 
     useEffect(() => {
         // Open legend by default
@@ -143,14 +156,20 @@ export const PollenMap = () => {
         <div className="map-container2">
             <MapContainer
                 center={center}
-                zoom={7}
+                zoom={11}
                 style={{ height: '75vh', width: '100%', fontSize: '1.2rem' }}
                 scrollWheelZoom={true}
             >
+                <RecenterMap center={center} />
                 <LayerSwitch onLayerSwitch={onLayerSwitch} />
                 <TileLayer
                     attribution="&copy; OpenStreetMap contributors"
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker
+                    position={center}
+                    title="Uw (geschatte) locatie"
+                    icon={customDivIcon}
                 />
                 <LayersControl ref={controlRef}>
                     {Object.entries(pollenMeta).map(
@@ -185,7 +204,8 @@ export const PollenMap = () => {
 
             {data && (
                 <TimeSlider
-                    times={data[0].hourly.time}
+                    times={data[0] ? data[0].hourly.time : []}
+                    currentTime={currentTime}
                     onTimeChange={(timeIndex) => setCurrentTime(timeIndex)}
                 />
             )}
@@ -206,3 +226,24 @@ const LayerSwitch = ({ onLayerSwitch }: LayerSwitchProps) => {
     });
     return null;
 };
+
+type RecenterProps = {
+    center: LatLngExpression;
+};
+
+const RecenterMap = ({ center }: RecenterProps) => {
+    const map = useMap();
+
+    useEffect(() => {
+        map.setView(center);
+    }, [center, map]);
+
+    return null;
+};
+
+export const customDivIcon = L.divIcon({
+    html: `<div class="custom-marker"></div>`,
+    className: '', // remove default leaflet styles
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+});
