@@ -21,6 +21,9 @@ const Navbar = () => {
             <NavLink to="/flora-pollen-info" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={closeMenu}>
                 Flora Pollen Informatie
             </NavLink>
+            <NavLink to="/profile" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={closeMenu}>
+                Mijn Profiel
+            </NavLink>
         </>
     );
 
