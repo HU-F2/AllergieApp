@@ -90,7 +90,7 @@ namespace PollenBackend.Services
             string baseUrl = "https://air-quality-api.open-meteo.com/v1/air-quality";
             string startDate = DateTime.UtcNow.ToString("yyyy-MM-dd");
             string endDate = DateTime.UtcNow.AddDays(2).ToString("yyyy-MM-dd");
-            string query = $"?latitude={latitudesParam}&longitude={longitudesParam}&hourly={POLLEN_TYPES}&start_date={startDate}&end_date={endDate}";
+            string query = $"?latitude={latitudesParam}&longitude={longitudesParam}&hourly={POLLEN_TYPES}&start_date={startDate}&end_date={endDate}&timezone=Europe%2FBerlin";
             string fullUrl = baseUrl + query;
 
             // Make API request

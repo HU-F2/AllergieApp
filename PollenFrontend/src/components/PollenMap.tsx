@@ -1,71 +1,249 @@
-import { LatLngExpression } from 'leaflet';
+import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useState } from 'react';
-import { MapContainer, Polygon, TileLayer } from 'react-leaflet';
+import { useEffect, useRef, useState } from 'react';
+import {
+    LayerGroup,
+    LayersControl,
+    MapContainer,
+    Marker,
+    Polygon,
+    TileLayer,
+    useMap,
+    useMapEvents,
+} from 'react-leaflet';
+import { useLocationContext } from '../contexts/LocationContext';
 import { useFetchPollenMap } from '../services/pollenService';
 import { TimeSlider } from './TimeSlider';
+import { useCurrentTime } from './hooks/useCurrentTime';
+import { useThrottle } from './hooks/useThrottle';
 
-const getColor = (pollen: number | null | undefined): string => {
-    if (pollen === null || pollen === undefined) return 'gray';
+const getColor = (
+    pollen: number | null | undefined,
+    pollenType: PollenTypes,
+    max: number = 30
+): string => {
+    if (pollen == null) return 'rgb(240,240,240)';
 
-    const clamped = Math.max(0, Math.min(pollen, 50));
+    const baseColor = pollenMeta[pollenType].baseColor;
+    const clampedPollen = Math.max(0, Math.min(max, pollen));
+    const t = Math.pow(clampedPollen / max, 0.3);
 
-    const r = Math.round((clamped / 50) * 255);
-    const g = Math.round((1 - clamped / 50) * 255);
-    const b = 0;
+    const startColor: [number, number, number] = [240, 240, 240];
+    const interpolatedColor = startColor.map((start, i) =>
+        Math.round(start + t * (baseColor[i] - start))
+    ) as [number, number, number];
 
-    return `rgb(${r}, ${g}, ${b})`;
+    return `rgb(${interpolatedColor[0]},${interpolatedColor[1]},${interpolatedColor[2]})`;
 };
+
+const pollenMeta: Record<
+    PollenTypes,
+    { name: string; baseColor: [number, number, number] }
+> = {
+    birch_pollen: {
+        name: '🌳 Berk 🟦',
+        baseColor: [0, 0, 255],
+    },
+    grass_pollen: {
+        name: '🌿 Gras 🟩',
+        baseColor: [0, 128, 0],
+    },
+    alder_pollen: {
+        name: '🌲 Els 🟧',
+        baseColor: [255, 165, 0],
+    },
+    mugwort_pollen: {
+        name: '🌾 Bijvoet 🟫',
+        baseColor: [150, 75, 0],
+    },
+    olive_pollen: {
+        name: '🫒 Olijf 🟪',
+        baseColor: [128, 0, 128],
+    },
+    ragweed_pollen: {
+        name: '🌼 Ambrosia 🟨',
+        baseColor: [255, 255, 0],
+    },
+};
+
+type PollenTypes =
+    | 'birch_pollen'
+    | 'grass_pollen'
+    | 'alder_pollen'
+    | 'mugwort_pollen'
+    | 'olive_pollen'
+    | 'ragweed_pollen';
 
 export const PollenMap = () => {
     const { data } = useFetchPollenMap();
-    const [currentTime, setCurrentTime] = useState(0);
-    const center: LatLngExpression = [52.1, 5.1];
+    // const [currentTime, setCurrentTime] = useState(0);
+    const [selectedPollenType, setSelectedPollenType] =
+        useState<PollenTypes>('birch_pollen');
+    const [polygonCoordinates, setPolygonCoordinates] = useState<Record<
+        string,
+        {
+            coordinates: LatLngExpression[];
+            color: string;
+            id: string;
+        }[]
+    > | null>(null);
+    const controlRef = useRef<L.Control.Layers | null>(null);
+    const { location } = useLocationContext();
 
-    const polygonCoordinates = data?.map(
-        ({ location, hourly: { birch_pollen } }) => {
+    const [center, setCenter] = useState<LatLngExpression>([52.1, 5.1]);
+    const [currentTime, setCurrentTime] = useCurrentTime(
+        data && data[0] ? data[0].hourly.time : []
+    );
+    const throttledTime = useThrottle(currentTime, 200);
+
+    const asyncProcessDataForType = (pollenType: PollenTypes) => {
+        if (!data) return [];
+
+        const coordinatesWithColors = data.map(({ location, hourly }) => {
             const { coordinates } = location;
-
-            const pollenValue = birch_pollen?.[currentTime] ?? null;
+            const pollenValue = hourly?.[pollenType]?.[currentTime] ?? null;
+            const color = getColor(pollenValue, pollenType);
 
             return {
                 coordinates: coordinates.map(
                     ({ latitude, longitude }) =>
                         [latitude, longitude] as LatLngExpression
                 ),
-                color: getColor(pollenValue),
+                color,
                 id: location.id,
             };
+        });
+
+        return coordinatesWithColors;
+    };
+
+    useEffect(() => {
+        // Center map
+        setCenter([location?.latitude ?? 52.1, location?.longitude ?? 5.1]);
+    }, [location]);
+
+    useEffect(() => {
+        // Open legend by default
+        const controlContainer = (controlRef.current as any)
+            ?._container as HTMLElement;
+
+        if (controlContainer) {
+            controlContainer.classList.add('leaflet-control-layers-expanded');
         }
-    );
+    }, [controlRef.current]);
+
+    useEffect(() => {
+        const processData = async () => {
+            const processedData = asyncProcessDataForType(selectedPollenType);
+            setPolygonCoordinates({
+                [selectedPollenType]: processedData,
+            });
+        };
+
+        processData();
+    }, [data, selectedPollenType, throttledTime]);
+
+    const onLayerSwitch = (name: string) => {
+        const index = Object.values(pollenMeta).findIndex(
+            (val) => val.name == name
+        );
+
+        const pollenType = Object.keys(pollenMeta)[index];
+        setSelectedPollenType(pollenType as PollenTypes);
+    };
 
     return (
         <div className="map-container2">
             <MapContainer
                 center={center}
-                zoom={7}
-                style={{ height: '75vh', width: '100%' }}
-                scrollWheelZoom={true} // add this to avoid warnings
+                zoom={11}
+                style={{ height: '75vh', width: '100%', fontSize: '1.2rem' }}
+                scrollWheelZoom={true}
             >
+                <RecenterMap center={center} />
+                <LayerSwitch onLayerSwitch={onLayerSwitch} />
                 <TileLayer
                     attribution="&copy; OpenStreetMap contributors"
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {polygonCoordinates?.map((polygon) => (
-                    <Polygon
-                        key={polygon.id}
-                        positions={polygon.coordinates}
-                        pathOptions={{ color: polygon.color }}
-                        stroke={false}
-                    />
-                ))}
+                <Marker
+                    position={center}
+                    title="Uw (geschatte) locatie"
+                    icon={customDivIcon}
+                />
+                <LayersControl ref={controlRef}>
+                    {Object.entries(pollenMeta).map(
+                        ([pollenType, { name }]) => (
+                            <LayersControl.BaseLayer
+                                key={pollenType}
+                                name={name}
+                                checked={selectedPollenType === pollenType}
+                            >
+                                <LayerGroup>
+                                    {/* Render polygons only for the selected pollen type */}
+                                    {polygonCoordinates &&
+                                        polygonCoordinates[
+                                            pollenType as PollenTypes
+                                        ]?.map((polygon) => (
+                                            <Polygon
+                                                key={polygon.id}
+                                                positions={polygon.coordinates}
+                                                pathOptions={{
+                                                    color: polygon.color,
+                                                }}
+                                                stroke={false}
+                                                fillOpacity={0.8}
+                                            />
+                                        ))}
+                                </LayerGroup>
+                            </LayersControl.BaseLayer>
+                        )
+                    )}
+                </LayersControl>
             </MapContainer>
+
             {data && (
                 <TimeSlider
-                    times={data![0].hourly.time}
+                    times={data[0] ? data[0].hourly.time : []}
+                    currentTime={currentTime}
                     onTimeChange={(timeIndex) => setCurrentTime(timeIndex)}
                 />
             )}
         </div>
     );
 };
+
+type LayerSwitchProps = {
+    onLayerSwitch: (name: string) => void;
+};
+
+const LayerSwitch = ({ onLayerSwitch }: LayerSwitchProps) => {
+    useMapEvents({
+        baselayerchange: (e) => {
+            console.log('Base layer', e);
+            onLayerSwitch(e.name);
+        },
+    });
+    return null;
+};
+
+type RecenterProps = {
+    center: LatLngExpression;
+};
+
+const RecenterMap = ({ center }: RecenterProps) => {
+    const map = useMap();
+
+    useEffect(() => {
+        map.setView(center);
+    }, [center, map]);
+
+    return null;
+};
+
+export const customDivIcon = L.divIcon({
+    html: `<div class="custom-marker"></div>`,
+    className: '', // remove default leaflet styles
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+});
