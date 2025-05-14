@@ -220,7 +220,6 @@ type LayerSwitchProps = {
 const LayerSwitch = ({ onLayerSwitch }: LayerSwitchProps) => {
     useMapEvents({
         baselayerchange: (e) => {
-            console.log('Base layer', e);
             onLayerSwitch(e.name);
         },
     });
