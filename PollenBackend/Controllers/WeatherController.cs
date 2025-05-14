@@ -10,25 +10,25 @@ namespace PollenBackend.Controllers
     [Route("api/weather")]
     public class WeatherController : ControllerBase
     {
-        private readonly IWeerService _weerService;
+        private readonly IWeatherService _weatherService;
         private readonly IMemoryCache _memoryCache;
 
-        public WeatherController(IWeerService weerService, IMemoryCache memoryCache)
+        public WeatherController(IWeatherService WeatherService, IMemoryCache memoryCache)
         {
-            _weerService = weerService;
+            _weatherService = WeatherService;
             _memoryCache = memoryCache;
         }
 
         [HttpGet("forecast")]
-        public async Task<ActionResult<WeerData>> GetThreeHourForecast([FromQuery] double latitude, [FromQuery] double longitude)
+        public async Task<ActionResult<WeatherData>> GetThreeHourForecast([FromQuery] double latitude, [FromQuery] double longitude)
         {
             try
             {
                 var cacheKey = $"WeatherData-{latitude}-{longitude}";
-                if (!_memoryCache.TryGetValue(cacheKey, out WeerData? cachedData))
+                if (!_memoryCache.TryGetValue(cacheKey, out WeatherData? cachedData))
                 {
                     Console.Out.WriteLine("New weather request");
-                    var weatherData = await _weerService.GetThreeHourForecast(latitude, longitude);
+                    var weatherData = await _weatherService.GetThreeHourForecast(latitude, longitude);
 
                     var cacheOptions = new MemoryCacheEntryOptions()
                         .SetSlidingExpiration(TimeSpan.FromMinutes(30))

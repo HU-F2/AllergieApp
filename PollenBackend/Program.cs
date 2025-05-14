@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using PollenBackend.Data;
 using PollenBackend.Services;
@@ -22,13 +21,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILocationService, LocationService>();
-builder.Services.AddScoped<IWeerService, WeerService>();
+builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<IPollenService, PollenService>();
 builder.Services.AddControllers();
 
 builder.Services.AddHttpClient<IPollenService, PollenService>();
 builder.Services.AddHttpClient<ILocationService, LocationService>();
-builder.Services.AddHttpClient<IWeerService, WeerService>();
+builder.Services.AddHttpClient<IWeatherService, WeatherService>();
 
 
 builder.Services.AddScoped<Seeder>();
