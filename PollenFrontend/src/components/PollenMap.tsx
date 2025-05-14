@@ -11,7 +11,6 @@ import {
 } from 'react-leaflet';
 import { useFetchPollenMap } from '../services/pollenService';
 import { TimeSlider } from './TimeSlider';
-import { useProfilePollenTypes } from './hooks/useProfilePollenTypes';
 import { useThrottle } from './hooks/useThrottle';
 
 const getColor = (
@@ -33,38 +32,32 @@ const getColor = (
     return `rgb(${interpolatedColor[0]},${interpolatedColor[1]},${interpolatedColor[2]})`;
 };
 
-export const pollenMeta: Record<
+const pollenMeta: Record<
     PollenTypes,
-    { name: string; rawName: string; baseColor: [number, number, number] }
+    { name: string; baseColor: [number, number, number] }
 > = {
     birch_pollen: {
         name: '🌳 Berk 🟦',
-        rawName: 'Berk',
         baseColor: [0, 0, 255],
     },
     alder_pollen: {
         name: '🌲 Els 🟧',
-        rawName: 'Els',
         baseColor: [255, 165, 0],
     },
     grass_pollen: {
         name: '🌿 Gras 🟩',
-        rawName: 'Gras',
         baseColor: [0, 128, 0],
     },
     mugwort_pollen: {
         name: '🌾 Bijvoet 🟫',
-        rawName: 'Bijvoet',
         baseColor: [150, 75, 0],
     },
     olive_pollen: {
         name: '🫒 Olijf 🟪',
-        rawName: 'Olijf',
         baseColor: [128, 0, 128],
     },
     ragweed_pollen: {
         name: '🌼 Ambrosia 🟨',
-        rawName: 'Ambrosia',
         baseColor: [255, 255, 0],
     },
 };
@@ -79,7 +72,6 @@ type PollenTypes =
 
 export const PollenMap = () => {
     const { data } = useFetchPollenMap();
-    const [profilePollenTypes] = useProfilePollenTypes();
     const [currentTime, setCurrentTime] = useState(0);
     const [selectedPollenType, setSelectedPollenType] =
         useState<PollenTypes>('birch_pollen');
@@ -118,13 +110,6 @@ export const PollenMap = () => {
     };
 
     useEffect(() => {
-        // Set the first item in profilePollenTypes as selected base layer
-        if (profilePollenTypes.length > 0) {
-            onLayerSwitch(profilePollenTypes[0]);
-        }
-    }, [profilePollenTypes]);
-
-    useEffect(() => {
         // Open legend by default
         const controlContainer = (controlRef.current as any)
             ?._container as HTMLElement;
@@ -147,7 +132,7 @@ export const PollenMap = () => {
 
     const onLayerSwitch = (name: string) => {
         const index = Object.values(pollenMeta).findIndex(
-            (val) => val.name == name || val.rawName == name
+            (val) => val.name == name
         );
 
         const pollenType = Object.keys(pollenMeta)[index];
@@ -215,6 +200,7 @@ type LayerSwitchProps = {
 const LayerSwitch = ({ onLayerSwitch }: LayerSwitchProps) => {
     useMapEvents({
         baselayerchange: (e) => {
+            console.log('Base layer', e);
             onLayerSwitch(e.name);
         },
     });
