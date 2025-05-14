@@ -92,7 +92,7 @@ export const PollenMap = () => {
 
     const [center, setCenter] = useState<LatLngExpression>([52.1, 5.1]);
     const [currentTime, setCurrentTime] = useCurrentTime(
-        data ? data[0].hourly.time : []
+        data && data[0] ? data[0].hourly.time : []
     );
     const throttledTime = useThrottle(currentTime, 200);
 
@@ -204,7 +204,7 @@ export const PollenMap = () => {
 
             {data && (
                 <TimeSlider
-                    times={data[0].hourly.time}
+                    times={data[0] ? data[0].hourly.time : []}
                     currentTime={currentTime}
                     onTimeChange={(timeIndex) => setCurrentTime(timeIndex)}
                 />
