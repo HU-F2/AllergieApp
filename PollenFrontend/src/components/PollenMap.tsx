@@ -15,6 +15,7 @@ import { useLocationContext } from '../contexts/LocationContext';
 import { useFetchPollenMap } from '../services/pollenService';
 import { TimeSlider } from './TimeSlider';
 import { useCurrentTime } from './hooks/useCurrentTime';
+import { useProfilePollenTypes } from './hooks/useProfilePollenTypes';
 import { useThrottle } from './hooks/useThrottle';
 
 const getColor = (
@@ -36,32 +37,38 @@ const getColor = (
     return `rgb(${interpolatedColor[0]},${interpolatedColor[1]},${interpolatedColor[2]})`;
 };
 
-const pollenMeta: Record<
+export const pollenMeta: Record<
     PollenTypes,
-    { name: string; baseColor: [number, number, number] }
+    { name: string; rawName: string; baseColor: [number, number, number] }
 > = {
     birch_pollen: {
         name: '🌳 Berk 🟦',
+        rawName: 'Berk',
         baseColor: [0, 0, 255],
     },
     grass_pollen: {
         name: '🌿 Gras 🟩',
+        rawName: 'Gras',
         baseColor: [0, 128, 0],
     },
     alder_pollen: {
         name: '🌲 Els 🟧',
+        rawName: 'Els',
         baseColor: [255, 165, 0],
     },
     mugwort_pollen: {
         name: '🌾 Bijvoet 🟫',
+        rawName: 'Bijvoet',
         baseColor: [150, 75, 0],
     },
     olive_pollen: {
         name: '🫒 Olijf 🟪',
+        rawName: 'Olijf',
         baseColor: [128, 0, 128],
     },
     ragweed_pollen: {
         name: '🌼 Ambrosia 🟨',
+        rawName: 'Ambrosia',
         baseColor: [255, 255, 0],
     },
 };
@@ -76,7 +83,7 @@ type PollenTypes =
 
 export const PollenMap = () => {
     const { data } = useFetchPollenMap();
-    // const [currentTime, setCurrentTime] = useState(0);
+    const [profilePollenTypes] = useProfilePollenTypes();
     const [selectedPollenType, setSelectedPollenType] =
         useState<PollenTypes>('birch_pollen');
     const [polygonCoordinates, setPolygonCoordinates] = useState<Record<
@@ -118,6 +125,13 @@ export const PollenMap = () => {
     };
 
     useEffect(() => {
+        // Set the first item in profilePollenTypes as selected base layer
+        if (profilePollenTypes.length > 0) {
+            onLayerSwitch(profilePollenTypes[0]);
+        }
+    }, [profilePollenTypes]);
+
+    useEffect(() => {
         // Center map
         setCenter([location?.latitude ?? 52.1, location?.longitude ?? 5.1]);
     }, [location]);
@@ -145,7 +159,7 @@ export const PollenMap = () => {
 
     const onLayerSwitch = (name: string) => {
         const index = Object.values(pollenMeta).findIndex(
-            (val) => val.name == name
+            (val) => val.name == name || val.rawName == name
         );
 
         const pollenType = Object.keys(pollenMeta)[index];
@@ -220,7 +234,6 @@ type LayerSwitchProps = {
 const LayerSwitch = ({ onLayerSwitch }: LayerSwitchProps) => {
     useMapEvents({
         baselayerchange: (e) => {
-            console.log('Base layer', e);
             onLayerSwitch(e.name);
         },
     });

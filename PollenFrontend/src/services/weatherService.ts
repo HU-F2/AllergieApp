@@ -22,7 +22,7 @@ export async function getThreeHourForecast(
 
 export const useFetchForecast = (latitude?: number, longitude?: number) =>
     useQuery({
-        queryKey: QUERY_KEYS.weather.forecast,
+        queryKey: QUERY_KEYS.weather.forecast(latitude, longitude),
         queryFn: () => {
             if (!latitude || !longitude) {
                 return Promise.reject();
