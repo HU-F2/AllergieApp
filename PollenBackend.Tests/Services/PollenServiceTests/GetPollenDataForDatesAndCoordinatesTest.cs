@@ -41,6 +41,7 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
 
             // Assert
             Assert.NotNull(result);
+            Assert.IsType<List<PollenDataPoint>>(result);
             Assert.Equal(48, result.Count);
             Assert.Contains(result, r => r.BirchPollen == 0.5);
             Assert.Contains(result, r => r.BirchPollen == 0.6);

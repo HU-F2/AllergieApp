@@ -47,18 +47,10 @@ namespace PollenBackend.Tests.Services.AllergyServiceTests
 
             // Assert
             Assert.NotNull(result);
+            Assert.IsType<List<AllergySuggestion>>(result);
             Assert.Equal(2, result.Count); // Verwacht 2 suggesties (zoals in je testdata)
-
-            // Controleer of de berekeningen correct zijn
-            var grass = result.FirstOrDefault(r => r.PollenType == "grass_pollen");
-            var birch = result.FirstOrDefault(r => r.PollenType == "birch_pollen");
-
-            Assert.NotNull(grass);
-            Assert.NotNull(birch);
-
-            // Deze waarden moeten overeenkomen met de gemiddelden in je testdata
-            Assert.Equal(6, (int)Math.Ceiling(grass!.AverageConcentration));
-            Assert.Equal(3, (int)Math.Ceiling(birch!.AverageConcentration));
+            Assert.Contains(result, r => r.PollenType == "grass_pollen" && (int)Math.Ceiling(r.AverageConcentration) == 6);
+            Assert.Contains(result, r => r.PollenType == "birch_pollen" && (int)Math.Ceiling(r.AverageConcentration) == 3);
         }
     }
 }
