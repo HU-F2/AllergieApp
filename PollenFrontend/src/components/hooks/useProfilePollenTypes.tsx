@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 
-const POLLEN_ALLERGY_KEY = 'selectedPollenTypes';
-
 export const useProfilePollenTypes = (): [
     string[],
     React.Dispatch<React.SetStateAction<string[]>>,
 ] => {
     const [pollenTypes, setPollenTypes] = useState<string[]>(() => {
         try {
-            const stored = localStorage.getItem(POLLEN_ALLERGY_KEY);
+            const stored = localStorage.getItem(
+                import.meta.env.VITE_POLLEN_ALLERGY_KEY
+            );
             return stored ? JSON.parse(stored) : [];
         } catch {
             return [];
@@ -16,7 +16,10 @@ export const useProfilePollenTypes = (): [
     });
 
     useEffect(() => {
-        localStorage.setItem(POLLEN_ALLERGY_KEY, JSON.stringify(pollenTypes));
+        localStorage.setItem(
+            import.meta.env.VITE_POLLEN_ALLERGY_KEY,
+            JSON.stringify(pollenTypes)
+        );
     }, [pollenTypes]);
 
     return [pollenTypes, setPollenTypes];
