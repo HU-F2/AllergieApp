@@ -21,8 +21,13 @@ public class WeerService : IWeerService
     }
 
     public async Task<WeerData> GetThreeHourForecast(double latitude, double longitude)
-    {
+    {   
+        if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180)
+            throw new ArgumentOutOfRangeException("Geef een valide latitude en longitude op.");
+        
+            
         string baseUrl = "https://api.open-meteo.com/v1/forecast";
+        
         string query = $"?latitude={latitude}&longitude={longitude}&hourly=temperature_2m,rain,wind_speed_10m&timezone=Europe%2FBerlin";
         string fullUrl = baseUrl + query;
         HttpResponseMessage response = await _httpClient.GetAsync(fullUrl);
@@ -37,6 +42,8 @@ public class WeerService : IWeerService
 
         var weatherData = ParseWeerData(hourly);
         return CalculateThreeHourAverages(weatherData);
+        
+        
     }
 
     private (List<string> Time, List<double> Temperature, List<double> Rain, List<double> Wind) ParseWeerData(JsonElement hourly)

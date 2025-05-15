@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "@tanstack/react-query": "^5.74.4",
+        "pollenelectron": "file:",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-leaflet": "^5.0.0",
