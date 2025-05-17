@@ -18,7 +18,7 @@ namespace PollenBackend.Controllers
         [HttpPost("analyze")]
         public async Task<IActionResult> AnalyzeSymptoms([FromBody] List<PollenDataRequest> submission)
         {
-            var suggestions = await _analysisService.AnalyzeSymptoms(submission);
+            List<AllergySuggestion> suggestions = await _analysisService.AnalyzeSymptoms(submission);
 
             return Ok(
                 new

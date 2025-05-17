@@ -6,6 +6,7 @@ import FloraPage from './pages/FloraInfo';
 import EducationPage from './pages/Education';
 import NotFoundPage from './pages/NotFoundPage';
 import { LocationProvider } from './contexts/LocationContext';
+import AllergyAnalysisPage from './pages/AllergyAnalysisPage';
 
 function App() {
     const queryClient = new QueryClient();
@@ -19,6 +20,7 @@ function App() {
                         <Route path="/map" element={<MapPage />} />
                         <Route path="/flora-pollen-info" element={<FloraPage />} />
                         <Route path="/education" element={<EducationPage />} />
+                        <Route path="/analysis" element={<AllergyAnalysisPage />} />
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </Router>
