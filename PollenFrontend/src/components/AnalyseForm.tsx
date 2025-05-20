@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import DatePicker, { DateObject } from 'react-multi-date-picker';
+import { Calendar, DateObject } from 'react-multi-date-picker';
+import DatePanel from "react-multi-date-picker/plugins/date_panel"
+import { getTwoMonthsAgo } from '../utils/utilityFunctions';
 
 interface DatePickerFormProps {
     onSubmit: (dates: Date[]) => void;
@@ -11,12 +13,12 @@ interface FormErrors {
 }
 
 const DatePickerForm = ({ onSubmit, isLoading }: DatePickerFormProps) => {
-    const [dates, setDates] = useState<DateObject[]>([]);
     const [errors, setErrors] = useState<FormErrors>({});
+    const [selectedDates, setSelectedDates] = useState<Date[]>([]);
 
     const validate = (): boolean => {
         const newErrors: FormErrors = {};
-        if (dates.length < 3) newErrors.dates = 'Selecteer minimaal 3 datums';
+        if (selectedDates.length < 3) newErrors.dates = 'Selecteer minimaal 3 datums';
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -24,19 +26,29 @@ const DatePickerForm = ({ onSubmit, isLoading }: DatePickerFormProps) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!validate()) return;
-        onSubmit(dates.map(dateObj => dateObj.toDate()));
+        onSubmit(selectedDates);
     };
 
+    function setDates(dates: DateObject[]): false | void {
+        setSelectedDates(dates.map(dateObj => dateObj.toDate()) as Date[]);
+    }
+
     return (
-        <form onSubmit={handleSubmit} className="date-picker-form">
+        <form onSubmit={handleSubmit} className="analyse-symptoms-form">
             <div className="date-picker-input-group">
                 <label>Selecteer datums:</label>
-                <DatePicker
+                <Calendar
                     multiple
-                    value={dates}
+                    value={selectedDates}
                     onChange={setDates}
                     disabled={isLoading}
                     format="DD/MM/YYYY"
+                    weekStartDayIndex={1}
+                    minDate={getTwoMonthsAgo()}
+                    maxDate={new Date()}
+                    plugins={[
+                        <DatePanel position="right" className="custom-date-panel" />
+                    ]}
                 />
                 {errors.dates && <span className="date-picker-error">{errors.dates}</span>}
             </div>

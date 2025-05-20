@@ -105,7 +105,8 @@ button:focus-visible {
 .education-container,
 .flora-info-container,
 .map-container,
-.home-container {
+.home-container,
+.allergy-analysis-page {
     margin: 20px;
 }
 
@@ -578,17 +579,12 @@ circle {
 }
 
 .allergy-analysis-page {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
   background-color: var(--aa-bg-color);
   color: var(--aa-text-color);
-  min-height: 100vh;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .allergy-analysis-container {
-  margin-top: 20px;
   padding: 20px;
   background-color: var(--aa-container-bg);
   border-radius: 8px;
@@ -614,13 +610,13 @@ circle {
 }
 
 @media (max-width: 768px) {
-  .allergy-analysis-page {
+  /* .allergy-analysis-page {
     padding: 10px;
   }
 
   .allergy-analysis-container {
     padding: 15px;
-  }
+  } */
 }
 
 /* DatePickerForm styling */
@@ -648,7 +644,11 @@ circle {
   --dpf-datepicker-border: #555;
 }
 
-.date-picker-form {
+.analyse-symptoms-form .rmdp-panel {
+    min-width: 200px;
+}
+
+.analyse-symptoms-form {
   margin-top: 20px;
   color: var(--dpf-text-color);
 }
@@ -700,7 +700,7 @@ circle {
 }
 
 @media (max-width: 768px) {
-  .date-picker-form {
+  .analyse-symptoms-form {
     margin-top: 15px;
   }
 }
@@ -781,5 +781,29 @@ circle {
 
   .analysis-suggestions-list {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Panel standaard rechts naast de kalender */
+.analyse-symptoms-form .rmdp-top-class {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 16px;
+}
+
+.analyse-symptoms-form .custom-date-panel {
+  order: 1; /* zorg dat hij na de kalender komt */
+  min-width: 200px;
+}
+
+/* Responsief gedrag voor kleinere schermen */
+@media (max-width: 768px) {
+  .analyse-symptoms-form .rmdp-top-class {
+    flex-direction: column;
+  }
+
+  .analyse-symptoms-form .custom-date-panel {
+    width: 100%;
   }
 }
