@@ -236,6 +236,17 @@ circle {
     max-width: 300px;
 }
 
+.selectable-pollen-indicator {
+    position: relative;
+    padding-top: 1rem;
+}
+
+.selectable-pollen-indicator select {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
 /* Alert */
 .alert {
     position: fixed;
