@@ -133,6 +133,7 @@ button:focus-visible {
     align-items: center;
     gap: 1rem;
     justify-content: center;
+    margin-bottom: 2rem;
 }
 
 .location-search-button-container {
@@ -565,4 +566,50 @@ circle {
 
 .custom-marker:hover {
     transform: scale(1.2);
+}
+
+/* Dashboard layout */
+.dashboard--layout {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+}
+
+.dashboard--layout > div {
+    width: 50%;
+}
+
+.dashboard--current-location {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.dashboard--weather-mobile {
+    display: block;
+}
+
+.dashboard--weather-desktop {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .dashboard--layout {
+        flex-direction: column;
+    }
+
+    .dashboard--layout > div {
+        width: 100%;
+    }
+
+    .location-input-container {
+        flex-direction: column;
+    }
+
+    .dashboard--weather-mobile {
+        display: none;
+    }
+
+    .dashboard--weather-desktop {
+        display: block;
+    }
 }
