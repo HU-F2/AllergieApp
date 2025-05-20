@@ -91,14 +91,6 @@ export const pollenMeta: Record<
     },
 };
 
-// export type PollenTypes =
-//     | 'birch_pollen'
-//     | 'grass_pollen'
-//     | 'alder_pollen'
-//     | 'mugwort_pollen'
-//     | 'olive_pollen'
-//     | 'ragweed_pollen';
-
 export enum PollenTypes {
     Birch = 'birch_pollen',
     Grass = 'grass_pollen',
