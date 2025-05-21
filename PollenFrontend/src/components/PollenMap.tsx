@@ -17,6 +17,7 @@ import { TimeSlider } from './TimeSlider';
 import { useCurrentTime } from './hooks/useCurrentTime';
 import { useProfilePollenTypes } from './hooks/useProfilePollenTypes';
 import { useThrottle } from './hooks/useThrottle';
+import { useSelectedPollenContext } from '../contexts/SelectedPollenContext';
 
 const getColor = (
     pollen: number | null | undefined,
@@ -103,9 +104,7 @@ export enum PollenTypes {
 export const PollenMap = () => {
     const { data } = useFetchPollenMap();
     const [profilePollenTypes] = useProfilePollenTypes();
-    const [selectedPollenType, setSelectedPollenType] = useState<PollenTypes>(
-        PollenTypes.Birch
-    );
+    const {selectedPollenType, setSelectedPollenType} = useSelectedPollenContext();
     const [polygonCoordinates, setPolygonCoordinates] = useState<Record<
         string,
         {

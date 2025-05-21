@@ -5,10 +5,11 @@ import { PollenMap, PollenTypes } from '../components/PollenMap';
 import { WalkAdvice } from '../components/WalkAdviceScore';
 import WeatherCard from '../components/weatherCard';
 import { useLocationContext } from '../contexts/LocationContext';
+import { useSelectedPollenContext } from '../contexts/SelectedPollenContext';
 
 const Home = () => {
     const { location } = useLocationContext();
-
+    const { selectedPollenType } = useSelectedPollenContext();
     return (
         <div className="home-container">
             <Navbar />
@@ -18,10 +19,7 @@ const Home = () => {
                         Pollen in {location?.name}:
                     </h1>
                     <CustomLocation />
-                    <WalkAdvice pollenType={PollenTypes.Birch} pollenValue={0} weather={{
-                        averageRain: 0,
-                        averageTemperature: 0
-                    }} location={location} />
+                    <WalkAdvice pollenType={selectedPollenType} location={location} />
                     <div className="dashboard--infoWeather">
                         <PollenInfo location={location} />
                         <div className="dashboard--weather-mobile">

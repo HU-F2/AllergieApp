@@ -1,38 +1,55 @@
-// src/components/WalkAdvice.tsx
-
 import React, { useState } from 'react';
 import { calculateWalkScore } from '../utils/calculateWalkScore';
 import { PollenTypes, pollenMeta } from './PollenMap';
 import { useFetchForecast } from '../services/weatherService';
 import { LocationData } from '../services/locationService';
+import { useFetchPollenByLocation } from '../services/pollenService';
 
 type Props = {
     pollenType: PollenTypes;
-    pollenValue: number;
-    weather: {
-        averageRain: number;
-        averageTemperature: number;
-    };
+    // pollenValue: number;
+    // weather: {
+    //     averageRain: number;
+    //     averageTemperature: number;
+    // };
     location: LocationData | undefined;
 };
 
-export const WalkAdvice = ({ pollenType, pollenValue, location}: Props) => {
+export const WalkAdvice = ({ pollenType, location}: Props) => {
     const [expanded, setExpanded] = useState(false);
     const {data:weather} = useFetchForecast(location?.latitude,location?.longitude);
-    
+    const {data:pollenData} = useFetchPollenByLocation(location && {latitude:location.latitude,longitude:location.longitude})
     if (!weather) return null;
+    if (!pollenData) return null;
 
     const score = calculateWalkScore({
         pollenType,
-        pollenValue,
+        pollenValue:pollenData?.hourly[pollenType]?.[0] ?? 0,
         averageRain: weather.averageRain,
         averageTemp: weather.averageTemperature
     });
 
     const { rawName } = pollenMeta[pollenType];
 
-    const explanation = `Weinig ${rawName.toLowerCase()}pollen, ${
-        weather.averageRain <= 0.5 ? 'droog weer' : weather.averageRain <= 2.0 ? 'lichte neerslag' : "zware neerslag"
+    // const explanation = `Weinig ${rawName.toLowerCase()}pollen, ${
+    //     weather.averageRain <= 0.5 ? 'droog weer' : weather.averageRain <= 2.0 ? 'lichte neerslag' : "zware neerslag"
+    // } en ${weather.averageTemperature.toFixed(1)}°C zorgen voor een ${
+    //     score >= 8 ? 'ideaal' : score >= 5 ? 'redelijk' : 'ongunstig'
+    // } moment om naar buiten te gaan.`;
+    const pollenConcentration = pollenData?.hourly[pollenType]?.[0] ?? 0;
+
+    const pollenRatio = pollenConcentration / pollenMeta[pollenType].max;
+
+    let pollenLabel = '';
+    if (pollenRatio <= 0.1) {
+        pollenLabel = 'Weinig';
+    } else if (pollenRatio <= 0.4) {
+        pollenLabel = 'Matige';
+    } else {
+        pollenLabel = 'Hoge';}
+
+    const explanation = `${pollenLabel.charAt(0).toUpperCase() + pollenLabel.slice(1)} ${rawName.toLowerCase()}pollen, ${
+    weather.averageRain <= 0.5 ? 'droog weer' : weather.averageRain <= 2.0 ? 'lichte neerslag' : 'zware neerslag'
     } en ${weather.averageTemperature.toFixed(1)}°C zorgen voor een ${
         score >= 8 ? 'ideaal' : score >= 5 ? 'redelijk' : 'ongunstig'
     } moment om naar buiten te gaan.`;

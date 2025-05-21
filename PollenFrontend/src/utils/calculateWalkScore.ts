@@ -15,9 +15,14 @@ export function calculateWalkScore({
 }): number {
     const max = pollenMeta[pollenType].max;
     const pollenRatio = pollenValue / max;
-    const lowPollenPercentage = 0.4
-    const pollenScore = pollenRatio <= lowPollenPercentage ? 1 : pollenRatio >= 1 ? 0 : 1 - (pollenRatio - lowPollenPercentage) / 0.6;
-
+    const lowPollenPercentage = 0.1
+    // let pollenScore = 0;
+    // if (pollenRatio <= lowPollenPercentage) {
+    //     pollenScore = 1;
+    // } else{
+    // }
+    let pollenScore = 1 - Math.min(pollenRatio,1);
+    // const pollenScore = pollenRatio <= lowPollenPercentage ? 1 : pollenRatio >= 1 ? 0 : 1 - (pollenRatio - lowPollenPercentage) / 0.6;
     const rainScore = averageRain < 1.5
         ? 1
         : averageRain >= 3
@@ -25,9 +30,11 @@ export function calculateWalkScore({
         : 1 - (averageRain - 1.5) / 1.5;
 
     let tempScore = 0;
-    if (averageTemp >= 17 && averageTemp <= 23) tempScore = 1;
-    else if ((averageTemp >= 13 && averageTemp < 17) || (averageTemp > 23 && averageTemp <= 27)) tempScore = 0.5;
+    if (averageTemp >= 19 && averageTemp <= 23) tempScore = 0.8;
+    else if ((averageTemp < 15)) tempScore = 0.3;
+    else if ((averageTemp >= 15 && averageTemp < 19)) tempScore = 0.5;
+    else if ((averageTemp > 23 && averageTemp <= 27)) tempScore = 1;
 
-    const total = pollenScore * 0.4 + rainScore * 0.3 + tempScore * 0.3;
+    const total = pollenScore * 0.6 + rainScore * 0.2 + tempScore * 0.2;
     return Math.round(total * 10);
 }
