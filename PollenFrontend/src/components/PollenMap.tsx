@@ -17,6 +17,7 @@ import { TimeSlider } from './TimeSlider';
 import { useCurrentTime } from './hooks/useCurrentTime';
 import { useProfilePollenTypes } from './hooks/useProfilePollenTypes';
 import { useThrottle } from './hooks/useThrottle';
+import { PollenLegend } from './PollenLegend';
 
 const getColor = (
     pollen: number | null | undefined,
@@ -234,6 +235,7 @@ export const PollenMap = () => {
                         )
                     )}
                 </LayersControl>
+                <PollenLegend pollenType={selectedPollenType} />
             </MapContainer>
 
             {data && (
