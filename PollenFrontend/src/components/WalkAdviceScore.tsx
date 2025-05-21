@@ -31,11 +31,6 @@ export const WalkAdvice = ({ pollenType, location}: Props) => {
 
     const { rawName } = pollenMeta[pollenType];
 
-    // const explanation = `Weinig ${rawName.toLowerCase()}pollen, ${
-    //     weather.averageRain <= 0.5 ? 'droog weer' : weather.averageRain <= 2.0 ? 'lichte neerslag' : "zware neerslag"
-    // } en ${weather.averageTemperature.toFixed(1)}°C zorgen voor een ${
-    //     score >= 8 ? 'ideaal' : score >= 5 ? 'redelijk' : 'ongunstig'
-    // } moment om naar buiten te gaan.`;
     const pollenConcentration = pollenData?.hourly[pollenType]?.[0] ?? 0;
 
     const pollenRatio = pollenConcentration / pollenMeta[pollenType].max;
