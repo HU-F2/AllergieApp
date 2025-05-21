@@ -18,12 +18,9 @@ const PollenInfo = ({ location }: Props) => {
     }
 
     return (
-        <div>
-            <div className="pollen-summary">
-                <h1>Pollen in {location?.name}:</h1>
-                <SelectablePollenIndicator location={location} />
-                <p className="date-text">{formattedDate}</p>
-            </div>
+        <div className="pollen-summary">
+            <SelectablePollenIndicator location={location} />
+            <p className="date-text">{formattedDate}</p>
         </div>
     );
 };

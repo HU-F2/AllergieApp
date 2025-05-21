@@ -1,35 +1,34 @@
+import Navbar from '../components/common/navigation/Navbar';
 import CustomLocation from '../components/location/customLocation/CustomLocation';
 import PollenInfo from '../components/PollenInfo';
-import { useLocationContext } from '../contexts/LocationContext';
-import Navbar from '../components/common/navigation/Navbar';
+import { PollenMap } from '../components/PollenMap';
 import WeatherCard from '../components/weatherCard';
-import { getThreeHourForecast, useFetchForecast } from '../services/weatherService';
-import { useEffect, useState } from 'react';
+import { useLocationContext } from '../contexts/LocationContext';
 
 const Home = () => {
-    
     const { location } = useLocationContext();
-
-    // const [weather, setWeather] = useState<WeatherData | null>(null);
-    // const [error, setError] = useState('');
-
-    // useEffect(() => {
-    //     if (location) {
-    //         getThreeHourForecast(location.latitude, location.longitude)
-    //             .then(setWeather)
-    //             .catch((err) => {
-    //                 setError(err.message);
-    //             });
-    //     }
-    // }, [location]);
-
 
     return (
         <div className="home-container">
             <Navbar />
-            <CustomLocation />
-            <PollenInfo location={location} />
-            <WeatherCard location={location} />
+            <div className="dashboard--layout">
+                <div className="dashboard--left">
+                    <h1 className="dashboard--current-location">
+                        Pollen in {location?.name}:
+                    </h1>
+                    <CustomLocation />
+                    <PollenInfo location={location} />
+                    <div className="dashboard--weather-mobile">
+                        <WeatherCard location={location} />
+                    </div>
+                </div>
+                <div className="dashboard--right">
+                    <PollenMap />
+                    <div className="dashboard--weather-desktop">
+                        <WeatherCard location={location} />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
