@@ -16,13 +16,13 @@ const Home = () => {
                     <h1 className="dashboard--current-location">
                         Pollen in {location?.name}:
                     </h1>
-                    <CustomLocation />
                     <PollenInfo location={location} />
                     <div className="dashboard--weather-mobile">
                         <WeatherCard location={location} />
                     </div>
                 </div>
                 <div className="dashboard--right">
+                    <CustomLocation />
                     <PollenMap />
                     <div className="dashboard--weather-desktop">
                         <WeatherCard location={location} />
