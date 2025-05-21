@@ -93,6 +93,10 @@ button:focus-visible {
     .flora-card {
         background: #757575;
     }
+
+    .pollenlegend {
+        color: #000;
+    }
 }
 
 #root {
