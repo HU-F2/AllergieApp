@@ -58,7 +58,7 @@ export const WalkAdvice = ({ pollenType, location}: Props) => {
     if (score >= 0 && score <= 4) {
         colorScoreCalculation = 'red'
     } else if (score > 4 && score <= 6) {
-        colorScoreCalculation = 'yellow'
+        colorScoreCalculation = 'orange'
     }
 
     return (
