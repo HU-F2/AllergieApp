@@ -74,6 +74,7 @@
             "pollenbackend",
             "postgres",
             "postgresql",
+            "rmdp",
             "Serilog",
             "Swashbuckle",
             "VITE",

@@ -553,27 +553,120 @@ circle {
     transform: scale(1.2);
 }
 
-/* AllergyAnalysisPage styling */
+/* ===== Allergie Analyse Root Variabelen (Light Theme) ===== */
 :root {
-    /* Light theme (default) */
     --aa-bg-color: #ffffff;
     --aa-text-color: #2c3e50;
     --aa-secondary-text: #7f8c8d;
     --aa-container-bg: #f9f9f9;
     --aa-error-bg: #fadbd8;
     --aa-error-text: #e74c3c;
+
+    --dpf-bg-color: #ffffff;
+    --dpf-text-color: #2c3e50;
+    --dpf-label-color: #2c3e50;
+    --dpf-button-bg: #3498db;
+    --dpf-button-disabled: #bdc3c7;
+    --dpf-error-color: #e74c3c;
+    --dpf-datepicker-bg: #ffffff;
+    --dpf-datepicker-border: #ddd;
+
+    --ar-bg-color: #ffffff;
+    --ar-container-bg: #ecf0f1;
+    --ar-text-color: #2c3e50;
+    --ar-disclaimer-color: #e67e22;
+    --ar-suggestion-bg: #ffffff;
+    --ar-suggestion-title: #16a085;
+    --ar-loader-color: #3498db;
+
+    --card-bg: #f9f9f9;
 }
 
-[data-theme='dark'] {
-    /* Dark theme */
-    --aa-bg-color: #1a1a1a;
-    --aa-text-color: #ecf0f1;
-    --aa-secondary-text: #bdc3c7;
-    --aa-container-bg: #2d2d2d;
-    --aa-error-bg: #5c2a2a;
-    --aa-error-text: #ff6b6b;
+/* ===== Allergie Analyse Donkere Thema (Dark Theme) ===== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --aa-bg-color: #1a1a1a;
+        --aa-text-color: #ecf0f1;
+        --aa-secondary-text: #bdc3c7;
+        --aa-container-bg: #2d2d2d;
+        --aa-error-bg: #5c2a2a;
+        --aa-error-text: #ff6b6b;
+
+        --dpf-bg-color: #2d2d2d;
+        --dpf-text-color: #ecf0f1;
+        --dpf-label-color: #3498db;
+        --dpf-button-bg: #2980b9;
+        --dpf-button-disabled: #7f8c8d;
+        --dpf-error-color: #ff6b6b;
+        --dpf-datepicker-bg: #3d3d3d;
+        --dpf-datepicker-border: #555;
+
+        --ar-bg-color: #1a1a1a;
+        --ar-container-bg: #2d2d2d;
+        --ar-text-color: #ecf0f1;
+        --ar-disclaimer-color: #f39c12;
+        --ar-suggestion-bg: #3d3d3d;
+        --ar-suggestion-title: #1abc9c;
+        --ar-loader-color: #2980b9;
+
+        --card-bg: #1e1e1e;
+    }
+
+    .suggestion-card,
+    .allergy-analysis-container {
+        background-color: #585353;
+    }
+
+    .allergy-analysis-description {
+        color: white;
+    }
+
+    .allergy-analysis-title,
+    .date-picker-input-group label,
+    .analysis-results-title {
+        color: #4a90e2;
+    }
+
+    .analysis-results-container {
+        background-color: #1f1f1f;
+    }
+
+    .medical-alert-banner {
+        background-color: #3a2f05;
+        color: #e6c552;
+        border-color: #4f3e0a;
+    }
 }
 
+/* ===== Media Queries (Responsiveness) ===== */
+@media (max-width: 768px) {
+    .analyse-symptoms-form {
+        margin-top: 15px;
+    }
+
+    .analysis-results-container {
+        padding: 15px;
+        margin-top: 20px;
+    }
+
+    .analysis-suggestions-list {
+        grid-template-columns: 1fr;
+    }
+
+    .analysis-suggestions-grid {
+        align-items: center;
+    }
+
+    .analyse-symptoms-form .rmdp-top-class {
+        flex-direction: column;
+    }
+
+    .analyse-symptoms-form .custom-date-panel {
+        width: 100%;
+    }
+}
+
+/* ===== Allergie Analyse Algemene Stijlen ===== */
 .allergy-analysis-page {
     background-color: var(--aa-bg-color);
     color: var(--aa-text-color);
@@ -586,7 +679,9 @@ circle {
     transition: background-color 0.3s ease;
 }
 
-.allergy-analysis-title {
+.allergy-analysis-title,
+.date-picker-input-group label,
+.analysis-results-title {
     color: var(--aa-text-color);
     margin-bottom: 15px;
 }
@@ -604,48 +699,13 @@ circle {
     border-radius: 4px;
 }
 
-@media (max-width: 768px) {
-    /* .allergy-analysis-page {
-    padding: 10px;
-  }
-
-  .allergy-analysis-container {
-    padding: 15px;
-  } */
-}
-
-/* DatePickerForm styling */
-:root {
-    /* Light theme */
-    --dpf-bg-color: #ffffff;
-    --dpf-text-color: #2c3e50;
-    --dpf-label-color: #2c3e50;
-    --dpf-button-bg: #3498db;
-    --dpf-button-disabled: #bdc3c7;
-    --dpf-error-color: #e74c3c;
-    --dpf-datepicker-bg: #ffffff;
-    --dpf-datepicker-border: #ddd;
-}
-
-[data-theme='dark'] {
-    /* Dark theme */
-    --dpf-bg-color: #2d2d2d;
-    --dpf-text-color: #ecf0f1;
-    --dpf-label-color: #3498db;
-    --dpf-button-bg: #2980b9;
-    --dpf-button-disabled: #7f8c8d;
-    --dpf-error-color: #ff6b6b;
-    --dpf-datepicker-bg: #3d3d3d;
-    --dpf-datepicker-border: #555;
+.analyse-symptoms-form {
+    margin-top: 20px;
+    color: var(--dpf-text-color);
 }
 
 .analyse-symptoms-form .rmdp-panel {
     min-width: 200px;
-}
-
-.analyse-symptoms-form {
-    margin-top: 20px;
-    color: var(--dpf-text-color);
 }
 
 .date-picker-input-group {
@@ -658,7 +718,6 @@ circle {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-    color: var(--dpf-label-color);
 }
 
 .date-picker-error {
@@ -684,7 +743,6 @@ circle {
     cursor: not-allowed;
 }
 
-/* DatePicker component styling */
 .react-multi-date-picker {
     background-color: var(--dpf-datepicker-bg);
     border: 1px solid var(--dpf-datepicker-border);
@@ -696,35 +754,6 @@ circle {
     background-color: var(--dpf-datepicker-bg);
 }
 
-@media (max-width: 768px) {
-    .analyse-symptoms-form {
-        margin-top: 15px;
-    }
-}
-
-/* AnalysisResults styling */
-:root {
-    /* Light theme */
-    --ar-bg-color: #ffffff;
-    --ar-container-bg: #ecf0f1;
-    --ar-text-color: #2c3e50;
-    --ar-disclaimer-color: #e67e22;
-    --ar-suggestion-bg: #ffffff;
-    --ar-suggestion-title: #16a085;
-    --ar-loader-color: #3498db;
-}
-
-[data-theme='dark'] {
-    /* Dark theme */
-    --ar-bg-color: #1a1a1a;
-    --ar-container-bg: #2d2d2d;
-    --ar-text-color: #ecf0f1;
-    --ar-disclaimer-color: #f39c12;
-    --ar-suggestion-bg: #3d3d3d;
-    --ar-suggestion-title: #1abc9c;
-    --ar-loader-color: #2980b9;
-}
-
 .analysis-results-container {
     margin-top: 30px;
     padding: 20px;
@@ -732,11 +761,6 @@ circle {
     border-radius: 8px;
     color: var(--ar-text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.analysis-results-title {
-    color: var(--ar-text-color);
-    margin-bottom: 15px;
 }
 
 .analysis-results-disclaimer {
@@ -768,47 +792,6 @@ circle {
     padding: 20px;
     color: var(--ar-loader-color);
     font-size: 1.2em;
-}
-
-@media (max-width: 768px) {
-    .analysis-results-container {
-        padding: 15px;
-        margin-top: 20px;
-    }
-
-    .analysis-suggestions-list {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Panel standaard rechts naast de kalender */
-.analyse-symptoms-form .rmdp-top-class {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 16px;
-}
-
-.analyse-symptoms-form .custom-date-panel {
-    order: 1; /* zorg dat hij na de kalender komt */
-    min-width: 200px;
-}
-
-/* Responsief gedrag voor kleinere schermen */
-@media (max-width: 768px) {
-    .analyse-symptoms-form .rmdp-top-class {
-        flex-direction: column;
-    }
-
-    .analyse-symptoms-form .custom-date-panel {
-        width: 100%;
-    }
-}
-
-.analysis-results-container {
-    padding: 1rem;
-    color: var(--text-color);
-    background-color: var(--bg-color);
 }
 
 .analysis-suggestions-grid {
@@ -859,49 +842,6 @@ circle {
     opacity: 0.8;
 }
 
-/* Responsiveness */
-@media (max-width: 768px) {
-    .analysis-suggestions-grid {
-        align-items: center;
-    }
-}
-
-/* Blauwtinten voor posities */
-.rank-1 .suggestion-number {
-    background-color: #4db6e2;
-}
-.rank-2 .suggestion-number {
-    background-color: #3399cc;
-}
-.rank-3 .suggestion-number {
-    background-color: #007bb5;
-}
-/* extra tinten indien meer resultaten komen */
-.rank-4 .suggestion-number {
-    background-color: #006da4;
-}
-.rank-5 .suggestion-number {
-    background-color: #005c8f;
-}
-.rank-6 .suggestion-number {
-    background-color: #004d76;
-}
-
-/* Light/Dark Mode (CSS variables) */
-:root {
-    --bg-color: #ffffff;
-    --text-color: #000000;
-    --card-bg: #f9f9f9;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-color: #121212;
-        --text-color: #f0f0f0;
-        --card-bg: #1e1e1e;
-    }
-}
-
 .medical-alert-banner {
     background-color: #fff3cd;
     color: #856404;
@@ -917,41 +857,33 @@ circle {
 }
 
 .medical-alert-banner p {
-    margin: 0px;
+    margin: 0;
 }
 
-/* Donkere modus ondersteuning */
-@media (prefers-color-scheme: dark) {
-    .medical-alert-banner {
-        background-color: #3a2f05;
-        color: #e6c552;
-        border-color: #4f3e0a;
-    }
+.analyse-symptoms-form .rmdp-top-class {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 16px;
+}
 
-    .suggestion-card {
-        background-color: #585353;
-    }
-
-    .allergy-analysis-container {
-        background-color: #585353;
-    }
-
-    .allergy-analysis-description {
-        color: white;
-    }
-
-    .allergy-analysis-title,
-    .date-picker-input-group label,
-    .analysis-results-title {
-        color: #4a90e2;
-    }
-
-    .analysis-results-container {
-        background-color: #1f1f1f;
-    }
+.analyse-symptoms-form .custom-date-panel {
+    order: 1;
+    min-width: 200px;
 }
 
 .rmdp-panel-body {
     max-height: 235px;
     position: initial;
+}
+
+/* ===== Suggestion Number Kleuren op Rang ===== */
+.rank-1 .suggestion-number { background-color: #4db6e2 !important; }
+.rank-2 .suggestion-number { background-color: #3399cc !important; }
+.rank-3 .suggestion-number { background-color: #007bb5 !important; }
+.rank-4 .suggestion-number { background-color: #006da4 !important; }
+.rank-5 .suggestion-number { background-color: #005c8f !important; }
+.rank-6 .suggestion-number { background-color: #004d76 !important; }
+.suggestion-number {
+    background-color: #003f5c;
 }
