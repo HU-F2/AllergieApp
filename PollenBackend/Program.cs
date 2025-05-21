@@ -23,6 +23,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<IPollenService, PollenService>();
+builder.Services.AddScoped<ISymptomAnalysisService, SymptomAnalysisService>();
 builder.Services.AddControllers();
 
 builder.Services.AddHttpClient<IPollenService, PollenService>();
