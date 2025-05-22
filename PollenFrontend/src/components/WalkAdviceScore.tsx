@@ -57,18 +57,7 @@ export const WalkAdvice = ({ pollenType, location}: Props) => {
     }
 
     return (
-        <div style={{
-            border: '2px solid rgb(232, 232, 232)',
-            borderRadius: '12px',
-            padding: '16px',
-            backgroundColor: '#f0f0f0',
-            color: 'black',
-            maxWidth: '300px',
-            minHeight: '100px',
-            margin: '0 auto',
-            boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
-            fontFamily: 'sans-serif',
-            }}>
+        <div className='walking-advice-card'>
             <h3 style={{ margin: 0, fontSize: '1.2rem'}}>
                 🥾 Wandeladvies: <span style={{color:colorScoreCalculation}}>{score}/10</span>
             </h3>
