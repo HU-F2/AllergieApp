@@ -93,6 +93,10 @@ button:focus-visible {
     .flora-card {
         background: #757575;
     }
+
+    .pollenlegend {
+        color: #000;
+    }
 }
 
 #root {
@@ -134,6 +138,7 @@ button:focus-visible {
     align-items: center;
     gap: 1rem;
     justify-content: center;
+    margin-bottom: 2rem;
 }
 
 .location-search-button-container {
@@ -193,6 +198,12 @@ button:focus-visible {
     flex-wrap: nowrap;
     gap: 0px;
     padding-bottom: 1rem;
+    background-color: #f0f0f0;
+    max-width: 300px;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
+    padding: 9px;
+    border: 2px;
     justify-content: center;
     flex-direction: column;
     align-items: center;
@@ -233,6 +244,17 @@ circle {
     font-size: 1.2rem;
     color: #666;
     max-width: 300px;
+}
+
+.selectable-pollen-indicator {
+    position: relative;
+    padding-top: 1rem;
+}
+
+.selectable-pollen-indicator select {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 /* Alert */
@@ -551,6 +573,60 @@ circle {
 
 .custom-marker:hover {
     transform: scale(1.2);
+}
+
+/* Dashboard layout */
+.dashboard--layout {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+}
+
+.dashboard--layout > div {
+    width: 50%;
+}
+
+.dashboard--current-location {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.dashboard--weather-mobile {
+    display: block;
+}
+
+.dashboard--weather-desktop {
+    display: none;
+}
+
+.dashboard--infoWeather {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 20px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .dashboard--layout {
+        flex-direction: column;
+    }
+
+    .dashboard--layout > div {
+        width: 100%;
+    }
+
+    .location-input-container {
+        flex-direction: column;
+    }
+
+    .dashboard--weather-mobile {
+        display: none;
+    }
+
+    .dashboard--weather-desktop {
+        display: block;
+    }
 }
 
 /* ===== Allergie Analyse Root Variabelen (Light Theme) ===== */

@@ -13,11 +13,14 @@ const WeatherCard = ({location}:Props) => {
 
     return (
       <div style={{
-        border: '2px solid #4a90e2',
+        border: '2px solid rgb(232, 232, 232)',
         borderRadius: '12px',
         padding: '16px',
-        backgroundColor: '#eef6fd',
-        color: '#333',
+        backgroundColor: '#f0f0f0',
+        width: '300px',
+        height: '242.2px',
+        color: 'black',
+        boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 4px',
         maxWidth: '300px',
         margin: '0 auto'
       }}>

@@ -15,7 +15,10 @@ import { useLocationContext } from '../contexts/LocationContext';
 import { useFetchPollenMap } from '../services/pollenService';
 import { TimeSlider } from './TimeSlider';
 import { useCurrentTime } from './hooks/useCurrentTime';
+import { useProfilePollenTypes } from './hooks/useProfilePollenTypes';
 import { useThrottle } from './hooks/useThrottle';
+import { PollenLegend } from './PollenLegend';
+import { useSelectedPollenContext } from '../contexts/SelectedPollenContext';
 
 const getColor = (
     pollen: number | null | undefined,
@@ -36,49 +39,73 @@ const getColor = (
     return `rgb(${interpolatedColor[0]},${interpolatedColor[1]},${interpolatedColor[2]})`;
 };
 
-const pollenMeta: Record<
+export const pollenMeta: Record<
     PollenTypes,
-    { name: string; baseColor: [number, number, number] }
+    {
+        name: string;
+        rawName: string;
+        baseColor: [number, number, number];
+        min: number;
+        max: number;
+    }
 > = {
     birch_pollen: {
         name: '🌳 Berk 🟦',
+        rawName: 'Berk',
         baseColor: [0, 0, 255],
+        min: 0,
+        max: 12,
     },
     grass_pollen: {
         name: '🌿 Gras 🟩',
+        rawName: 'Gras',
         baseColor: [0, 128, 0],
+        min: 0,
+        max: 20,
     },
     alder_pollen: {
         name: '🌲 Els 🟧',
+        rawName: 'Els',
         baseColor: [255, 165, 0],
+        min: 0,
+        max: 10,
     },
     mugwort_pollen: {
         name: '🌾 Bijvoet 🟫',
+        rawName: 'Bijvoet',
         baseColor: [150, 75, 0],
+        min: 0,
+        max: 8,
     },
     olive_pollen: {
         name: '🫒 Olijf 🟪',
+        rawName: 'Olijf',
         baseColor: [128, 0, 128],
+        min: 0,
+        max: 15,
     },
     ragweed_pollen: {
         name: '🌼 Ambrosia 🟨',
+        rawName: 'Ambrosia',
         baseColor: [255, 255, 0],
+        min: 0,
+        max: 18,
     },
 };
 
-type PollenTypes =
-    | 'birch_pollen'
-    | 'grass_pollen'
-    | 'alder_pollen'
-    | 'mugwort_pollen'
-    | 'olive_pollen'
-    | 'ragweed_pollen';
+export enum PollenTypes {
+    Birch = 'birch_pollen',
+    Grass = 'grass_pollen',
+    Alder = 'alder_pollen',
+    Mugwort = 'mugwort_pollen',
+    Olive = 'olive_pollen',
+    Ragweed = 'ragweed_pollen',
+}
 
 export const PollenMap = () => {
     const { data } = useFetchPollenMap();
-    // const [currentTime, setCurrentTime] = useState(0);
-    const [selectedPollenType, setSelectedPollenType] =
-        useState<PollenTypes>('birch_pollen');
+    const [profilePollenTypes] = useProfilePollenTypes();
+    const {selectedPollenType, setSelectedPollenType} = useSelectedPollenContext();
     const [polygonCoordinates, setPolygonCoordinates] = useState<Record<
         string,
         {
@@ -118,6 +145,13 @@ export const PollenMap = () => {
     };
 
     useEffect(() => {
+        // Set the first item in profilePollenTypes as selected base layer
+        if (profilePollenTypes.length > 0) {
+            onLayerSwitch(profilePollenTypes[0]);
+        }
+    }, [profilePollenTypes]);
+
+    useEffect(() => {
         // Center map
         setCenter([location?.latitude ?? 52.1, location?.longitude ?? 5.1]);
     }, [location]);
@@ -145,7 +179,7 @@ export const PollenMap = () => {
 
     const onLayerSwitch = (name: string) => {
         const index = Object.values(pollenMeta).findIndex(
-            (val) => val.name == name
+            (val) => val.name == name || val.rawName == name
         );
 
         const pollenType = Object.keys(pollenMeta)[index];
@@ -157,7 +191,7 @@ export const PollenMap = () => {
             <MapContainer
                 center={center}
                 zoom={11}
-                style={{ height: '75vh', width: '100%', fontSize: '1.2rem' }}
+                style={{ height: '64vh', width: '100%', fontSize: '1.2rem' }}
                 scrollWheelZoom={true}
             >
                 <RecenterMap center={center} />
@@ -200,6 +234,7 @@ export const PollenMap = () => {
                         )
                     )}
                 </LayersControl>
+                <PollenLegend pollenType={selectedPollenType} />
             </MapContainer>
 
             {data && (

@@ -4,16 +4,13 @@ import { NavLink } from 'react-router-dom';
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
-    const toggleMenu = () => setMenuOpen(prev => !prev);
+    const toggleMenu = () => setMenuOpen((prev) => !prev);
     const closeMenu = () => setMenuOpen(false);
 
     const navLinks = (
         <>
             <NavLink to="/" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={closeMenu}>
                 Home
-            </NavLink>
-            <NavLink to="/map" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={closeMenu}>
-                Map
             </NavLink>
             <NavLink to="/education" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={closeMenu}>
                 Educatie
@@ -23,6 +20,9 @@ const Navbar = () => {
             </NavLink>
             <NavLink to="/analysis" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={closeMenu}>
                 Pollen Allergie Analyse
+            </NavLink>
+            <NavLink to="/profile" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={closeMenu}>
+                Mijn Profiel
             </NavLink>
         </>
     );
@@ -36,11 +36,13 @@ const Navbar = () => {
                     </NavLink>
                 </div>
 
-                <div className="navbar-links desktop-only">
-                    {navLinks}
-                </div>
+                <div className="navbar-links desktop-only">{navLinks}</div>
 
-                <button className="hamburger mobile-only" onClick={toggleMenu} aria-label="Open menu">
+                <button
+                    className="hamburger mobile-only"
+                    onClick={toggleMenu}
+                    aria-label="Open menu"
+                >
                     <span className="bar"></span>
                     <span className="bar"></span>
                     <span className="bar"></span>
@@ -48,9 +50,7 @@ const Navbar = () => {
             </nav>
 
             {menuOpen && (
-                <div className="dropdown-menu mobile-only">
-                    {navLinks}
-                </div>
+                <div className="dropdown-menu mobile-only">{navLinks}</div>
             )}
         </div>
     );
