@@ -29,6 +29,7 @@ export const PollenLegend = ({ pollenType }: PollenLegendProps) => {
         >
             <div style={{ marginTop: '6px' }}>
                 <div
+                    data-testid="pollen-gradient"
                     style={{
                         background: gradient,
                         height: '20px',
