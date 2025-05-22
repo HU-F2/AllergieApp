@@ -667,3 +667,63 @@ circle {
         display: block;
     }
 }
+
+/* ===== Allergie Analyse Root Variabelen (Light Theme) ===== */
+:root {
+    --aa-bg-color: #ffffff;
+    --aa-text-color: #2c3e50;
+    --aa-secondary-text: #7f8c8d;
+    --aa-container-bg: #f9f9f9;
+    --aa-error-bg: #fadbd8;
+    --aa-error-text: #e74c3c;
+
+    --dpf-bg-color: #ffffff;
+    --dpf-text-color: #2c3e50;
+    --dpf-label-color: #2c3e50;
+    --dpf-button-bg: #3498db;
+    --dpf-button-disabled: #bdc3c7;
+    --dpf-error-color: #e74c3c;
+    --dpf-datepicker-bg: #ffffff;
+    --dpf-datepicker-border: #ddd;
+
+    --ar-bg-color: #ffffff;
+    --ar-container-bg: #ecf0f1;
+    --ar-text-color: #2c3e50;
+    --ar-disclaimer-color: #e67e22;
+    --ar-suggestion-bg: #ffffff;
+    --ar-suggestion-title: #16a085;
+    --ar-loader-color: #3498db;
+
+    --card-bg: #f9f9f9;
+}
+
+/* ===== Allergie Analyse Donkere Thema (Dark Theme) ===== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --aa-bg-color: #1a1a1a;
+        --aa-text-color: #ecf0f1;
+        --aa-secondary-text: #bdc3c7;
+        --aa-container-bg: #2d2d2d;
+        --aa-error-bg: #5c2a2a;
+        --aa-error-text: #ff6b6b;
+
+        --dpf-bg-color: #2d2d2d;
+        --dpf-text-color: #ecf0f1;
+        --dpf-label-color: #3498db;
+        --dpf-button-bg: #2980b9;
+        --dpf-button-disabled: #7f8c8d;
+        --dpf-error-color: #ff6b6b;
+        --dpf-datepicker-bg: #3d3d3d;
+        --dpf-datepicker-border: #555;
+
+        --ar-bg-color: #1a1a1a;
+        --ar-container-bg: #2d2d2d;
+        --ar-text-color: #ecf0f1;
+        --ar-disclaimer-color: #f39c12;
+        --ar-suggestion-bg: #3d3d3d;
+        --ar-suggestion-title: #1abc9c;
+        --ar-loader-color: #2980b9;
+
+        --card-bg: #1e1e1e;
+    }
+}

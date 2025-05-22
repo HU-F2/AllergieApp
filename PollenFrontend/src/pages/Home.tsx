@@ -18,7 +18,6 @@ const Home = () => {
                     <h1 className="dashboard--current-location">
                         Pollen in {location?.name}
                     </h1>
-                    <CustomLocation />
                     <WalkAdvice
                         pollenType={selectedPollenType}
                         location={location}
