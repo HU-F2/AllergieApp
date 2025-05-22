@@ -1,3 +1,4 @@
+import { getPollenLabel } from '../services/pollenTypeMapping';
 import { AnalysisResponse, AllergySuggestion } from '../services/symptomsService';
 
 interface AnalysisResultsProps {
@@ -25,7 +26,7 @@ const AnalysisResults = ({ results, isLoading }: AnalysisResultsProps) => {
                     <div key={index} className={`suggestion-card rank-${index + 1}`}>
                         <div className="suggestion-number">{index + 1}</div>
                         <div className="suggestion-content">
-                            <h4 className="suggestion-title">{suggestion.pollenType}</h4>
+                            <h4 className="suggestion-title">{getPollenLabel(suggestion.pollenType)}</h4>
                             <p className="suggestion-label">Allergie-indicatie</p>
                         </div>
                     </div>

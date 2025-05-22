@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { QUERY_KEYS } from './queryKeys';
 import { Coordinate } from './pollenService';
+import { PollenType, validPollenTypes } from './pollenTypeMapping';
 
 export interface PollenDataRequest {
     date: Date;
@@ -9,7 +10,7 @@ export interface PollenDataRequest {
 }
 
 export interface AllergySuggestion {
-    pollenType: string;
+    pollenType: PollenType;
     averageConcentration: number;
 }
 
@@ -33,13 +34,40 @@ export const analyzeSymptoms = async (requests: PollenDataRequest[]): Promise<An
             }))
         );
 
-        return response.data;
-    } catch (error) {
-        const axiosError = error as AxiosError<ApiError>;
-        console.error('Error analyzing symptoms:', axiosError.message);
-        throw new Error(
-            axiosError.response?.data?.message || 'Failed to analyze symptoms'
+        const invalid = response.data.suggestions.find(
+            (sug) => !validPollenTypes.includes(sug.pollenType)
         );
+
+        if (invalid) {
+            throw new Error(
+                `Ongeldig pollenType ontvangen van backend: "${invalid.pollenType}"`
+            );
+        }
+
+        const castedSuggestions: AllergySuggestion[] = response.data.suggestions.map((sug) => ({
+            pollenType: sug.pollenType as PollenType,
+            averageConcentration: sug.averageConcentration,
+        }));
+
+        return {
+            disclaimer: response.data.disclaimer,
+            suggestions: castedSuggestions,
+        };
+    }
+    catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            const axiosError = error as AxiosError<ApiError>;
+            const msg = axiosError.response?.data?.message ?? axiosError.message ?? 'Fout bij communicatie met de backend.';
+
+            console.error('Axios fout analyzing symptoms:', msg);
+            throw new Error(msg);
+        } else if (error instanceof Error) {
+            console.error('Logische fout analyzing symptoms:', error.message);
+            throw error;
+        } else {
+            console.error('Onbekende fout analyzing symptoms:', error);
+            throw new Error('Er is een onbekende fout opgetreden tijdens analyse.');
+        }
     }
 };
 

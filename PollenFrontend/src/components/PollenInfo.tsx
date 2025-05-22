@@ -20,7 +20,7 @@ const PollenInfo = ({ location }: Props) => {
 
     const formattedDate = formatDutchDate(new Date('2023-12-25'));
 
-    if (location == undefined) {
+    if (!location) {
         return (
             <div className="no-location-selected">
                 <p>Selecteer een locatie om pollen informatie te bekijken.</p>
