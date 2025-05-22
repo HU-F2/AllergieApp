@@ -30,7 +30,11 @@ const DatePickerForm = ({ onSubmit, isLoading }: DatePickerFormProps) => {
     };
 
     function setDates(dates: DateObject[]): false | void {
-        setSelectedDates(dates.map(dateObj => dateObj.toDate()) as Date[]);
+        const sortedDates : Date[] = dates
+            .map(dateObj => dateObj.toDate() as Date)
+            .sort((a, b) => a.getTime() - b.getTime());
+
+        setSelectedDates(sortedDates);
     }
 
     return (

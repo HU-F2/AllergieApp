@@ -36,10 +36,10 @@ const Navbar = () => {
                     </NavLink>
                 </div>
 
-                <div className="navbar-links desktop-only">{navLinks}</div>
+                <div className="navbar-links navbar-desktop-only">{navLinks}</div>
 
                 <button
-                    className="hamburger mobile-only"
+                    className="hamburger navbar-mobile-only"
                     onClick={toggleMenu}
                     aria-label="Open menu"
                 >
@@ -50,7 +50,7 @@ const Navbar = () => {
             </nav>
 
             {menuOpen && (
-                <div className="dropdown-menu mobile-only">{navLinks}</div>
+                <div className="dropdown-menu navbar-mobile-only">{navLinks}</div>
             )}
         </div>
     );

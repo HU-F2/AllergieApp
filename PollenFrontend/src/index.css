@@ -436,18 +436,18 @@ circle {
 }
 
 /* Responsiveness */
-@media screen and (max-width: 768px) {
-    .desktop-only {
+@media screen and (max-width: 853px) {
+    .navbar-desktop-only {
         display: none;
     }
 
-    .mobile-only {
+    .navbar-mobile-only {
         display: flex;
     }
 }
 
-@media screen and (min-width: 769px) {
-    .mobile-only {
+@media screen and (min-width: 854px) {
+    .navbar-mobile-only {
         display: none;
     }
 }
@@ -938,7 +938,6 @@ circle {
 
 .analyse-symptoms-form .rmdp-top-class {
     display: flex;
-    flex-direction: row;
     flex-wrap: nowrap;
     gap: 16px;
 }
@@ -946,6 +945,7 @@ circle {
 .analyse-symptoms-form .custom-date-panel {
     order: 1;
     min-width: 200px;
+    height: 240px;
 }
 
 .rmdp-panel-body {
