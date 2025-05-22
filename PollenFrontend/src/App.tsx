@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { LocationProvider } from './contexts/LocationContext';
+import { SelectedPollenProvider } from './contexts/SelectedPollenContext';
 import EducationPage from './pages/Education';
 import FloraPage from './pages/FloraInfo';
 import Home from './pages/Home';
@@ -13,18 +14,23 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <LocationProvider>
-                <Router>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route
-                            path="/flora-pollen-info"
-                            element={<FloraPage />}
-                        />
-                        <Route path="/education" element={<EducationPage />} />
-                        <Route path="/profile" element={<ProfilePage />} />
-                        <Route path="*" element={<NotFoundPage />} />
-                    </Routes>
-                </Router>
+                <SelectedPollenProvider>
+                    <Router>
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route
+                                path="/flora-pollen-info"
+                                element={<FloraPage />}
+                            />
+                            <Route
+                                path="/education"
+                                element={<EducationPage />}
+                            />
+                            <Route path="/profile" element={<ProfilePage />} />
+                            <Route path="*" element={<NotFoundPage />} />
+                        </Routes>
+                    </Router>
+                </SelectedPollenProvider>
             </LocationProvider>
         </QueryClientProvider>
     );
