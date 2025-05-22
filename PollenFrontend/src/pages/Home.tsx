@@ -1,7 +1,7 @@
 import Navbar from '../components/common/navigation/Navbar';
 import CustomLocation from '../components/location/customLocation/CustomLocation';
 import PollenInfo from '../components/PollenInfo';
-import { PollenMap, PollenTypes } from '../components/PollenMap';
+import { PollenMap } from '../components/PollenMap';
 import { WalkAdvice } from '../components/WalkAdviceScore';
 import WeatherCard from '../components/weatherCard';
 import { useLocationContext } from '../contexts/LocationContext';
@@ -19,7 +19,10 @@ const Home = () => {
                         Pollen in {location?.name}:
                     </h1>
                     <CustomLocation />
-                    <WalkAdvice pollenType={selectedPollenType} location={location} />
+                    <WalkAdvice
+                        pollenType={selectedPollenType}
+                        location={location}
+                    />
                     <div className="dashboard--infoWeather">
                         <PollenInfo location={location} />
                         <div className="dashboard--weather-mobile">
@@ -28,6 +31,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="dashboard--right">
+                    <CustomLocation />
                     <PollenMap />
                     <div className="dashboard--weather-desktop">
                         <WeatherCard location={location} />

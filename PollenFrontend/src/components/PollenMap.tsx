@@ -191,7 +191,7 @@ export const PollenMap = () => {
             <MapContainer
                 center={center}
                 zoom={11}
-                style={{ height: '75vh', width: '100%', fontSize: '1.2rem' }}
+                style={{ height: '64vh', width: '100%', fontSize: '1.2rem' }}
                 scrollWheelZoom={true}
             >
                 <RecenterMap center={center} />
