@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import { Calendar, DateObject } from 'react-multi-date-picker';
+import { useMemo, useState } from 'react';
+import { Calendar } from 'react-multi-date-picker';
 import DatePanel from "react-multi-date-picker/plugins/date_panel"
-import { getTwoMonthsAgo } from '../utils/utilityFunctions';
+import { useStoredDates } from './hooks/useStoredAnalyseDates';
+import { getTwoMonthsAgo, truncateTime, useDayKey } from '../utils/dateFunctions';
 
 interface DatePickerFormProps {
     onSubmit: (dates: Date[]) => void;
+    onInvalidateResults: () => void;
     isLoading: boolean;
 }
 
@@ -12,9 +14,14 @@ interface FormErrors {
     dates?: string;
 }
 
-const DatePickerForm = ({ onSubmit, isLoading }: DatePickerFormProps) => {
+const AnalyseForm = ({ onSubmit, onInvalidateResults, isLoading }: DatePickerFormProps) => {
     const [errors, setErrors] = useState<FormErrors>({});
-    const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+    const dayKey = useDayKey();
+
+    const minDate = useMemo(() => truncateTime(getTwoMonthsAgo()), [dayKey]);
+    const maxDate = useMemo(() => truncateTime(new Date()), [dayKey]);
+
+    const [selectedDates, setDates] = useStoredDates(minDate, maxDate, onInvalidateResults);
 
     const validate = (): boolean => {
         const newErrors: FormErrors = {};
@@ -29,14 +36,6 @@ const DatePickerForm = ({ onSubmit, isLoading }: DatePickerFormProps) => {
         onSubmit(selectedDates);
     };
 
-    function setDates(dates: DateObject[]): false | void {
-        const sortedDates : Date[] = dates
-            .map(dateObj => dateObj.toDate() as Date)
-            .sort((a, b) => a.getTime() - b.getTime());
-
-        setSelectedDates(sortedDates);
-    }
-
     return (
         <form onSubmit={handleSubmit} className="analyse-symptoms-form">
             <div className="date-picker-input-group">
@@ -48,8 +47,8 @@ const DatePickerForm = ({ onSubmit, isLoading }: DatePickerFormProps) => {
                     disabled={isLoading}
                     format="DD/MM/YYYY"
                     weekStartDayIndex={1}
-                    minDate={getTwoMonthsAgo()}
-                    maxDate={new Date()}
+                    minDate={minDate}
+                    maxDate={maxDate}
                     plugins={[
                         <DatePanel position="right" className="custom-date-panel" />
                     ]}
@@ -68,4 +67,4 @@ const DatePickerForm = ({ onSubmit, isLoading }: DatePickerFormProps) => {
     );
 };
 
-export default DatePickerForm;
+export default AnalyseForm;

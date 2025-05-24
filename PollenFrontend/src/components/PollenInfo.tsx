@@ -1,5 +1,5 @@
 import { LocationData } from '../services/locationService';
-import { formatDutchDate } from '../utils/utilityFunctions';
+import { formatDutchDate } from '../utils/dateFunctions';
 import SelectablePollenIndicator from './SelectablePollenIndicator';
 
 type Props = {

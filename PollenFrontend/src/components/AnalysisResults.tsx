@@ -2,7 +2,7 @@ import { getPollenLabel } from '../services/pollenTypeMapping';
 import { AnalysisResponse, AllergySuggestion } from '../services/symptomsService';
 
 interface AnalysisResultsProps {
-    results: AnalysisResponse | undefined;
+    results: AnalysisResponse | undefined | null;
     isLoading: boolean;
 }
 

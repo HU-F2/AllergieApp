@@ -1,25 +1,30 @@
-import { useState } from 'react';
-import { PollenDataRequest, useAnalysisQuery } from '../services/symptomsService';
-import DatePickerForm from '../components/AnalyseForm';
+import { useCallback, useEffect } from 'react';
+import { useAnalysisQuery } from '../services/symptomsService';
+import AnalyseForm from '../components/AnalyseForm';
 import AnalysisResults from '../components/AnalysisResults';
 import Navbar from '../components/common/navigation/Navbar';
-import { useLocationContext } from '../contexts/LocationContext';
+import { useStoredResults } from '../components/hooks/useStoredAnalyseResults';
+import { useAnalysisRequests } from '../components/hooks/useStoredAnalyseRequests';
 
 const AllergyAnalysisPage = () => {
-    const { location } = useLocationContext();
-    const [requests, setRequests] = useState<PollenDataRequest[]>([]);
-    const { data: results, isLoading, error } = useAnalysisQuery(requests);
+    const { requests, updateRequests, clearRequests } = useAnalysisRequests();
+    const { data: apiResults, isLoading, error } = useAnalysisQuery(requests, {
+        skip: requests.length === 0
+    });
 
-    const handleSubmit = (dates: Date[]) => {
-        const newRequests: PollenDataRequest[] = dates.map(date => ({
-            date: date,
-            coordinate: {
-                latitude: location!.latitude,
-                longitude: location!.longitude
-            }
-        }));
-        setRequests(newRequests);
-    };
+    const [storedResults, saveResults] = useStoredResults(requests);
+
+    // Callback voor het resetten van results
+    const handleInvalidateResults = useCallback(() => {
+        clearRequests();
+        saveResults(null); // Expliciet null opslaan
+    }, [clearRequests, saveResults]);
+
+    useEffect(() => {
+        if (apiResults) {
+            saveResults(apiResults);
+        }
+    }, [apiResults]);
 
     return (
         <div className="allergy-analysis-page">
@@ -32,11 +37,15 @@ const AllergyAnalysisPage = () => {
                     Wij analyseren op basis van de pollen concentratie van die datums welke pollen mogelijk uw klachten veroorzaken.
                 </p>
 
-                <DatePickerForm onSubmit={handleSubmit} isLoading={isLoading} />
+                <AnalyseForm
+                    onSubmit={updateRequests}
+                    onInvalidateResults={handleInvalidateResults}
+                    isLoading={isLoading}
+                />
 
                 {error && <p className="allergy-analysis-error">{error.message}</p>}
 
-                <AnalysisResults results={results} isLoading={isLoading} />
+                <AnalysisResults results={storedResults || apiResults} isLoading={isLoading} />
             </div>
         </div>
     );

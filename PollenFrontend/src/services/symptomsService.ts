@@ -3,6 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { QUERY_KEYS } from './queryKeys';
 import { Coordinate } from './pollenService';
 import { PollenType, validPollenTypes } from './pollenTypeMapping';
+import { convertToMilliseconds } from '../utils/dateFunctions';
 
 export interface PollenDataRequest {
     date: Date;
@@ -71,13 +72,13 @@ export const analyzeSymptoms = async (requests: PollenDataRequest[]): Promise<An
     }
 };
 
-export const useAnalysisQuery = (requests: PollenDataRequest[]) =>
+export const useAnalysisQuery = (requests: PollenDataRequest[], options?: { skip?: boolean }) =>
     useQuery<AnalysisResponse, Error>({
         queryKey: [QUERY_KEYS.pollen.analysis, ...requests.map(r =>
             `${r.date.toISOString()}-${r.coordinate.latitude}-${r.coordinate.longitude}`
         )],
         queryFn: () => analyzeSymptoms(requests),
         retry: 1,
-        staleTime: 1000 * 60 * 60 * 4, // 4 uur
-        enabled: requests.length > 0,
+        staleTime: convertToMilliseconds({ hours: 4 }),
+        enabled: !options?.skip && requests.length > 0,
     });
