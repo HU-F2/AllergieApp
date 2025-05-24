@@ -10,7 +10,7 @@ export interface Flora {
 }
 
 export const fetchFloraList = async (): Promise<Flora[]> => {
-    const response = await fetch('http://localhost:5000/api/flora/list');
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/flora/list`);
     if (!response.ok) throw new Error('Failed to fetch flora data');
     return response.json();
 };

@@ -1,5 +1,3 @@
-// src/utils/calculateWalkScore.ts
-
 import { PollenTypes, pollenMeta } from '../components/PollenMap'; // Adjust path as needed
 
 export function calculateWalkScore({
@@ -15,14 +13,9 @@ export function calculateWalkScore({
 }): number {
     const max = pollenMeta[pollenType].max;
     const pollenRatio = pollenValue / max;
-    const lowPollenPercentage = 0.1
-    // let pollenScore = 0;
-    // if (pollenRatio <= lowPollenPercentage) {
-    //     pollenScore = 1;
-    // } else{
-    // }
-    let pollenScore = 1 - Math.min(pollenRatio,1);
-    // const pollenScore = pollenRatio <= lowPollenPercentage ? 1 : pollenRatio >= 1 ? 0 : 1 - (pollenRatio - lowPollenPercentage) / 0.6;
+
+    let pollenScore = 1 - Math.min(pollenRatio, 1);
+
     const rainScore = averageRain < 1.5
         ? 1
         : averageRain >= 3

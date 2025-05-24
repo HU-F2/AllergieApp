@@ -37,19 +37,22 @@ namespace PollenBackend.Services
             var baseUrl = "https://api.pdok.nl/kadaster/bestuurlijkegebieden/ogc/v1/collections/gemeentegebied/items";
             var query = "?limit=342&crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FOGC%2F1.3%2FCRS84&bbox-crs=http%3A%2F%2Fwww.opengis.net%2Fdef%2Fcrs%2FOGC%2F1.3%2FCRS84";
             string fullUrl = baseUrl + query;
-            
 
             HttpResponseMessage response = await _httpClient.GetAsync(fullUrl);
-            
+
             if (!response.IsSuccessStatusCode)
             {
-                Console.WriteLine($"Location API request failed: {await response.Content.ReadAsStringAsync()}");
-                throw new HttpRequestException($"Request to Location API failed with status code {(int)response.StatusCode}");
+                Console.WriteLine(
+                    $"Location API request failed: {await response.Content.ReadAsStringAsync()}"
+                );
+                throw new HttpRequestException(
+                    $"Request to Location API failed with status code {(int)response.StatusCode}"
+                );
             }
-            
-            string responseBody = await response.Content.ReadAsStringAsync(); 
+
+            string responseBody = await response.Content.ReadAsStringAsync();
             var locations = ConvertGeoJsonToLocations(responseBody);
-            
+
             return locations;
         }
 
@@ -61,12 +64,12 @@ namespace PollenBackend.Services
 
             var features = root.GetProperty("features");
             var locations = new List<Location>();
-            
+
             foreach (var feature in features.EnumerateArray())
             {
                 var id = feature.GetProperty("id").GetString();
                 var properties = feature.GetProperty("properties");
-                
+
                 string name = properties.TryGetProperty("naam", out var naamProp)
                     ? naamProp.GetString() ?? $"Feature {id}"
                     : $"Feature {id}";
@@ -116,9 +119,9 @@ namespace PollenBackend.Services
                 var location = new Location
                 {
                     Name = name,
-                    Latitude = (maxLat+minLat)/2,
-                    Longitude = (maxLon+minLon)/2,
-                    Coordinates = coordinates
+                    Latitude = (maxLat + minLat) / 2,
+                    Longitude = (maxLon + minLon) / 2,
+                    Coordinates = coordinates,
                 };
 
                 locations.Add(location);
@@ -143,7 +146,7 @@ namespace PollenBackend.Services
                     Name = location.Name,
                     Latitude = location.Latitude,
                     Longitude = location.Longitude,
-                    Coordinates = null!
+                    Coordinates = null!,
                 })
                 .ToListAsync();
 

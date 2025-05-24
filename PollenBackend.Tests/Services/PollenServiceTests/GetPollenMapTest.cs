@@ -16,6 +16,7 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
         private readonly IMemoryCache _memoryCache;
         private readonly HttpClient _httpClient;
         private readonly PollenService _pollenService;
+        
         public GetPollenMapTest()
         {
             _mockHandler = new Mock<HttpMessageHandler>(); //From MockApiCall
@@ -25,7 +26,6 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
             _memoryCache = new MemoryCache(new MemoryCacheOptions());
             _httpClient = new HttpClient(_mockHandler.Object);
             _pollenService = new PollenService(_mockAppDbContext.Object,_mockLocationService.Object,_httpClient, _memoryCache);
-
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
                 new Location { Name = "Test 2", Latitude = 53.0f, Longitude = 6.0f }
             });
 
-            mockApiCall("TestData","PollenApiResponse.json",System.Net.HttpStatusCode.OK);
+            mockApiCall("TestData","PollenApiResponse.json", HttpStatusCode.OK);
 
             // Act
             var result = (await _pollenService.GetPollenMap()).ToList();
@@ -80,7 +80,7 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
                 new Location { Name = "Test 2", Latitude = 53.0f, Longitude = 6.0f }
             });
 
-            mockApiCall("TestData","PollenApiResponse.json",System.Net.HttpStatusCode.OK);
+            mockApiCall("TestData","PollenApiResponse.json", HttpStatusCode.OK);
 
             // Act
             var result = (await _pollenService.GetPollenMap()).ToList();

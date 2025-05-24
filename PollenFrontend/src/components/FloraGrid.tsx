@@ -1,5 +1,5 @@
 import { Flora } from '../services/floraInfoService';
-import { formatDate } from '../utils/utilityFunctions';
+import { formatDate } from '../utils/dateFunctions';
 import { useProfilePollenTypes } from './hooks/useProfilePollenTypes';
 
 type FloraGridProps = {

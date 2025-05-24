@@ -17,6 +17,7 @@ export const QUERY_KEYS = {
     // Pollen-related queries
     pollen: {
         map: ['pollen', 'map'],
+        analysis: ['pollen', 'analysis'],
         location: (coordinate?: Coordinate) => [
             'pollen',
             coordinate?.latitude,
