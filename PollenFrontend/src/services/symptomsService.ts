@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { QUERY_KEYS } from './queryKeys';
 import { Coordinate } from './pollenService';
 import { PollenType, validPollenTypes } from './pollenTypeMapping';
-import { convertToMilliseconds } from '../utils/dateFunctions';
+import { convertToMilliseconds, toDateOnlyString } from '../utils/dateFunctions';
 
 export interface PollenDataRequest {
     date: Date;
@@ -29,7 +29,7 @@ export const analyzeSymptoms = async (requests: PollenDataRequest[]): Promise<An
         const response = await axios.post<AnalysisResponse>(
             `${import.meta.env.VITE_BACKEND_API_URL}/api/AllergySuggestion/analyze`,
             requests.map(req => ({
-                Date: req.date,
+                Date: toDateOnlyString(req.date),
                 Latitude: req.coordinate.latitude,
                 Longitude: req.coordinate.longitude,
             }))

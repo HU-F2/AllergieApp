@@ -42,6 +42,14 @@ export const formatDutchDate = (date: Date = new Date()): string => {
 };
 
 /**
+ * Converteert een Date object naar een YYYY-MM-DD string
+ * zonder tijdzone informatie om tijdsverschillen te voorkomen
+ */
+export const toDateOnlyString = (date: Date): string => {
+  return date.toISOString().split('T')[0];
+};
+
+/**
  * Converteert tijdseenheden naar milliseconden
  * @param {Object} options - Conversie opties
  * @param {number} [options.seconds=0] - Aantal seconden
