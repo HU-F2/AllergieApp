@@ -46,5 +46,29 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
             Assert.Contains(result, r => r.BirchPollen == 0.5);
             Assert.Contains(result, r => r.BirchPollen == 0.6);
         }
+
+        [Fact]
+        public async Task GetPollenDataForDatesAndCoordinates_BigDateGap_ReturnsExpectedData()
+        {
+            var today = DateTime.UtcNow.Date;
+            var maxDate = today;
+            var minDate = today.AddMonths(-3);
+
+            // Arrange
+            var requests = new List<PollenDataRequest>
+            {
+                new PollenDataRequest { Latitude = 52.0, Longitude = 5.0, Date = minDate },
+                new PollenDataRequest { Latitude = 52.0, Longitude = 5.0, Date = maxDate }
+            };
+
+            mockApiCall("TestData", "PollenApiByDateAndCoordinates.json", HttpStatusCode.OK);
+
+            // Act
+            var result = await _pollenService.GetPollenDataForDatesAndCoordinates(requests);
+
+            Assert.NotNull(result);
+            Assert.IsType<List<PollenDataPoint>>(result);
+            Assert.Equal(48, result.Count);
+        }
     }
 }

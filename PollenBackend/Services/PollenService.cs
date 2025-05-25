@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using PollenBackend.Data;
 using PollenBackend.Models;
 using System.Globalization;
+using PollenBackend.Validation;
 
 namespace PollenBackend.Services
 {
@@ -115,6 +116,8 @@ namespace PollenBackend.Services
 
         public async Task<List<PollenDataPoint>> GetPollenDataForDatesAndCoordinates(List<PollenDataRequest> requests)
         {
+            PollenDataRequestValidator.Validate(requests);
+
             var result = new List<PollenDataPoint>();
 
             // Groepeer op coördinaten om dubbele API-calls te voorkomen
