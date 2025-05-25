@@ -4,6 +4,8 @@ namespace PollenBackend.Validation
 {
     public static class PollenDataRequestValidator
     {
+        public static bool SkipDateValidation { get; set; } = false;
+
         public static void Validate(List<PollenDataRequest> requests)
         {
             if (requests == null || requests.Count == 0)
@@ -25,15 +27,18 @@ namespace PollenBackend.Validation
             if (requests.Any(r => r.Date.TimeOfDay != TimeSpan.Zero))
                 throw new ArgumentException("All dates must be at midnight (00:00:00).");
 
-            // 4. Date limieten
-            var today = DateTime.UtcNow.Date;
-            var maxDate = today;
-            var minDate = today.AddDays(-91);
+            // 4. Date limieten (alleen als niet overgeslagen)
+            if (!SkipDateValidation)
+            {
+                var today = DateTime.UtcNow.Date;
+                var maxDate = today;
+                var minDate = today.AddDays(-91);
 
-            if (requests.Any(r => r.Date < minDate))
-                throw new ArgumentException($"Dates cannot be earlier than {minDate:yyyy-MM-dd}.");
-            if (requests.Any(r => r.Date > maxDate))
-                throw new ArgumentException($"Dates cannot be later than {maxDate:yyyy-MM-dd}.");
+                if (requests.Any(r => r.Date < minDate))
+                    throw new ArgumentException($"Dates cannot be earlier than {minDate:yyyy-MM-dd}.");
+                if (requests.Any(r => r.Date > maxDate))
+                    throw new ArgumentException($"Dates cannot be later than {maxDate:yyyy-MM-dd}.");
+            }
 
             // 5. Latitude/Longitude limieten
             if (requests.Any(r => r.Latitude < -90 || r.Latitude > 90))

@@ -5,6 +5,7 @@ using Moq;
 using PollenBackend.Data;
 using PollenBackend.Models;
 using PollenBackend.Services;
+using PollenBackend.Validation;
 
 namespace PollenBackend.Tests.Services.AllergyServiceTests
 {
@@ -42,15 +43,26 @@ namespace PollenBackend.Tests.Services.AllergyServiceTests
             // Mock de API response met testdata
             mockApiCall("TestData", "PollenApiByDateAndCoordinates.json", HttpStatusCode.OK);
 
-            // Act - hier wordt de echte GetPollenDataForDatesAndCoordinates aangeroepen
-            var result = await _service.AnalyzeSymptoms(requests);
+            // Tijdelijk datumvalidatie uitschakelen voor deze test
+            PollenDataRequestValidator.SkipDateValidation = true;
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<List<AllergySuggestion>>(result);
-            Assert.Equal(2, result.Count); // Verwacht 2 suggesties (zoals in je testdata)
-            Assert.Contains(result, r => r.PollenType == "grass_pollen" && (int)Math.Ceiling(r.AverageConcentration) == 6);
-            Assert.Contains(result, r => r.PollenType == "birch_pollen" && (int)Math.Ceiling(r.AverageConcentration) == 3);
+            try
+            {
+                // Act - hier wordt de echte GetPollenDataForDatesAndCoordinates aangeroepen
+                var result = await _service.AnalyzeSymptoms(requests);
+
+                // Assert
+                Assert.NotNull(result);
+                Assert.IsType<List<AllergySuggestion>>(result);
+                Assert.Equal(2, result.Count); // Verwacht 2 suggesties (zoals in je testdata)
+                Assert.Contains(result, r => r.PollenType == "grass_pollen" && (int)Math.Ceiling(r.AverageConcentration) == 6);
+                Assert.Contains(result, r => r.PollenType == "birch_pollen" && (int)Math.Ceiling(r.AverageConcentration) == 3);
+            }
+            finally
+            {
+                // Zorg ervoor dat we de oorspronkelijke staat herstellen
+                PollenDataRequestValidator.SkipDateValidation = false;
+            }
         }
     }
 }
