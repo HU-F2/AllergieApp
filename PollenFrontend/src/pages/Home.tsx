@@ -16,9 +16,8 @@ const Home = () => {
             <div className="dashboard--layout">
                 <div className="dashboard--left">
                     <h1 className="dashboard--current-location">
-                        Pollen in {location?.name}:
+                        Pollen in {location?.name}
                     </h1>
-                    <CustomLocation />
                     <WalkAdvice
                         pollenType={selectedPollenType}
                         location={location}

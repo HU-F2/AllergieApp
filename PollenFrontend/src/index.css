@@ -78,6 +78,12 @@ button:focus-visible {
     .flora-card {
         background: #f0f0f0;
     }
+
+    .pollen-summary, .weather-card, .walking-advice-card {
+        background-color: #f0f0f0;
+        border: 2px solid rgb(232, 232, 232);
+        color: black;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -97,6 +103,37 @@ button:focus-visible {
     .pollenlegend {
         color: #000;
     }
+
+    .pollen-summary .date-text, .weather-card, .weather-card, .walking-advice-card {
+        color: var(--aa-text-color);
+    }
+
+    .pollen-summary, .weather-card, .walking-advice-card {
+        background-color: var(--aa-bg-color);
+        border: 2px solid #646363;
+    }
+}
+
+.weather-card, .walking-advice-card  {
+    border-radius: 12px;
+    padding: 16px;
+    margin: 0px auto;
+}
+
+.weather-card, .walking-advice-card, .pollen-summary {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
+}
+
+.weather-card {
+    width: 300px;
+    height: 242.2px;
+    max-width: 300px;
+}
+
+.walking-advice-card {
+    max-width: 300px;
+    min-height: 100px;
+    font-family: sans-serif;
 }
 
 #root {
@@ -197,12 +234,9 @@ button:focus-visible {
     flex-wrap: nowrap;
     gap: 0px;
     padding-bottom: 1rem;
-    background-color: #f0f0f0;
     max-width: 300px;
     border-radius: 12px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
     padding: 9px;
-    border: 2px;
     justify-content: center;
     flex-direction: column;
     align-items: center;
@@ -606,7 +640,9 @@ circle {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 
@@ -629,5 +665,65 @@ circle {
 
     .dashboard--weather-desktop {
         display: block;
+    }
+}
+
+/* ===== Allergie Analyse Root Variabelen (Light Theme) ===== */
+:root {
+    --aa-bg-color: #ffffff;
+    --aa-text-color: #2c3e50;
+    --aa-secondary-text: #7f8c8d;
+    --aa-container-bg: #f9f9f9;
+    --aa-error-bg: #fadbd8;
+    --aa-error-text: #e74c3c;
+
+    --dpf-bg-color: #ffffff;
+    --dpf-text-color: #2c3e50;
+    --dpf-label-color: #2c3e50;
+    --dpf-button-bg: #3498db;
+    --dpf-button-disabled: #bdc3c7;
+    --dpf-error-color: #e74c3c;
+    --dpf-datepicker-bg: #ffffff;
+    --dpf-datepicker-border: #ddd;
+
+    --ar-bg-color: #ffffff;
+    --ar-container-bg: #ecf0f1;
+    --ar-text-color: #2c3e50;
+    --ar-disclaimer-color: #e67e22;
+    --ar-suggestion-bg: #ffffff;
+    --ar-suggestion-title: #16a085;
+    --ar-loader-color: #3498db;
+
+    --card-bg: #f9f9f9;
+}
+
+/* ===== Allergie Analyse Donkere Thema (Dark Theme) ===== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --aa-bg-color: #1a1a1a;
+        --aa-text-color: #ecf0f1;
+        --aa-secondary-text: #bdc3c7;
+        --aa-container-bg: #2d2d2d;
+        --aa-error-bg: #5c2a2a;
+        --aa-error-text: #ff6b6b;
+
+        --dpf-bg-color: #2d2d2d;
+        --dpf-text-color: #ecf0f1;
+        --dpf-label-color: #3498db;
+        --dpf-button-bg: #2980b9;
+        --dpf-button-disabled: #7f8c8d;
+        --dpf-error-color: #ff6b6b;
+        --dpf-datepicker-bg: #3d3d3d;
+        --dpf-datepicker-border: #555;
+
+        --ar-bg-color: #1a1a1a;
+        --ar-container-bg: #2d2d2d;
+        --ar-text-color: #ecf0f1;
+        --ar-disclaimer-color: #f39c12;
+        --ar-suggestion-bg: #3d3d3d;
+        --ar-suggestion-title: #1abc9c;
+        --ar-loader-color: #2980b9;
+
+        --card-bg: #1e1e1e;
     }
 }
