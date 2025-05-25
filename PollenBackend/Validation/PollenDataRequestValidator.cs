@@ -4,6 +4,10 @@ namespace PollenBackend.Validation
 {
     public static class PollenDataRequestValidator
     {
+        // Bypasses date validation when true. Used exclusively for testing:
+        // - Allows static test dates to bypass dynamic date range checks
+        // - Enables isolated testing of other validation rules
+        // Default false (validation enabled). Only set true in tests.
         public static bool SkipDateValidation { get; set; } = false;
 
         public static void Validate(List<PollenDataRequest> requests)

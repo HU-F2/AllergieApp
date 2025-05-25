@@ -26,7 +26,7 @@ namespace PollenBackend.Tests.Services.AllergyServiceTests
             _mockLocationService = new Mock<ILocationService>();
             _memoryCache = new MemoryCache(new MemoryCacheOptions());
             _httpClient = new HttpClient(_mockHandler.Object);
-            _pollenService = new PollenService(_mockAppDbContext.Object,_mockLocationService.Object,_httpClient, _memoryCache);
+            _pollenService = new PollenService(_mockAppDbContext.Object, _mockLocationService.Object, _httpClient, _memoryCache);
             _service = new SymptomAnalysisService(_pollenService);
         }
 
