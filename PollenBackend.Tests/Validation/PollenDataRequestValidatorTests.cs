@@ -72,7 +72,7 @@ namespace PollenBackend.Tests.Validation
         [Fact]
         public void Validate_Throws_On_Date_Too_Early()
         {
-            var earlyDate = DateTime.UtcNow.Date.AddMonths(-3).AddDays(-1);
+            var earlyDate = DateTime.UtcNow.Date.AddDays(-91).AddDays(-1);
             var requests = new List<PollenDataRequest>
         {
             CreateRequest(date: earlyDate)

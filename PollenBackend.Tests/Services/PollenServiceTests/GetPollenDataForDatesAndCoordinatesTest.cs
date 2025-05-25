@@ -52,7 +52,7 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
         {
             var today = DateTime.UtcNow.Date;
             var maxDate = today;
-            var minDate = today.AddMonths(-3);
+            var minDate = today.AddDays(-91);
 
             // Arrange
             var requests = new List<PollenDataRequest>

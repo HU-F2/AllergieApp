@@ -28,7 +28,7 @@ namespace PollenBackend.Validation
             // 4. Date limieten
             var today = DateTime.UtcNow.Date;
             var maxDate = today;
-            var minDate = today.AddMonths(-3);
+            var minDate = today.AddDays(-91);
 
             if (requests.Any(r => r.Date < minDate))
                 throw new ArgumentException($"Dates cannot be earlier than {minDate:yyyy-MM-dd}.");
