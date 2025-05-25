@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -50,9 +51,8 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
         [Fact]
         public async Task GetPollenDataForDatesAndCoordinates_BigDateGap_ReturnsExpectedData()
         {
-            var today = DateTime.UtcNow.Date;
-            var maxDate = today;
-            var minDate = today.AddDays(-91);
+            DateTime minDate = DateTime.ParseExact("23-2-2025 00:00:00", "d-M-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+            DateTime maxDate = DateTime.ParseExact("25-2-2025 00:00:00", "d-M-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 
             // Arrange
             var requests = new List<PollenDataRequest>
@@ -61,14 +61,14 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
                 new PollenDataRequest { Latitude = 52.0, Longitude = 5.0, Date = maxDate }
             };
 
-            mockApiCall("TestData", "PollenApiByDateAndCoordinates.json", HttpStatusCode.OK);
+            mockApiCall("TestData", "PollenApiByDateAndCoordinates2.json", HttpStatusCode.OK);
 
             // Act
             var result = await _pollenService.GetPollenDataForDatesAndCoordinates(requests);
 
             Assert.NotNull(result);
             Assert.IsType<List<PollenDataPoint>>(result);
-            Assert.Equal(48, result.Count);
+            Assert.Equal(2208, result.Count);
         }
     }
 }
