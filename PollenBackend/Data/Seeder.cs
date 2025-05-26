@@ -8,7 +8,7 @@ namespace PollenBackend.Data
         private readonly AppDbContext _context;
         private readonly ILocationService _locationService;
 
-        public Seeder(AppDbContext context,ILocationService locationService)
+        public Seeder(AppDbContext context, ILocationService locationService)
         {
             _context = context;
             _locationService = locationService;
@@ -27,10 +27,11 @@ namespace PollenBackend.Data
                 _context.SaveChanges();
             }
 
-            if(!_context.Locations.Any()){
+            if (!_context.Locations.Any())
+            {
                 var locations = await _locationService.GetMunicipality();
                 _context.Locations.AddRange(locations);
-                
+
                 _context.SaveChanges();
             }
             if (!_context.Flora.Any())

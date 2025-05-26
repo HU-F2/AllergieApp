@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { calculateWalkScore } from '../utils/calculateWalkScore';
 import { PollenTypes, pollenMeta } from './PollenMap';
 import { useFetchForecast } from '../services/weatherService';

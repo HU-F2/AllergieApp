@@ -10,6 +10,7 @@ import { useSelectedPollenContext } from '../contexts/SelectedPollenContext';
 const Home = () => {
     const { location } = useLocationContext();
     const { selectedPollenType } = useSelectedPollenContext();
+    
     return (
         <div className="home-container">
             <Navbar />

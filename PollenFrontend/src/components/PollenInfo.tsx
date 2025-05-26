@@ -1,5 +1,5 @@
 import { LocationData } from '../services/locationService';
-import { formatDutchDate } from '../utils/utilityFunctions';
+import { formatDutchDate } from '../utils/dateFunctions';
 import SelectablePollenIndicator from './SelectablePollenIndicator';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 const PollenInfo = ({ location }: Props) => {
     const formattedDate = formatDutchDate(new Date());
 
-    if (location == undefined) {
+    if (!location) {
         return (
             <div className="no-location-selected">
                 <p>Selecteer een locatie om pollen informatie te bekijken.</p>
