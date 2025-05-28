@@ -1,19 +1,19 @@
 import { pollenMeta, PollenTypes } from './PollenMap';
 
-type PollenLegendProps = {
+type PollenLegendaProps = {
     pollenType: PollenTypes;
 };
 
-export const PollenLegend = ({ pollenType }: PollenLegendProps) => {
+export const PollenLegenda = ({ pollenType }: PollenLegendaProps) => {
     const { baseColor, min, max } = pollenMeta[pollenType];
 
-    const gradient = `linear-gradient(to right, 
-        rgba(${baseColor.join(',')}, 0.1), 
+    const gradient = `linear-gradient(to right,
+        rgba(${baseColor.join(',')}, 0.1),
         rgba(${baseColor.join(',')}, 1))`;
 
     return (
         <div
-            className="pollenlegend"
+            className="pollenLegenda"
             style={{
                 position: 'absolute',
                 bottom: '20px',
