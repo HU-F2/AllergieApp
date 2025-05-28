@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useSelectedPollenContext } from '../contexts/SelectedPollenContext';
 import { LocationData } from '../services/locationService';
 import { useFetchPollenByLocation } from '../services/pollenService';
-import { useProfilePollenTypes } from './hooks/useProfilePollenTypes';
 import PollenIndicator from './PollenIndicator';
 import { pollenMeta, PollenTypes } from './PollenMap';
 
@@ -11,7 +11,10 @@ type Props = {
 
 const SelectablePollenIndicator = ({ location }: Props) => {
     const { data: pollenData } = useFetchPollenByLocation(location);
-    const [profilePollenTypes] = useProfilePollenTypes();
+    const {
+        selectedPollenType: globalSelectedPollenType,
+        setSelectedPollenType: globalSetSelectedPollenType,
+    } = useSelectedPollenContext();
     const [selectedPollenType, setSelectedPollenType] = useState<
         PollenTypes | 'total'
     >('total');
@@ -42,17 +45,14 @@ const SelectablePollenIndicator = ({ location }: Props) => {
     }, [selectedPollenType, pollenMeta, totalPollen, pollenData]);
 
     useEffect(() => {
-        // Set the first item in profilePollenTypes as the default indicator
-        if (profilePollenTypes.length > 0) {
-            const name = profilePollenTypes[0];
-            const index = Object.values(pollenMeta).findIndex(
-                (val) => val.name == name || val.rawName == name
-            );
+        setSelectedPollenType(globalSelectedPollenType);
+    }, [globalSelectedPollenType]);
 
-            const pollenType = Object.keys(pollenMeta)[index];
-            setSelectedPollenType(pollenType as PollenTypes);
+    useEffect(() => {
+        if (selectedPollenType != 'total') {
+            globalSetSelectedPollenType(selectedPollenType);
         }
-    }, [profilePollenTypes]);
+    }, [selectedPollenType]);
 
     return (
         <div className="selectable-pollen-indicator">
