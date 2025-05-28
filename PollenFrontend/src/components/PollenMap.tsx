@@ -2,23 +2,20 @@ import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useEffect, useRef, useState } from 'react';
 import {
-    LayerGroup,
-    LayersControl,
     MapContainer,
     Marker,
     Polygon,
     TileLayer,
     useMap,
-    useMapEvents,
 } from 'react-leaflet';
 import { useLocationContext } from '../contexts/LocationContext';
-import { useFetchPollenMap } from '../services/pollenService';
-import { TimeSlider } from './TimeSlider';
-import { useCurrentTime } from './hooks/useCurrentTime';
-import { useProfilePollenTypes } from './hooks/useProfilePollenTypes';
-import { useThrottle } from './hooks/useThrottle';
-import { PollenLegend } from './PollenLegend';
 import { useSelectedPollenContext } from '../contexts/SelectedPollenContext';
+import { useFetchPollenMap } from '../services/pollenService';
+import { useCurrentTime } from './hooks/useCurrentTime';
+import { useThrottle } from './hooks/useThrottle';
+import PollenLayerSelector from './PollenLayerSelector';
+import { PollenLegend } from './PollenLegend';
+import { TimeSlider } from './TimeSlider';
 
 const getColor = (
     pollen: number | null | undefined,
@@ -104,8 +101,7 @@ export enum PollenTypes {
 
 export const PollenMap = () => {
     const { data } = useFetchPollenMap();
-    const [profilePollenTypes] = useProfilePollenTypes();
-    const {selectedPollenType, setSelectedPollenType} = useSelectedPollenContext();
+    const { selectedPollenType } = useSelectedPollenContext();
     const [polygonCoordinates, setPolygonCoordinates] = useState<Record<
         string,
         {
@@ -145,13 +141,6 @@ export const PollenMap = () => {
     };
 
     useEffect(() => {
-        // Set the first item in profilePollenTypes as selected base layer
-        if (profilePollenTypes.length > 0) {
-            onLayerSwitch(profilePollenTypes[0]);
-        }
-    }, [profilePollenTypes]);
-
-    useEffect(() => {
         // Center map
         setCenter([location?.latitude ?? 52.1, location?.longitude ?? 5.1]);
     }, [location]);
@@ -177,15 +166,6 @@ export const PollenMap = () => {
         processData();
     }, [data, selectedPollenType, throttledTime]);
 
-    const onLayerSwitch = (name: string) => {
-        const index = Object.values(pollenMeta).findIndex(
-            (val) => val.name == name || val.rawName == name
-        );
-
-        const pollenType = Object.keys(pollenMeta)[index];
-        setSelectedPollenType(pollenType as PollenTypes);
-    };
-
     return (
         <div className="map-container2">
             <MapContainer
@@ -195,7 +175,6 @@ export const PollenMap = () => {
                 scrollWheelZoom={true}
             >
                 <RecenterMap center={center} />
-                <LayerSwitch onLayerSwitch={onLayerSwitch} />
                 <TileLayer
                     attribution="&copy; OpenStreetMap contributors"
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -205,35 +184,21 @@ export const PollenMap = () => {
                     title="Uw (geschatte) locatie"
                     icon={customDivIcon}
                 />
-                <LayersControl ref={controlRef}>
-                    {Object.entries(pollenMeta).map(
-                        ([pollenType, { name }]) => (
-                            <LayersControl.BaseLayer
-                                key={pollenType}
-                                name={name}
-                                checked={selectedPollenType === pollenType}
-                            >
-                                <LayerGroup>
-                                    {/* Render polygons only for the selected pollen type */}
-                                    {polygonCoordinates &&
-                                        polygonCoordinates[
-                                            pollenType as PollenTypes
-                                        ]?.map((polygon) => (
-                                            <Polygon
-                                                key={polygon.id}
-                                                positions={polygon.coordinates}
-                                                pathOptions={{
-                                                    color: polygon.color,
-                                                }}
-                                                stroke={false}
-                                                fillOpacity={0.8}
-                                            />
-                                        ))}
-                                </LayerGroup>
-                            </LayersControl.BaseLayer>
+                <PollenLayerSelector />
+                {polygonCoordinates &&
+                    polygonCoordinates[selectedPollenType as PollenTypes]?.map(
+                        (polygon) => (
+                            <Polygon
+                                key={polygon.id}
+                                positions={polygon.coordinates}
+                                pathOptions={{
+                                    color: polygon.color,
+                                }}
+                                stroke={false}
+                                fillOpacity={0.8}
+                            />
                         )
                     )}
-                </LayersControl>
                 <PollenLegend pollenType={selectedPollenType} />
             </MapContainer>
 
@@ -246,19 +211,6 @@ export const PollenMap = () => {
             )}
         </div>
     );
-};
-
-type LayerSwitchProps = {
-    onLayerSwitch: (name: string) => void;
-};
-
-const LayerSwitch = ({ onLayerSwitch }: LayerSwitchProps) => {
-    useMapEvents({
-        baselayerchange: (e) => {
-            onLayerSwitch(e.name);
-        },
-    });
-    return null;
 };
 
 type RecenterProps = {

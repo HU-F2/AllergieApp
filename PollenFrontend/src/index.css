@@ -125,6 +125,11 @@ button:focus-visible {
         background-color: var(--aa-bg-color);
         border: 2px solid #646363;
     }
+
+    .pollen-layer-selector {
+        color: #000;
+        background-color: #fff;
+    }
 }
 
 .weather-card,
@@ -277,7 +282,9 @@ text {
 }
 
 circle {
-    transition: cx 0.3s ease, cy 0.3s ease;
+    transition:
+        cx 0.3s ease,
+        cy 0.3s ease;
 }
 
 .no-location-selected {
@@ -510,7 +517,9 @@ circle {
     cursor: pointer;
     font-weight: bold;
     text-align: center;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
 }
 
 .accept-btn {
@@ -632,7 +641,7 @@ circle {
     margin-top: 0.5rem;
 }
 
-.dashboard--layout>div {
+.dashboard--layout > div {
     width: 50%;
 }
 
@@ -658,13 +667,12 @@ circle {
     flex-wrap: wrap;
 }
 
-
 @media screen and (max-width: 768px) {
     .dashboard--layout {
         flex-direction: column;
     }
 
-    .dashboard--layout>div {
+    .dashboard--layout > div {
         width: 100%;
     }
 
@@ -798,7 +806,9 @@ circle {
 .allergy-analysis-page {
     background-color: var(--aa-bg-color);
     color: var(--aa-text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
 }
 
 .allergy-analysis-container {
@@ -888,7 +898,9 @@ circle {
     background-color: var(--ar-container-bg);
     border-radius: 8px;
     color: var(--ar-text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
 }
 
 .analysis-results-disclaimer {
@@ -1032,4 +1044,17 @@ circle {
 
 .suggestion-number {
     background-color: #003f5c;
+}
+
+/* Pollen layer selector */
+.pollen-layer-selector {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: white;
+    padding: 10px;
+    z-index: 1000;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    color: #000;
 }
