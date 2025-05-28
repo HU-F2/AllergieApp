@@ -14,7 +14,7 @@ import { useFetchPollenMap } from '../services/pollenService';
 import { useCurrentTime } from './hooks/useCurrentTime';
 import { useThrottle } from './hooks/useThrottle';
 import PollenLayerSelector from './PollenLayerSelector';
-import { PollenLegend } from './PollenLegend';
+import { PollenLegenda } from './PollenLegenda';
 import { TimeSlider } from './TimeSlider';
 
 const getColor = (
@@ -199,7 +199,7 @@ export const PollenMap = () => {
                             />
                         )
                     )}
-                <PollenLegend pollenType={selectedPollenType} />
+                <PollenLegenda pollenType={selectedPollenType} />
             </MapContainer>
 
             {data && (

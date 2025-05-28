@@ -108,7 +108,7 @@ button:focus-visible {
         background: #757575;
     }
 
-    .pollenlegend {
+    .pollenLegenda {
         color: #000;
     }
 
@@ -1057,4 +1057,11 @@ circle {
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     color: #000;
+}
+
+.flora-grid-loading {
+  padding: 2rem;
+  text-align: center;
+  font-style: italic;
+  color: #666;
 }
