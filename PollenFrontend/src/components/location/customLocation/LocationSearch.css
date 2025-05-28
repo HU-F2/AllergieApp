@@ -55,5 +55,6 @@
 }
 
 .location-permission-reset-container button:hover {
+    color: black;
     background-color: #e4e2e2;
 }

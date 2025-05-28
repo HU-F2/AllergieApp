@@ -16,16 +16,21 @@ const FloraInfo = () => {
             .finally(() => setLoading(false));
     }, []);
 
-    if (loading) return <p>Laden...</p>;
-    if (error) return <p>{error}</p>;
-
     return (
         <div className="flora-info-container">
             <Navbar />
             <div className="header-flora-info">
-              <h1 className="flora-title">Informatie over flora die hooikoorts klachten kunnen veroorzaken</h1>
+                <h1 className="flora-title">Informatie over flora die hooikoorts klachten kunnen veroorzaken</h1>
             </div>
-            <FloraGrid floraList={floraList} />
+            {loading ? (
+                <div className="flora-grid-loading">
+                    <p>Flora-informatie laden...</p>
+                </div>
+            ) : error ? (
+                <p className="flora-error">{error}</p>
+            ) : (
+                <FloraGrid floraList={floraList} />
+            )}
         </div>
     );
 };
