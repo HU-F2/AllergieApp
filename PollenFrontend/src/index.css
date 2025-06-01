@@ -846,6 +846,10 @@ circle {
     min-width: 200px;
 }
 
+.disabled-datepicker {
+    background-color: #e5e5e5;
+}
+
 .date-picker-input-group {
     margin-bottom: 15px;
     display: flex;

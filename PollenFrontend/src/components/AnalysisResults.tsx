@@ -17,10 +17,6 @@ const AnalysisResults = ({ results, isLoading }: AnalysisResultsProps) => {
     return (
         <div className="analysis-results-container">
             <h3 className="analysis-results-title">Resultaten</h3>
-            <div className="medical-alert-banner">
-                <p><strong>Let op: </strong> Dit medisch advies is slechts indicatief en vervangt geen professioneel medisch consult. Raadpleeg bij twijfel altijd een arts.</p>
-            </div>
-
             <div className="analysis-suggestions-grid">
                 {sortedSuggestions.map((suggestion: AllergySuggestion, index: number) => (
                     <div key={index} className={`suggestion-card rank-${index + 1}`}>
