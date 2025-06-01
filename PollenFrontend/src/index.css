@@ -92,6 +92,10 @@ button:focus-visible {
         border: 2px solid rgb(232, 232, 232);
         color: black;
     }
+
+    .analysis-results-container {
+        background-color: var(--ar-container-bg);
+    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -641,7 +645,7 @@ circle {
     margin-top: 0.5rem;
 }
 
-.dashboard--layout > div {
+.dashboard--layout>div {
     width: 50%;
 }
 
@@ -672,7 +676,7 @@ circle {
         flex-direction: column;
     }
 
-    .dashboard--layout > div {
+    .dashboard--layout>div {
         width: 100%;
     }
 
@@ -764,13 +768,17 @@ circle {
     }
 
     .analysis-results-container {
-        background-color: #1f1f1f;
+        background-color: #3b3939;
     }
 
     .medical-alert-banner {
         background-color: #3a2f05;
         color: #e6c552;
         border-color: #4f3e0a;
+    }
+
+    .location-permission-content {
+        color: black;
     }
 }
 
@@ -822,6 +830,10 @@ circle {
 .analysis-results-title {
     color: var(--aa-text-color);
     margin-bottom: 15px;
+}
+
+.analysis-results-title {
+    margin-top: 0;
 }
 
 .allergy-analysis-description {
@@ -899,7 +911,6 @@ circle {
 .analysis-results-container {
     margin-top: 30px;
     padding: 20px;
-    background-color: var(--ar-container-bg);
     border-radius: 8px;
     color: var(--ar-text-color);
     transition:
@@ -1064,8 +1075,8 @@ circle {
 }
 
 .flora-grid-loading {
-  padding: 2rem;
-  text-align: center;
-  font-style: italic;
-  color: #666;
+    padding: 2rem;
+    text-align: center;
+    font-style: italic;
+    color: #666;
 }

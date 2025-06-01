@@ -48,7 +48,7 @@ const AllergyAnalysisPage = () => {
                 <h1 className="allergy-analysis-title">Pollen Allergie Analyse</h1>
                 <p className="allergy-analysis-description">
                     Selecteer de datums waarop u symptomen ervaarde.
-                    Wij analyseren op basis van de pollen concentratie van die datums welke pollen mogelijk uw klachten veroorzaken.
+                    Wij analyseren op basis van de pollen concentratie van die datums op de gekozen locatie welke pollen mogelijk uw klachten veroorzaken.
                 </p>
 
                 <AnalyseForm
@@ -61,11 +61,11 @@ const AllergyAnalysisPage = () => {
 
                 {error && <p className="allergy-analysis-error">{error.message}</p>}
 
-                <AnalysisResults results={storedResults || apiResults} isLoading={isLoading} />
-
                 <div className="medical-alert-banner">
                     <p><strong>Let op: </strong> Dit medisch advies is slechts indicatief en vervangt geen professioneel medisch consult. Raadpleeg bij twijfel altijd een arts.</p>
                 </div>
+
+                <AnalysisResults results={storedResults || apiResults} isLoading={isLoading} />
             </div>
         </div>
     );
