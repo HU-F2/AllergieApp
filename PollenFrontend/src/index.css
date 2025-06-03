@@ -667,7 +667,7 @@ circle {
     flex-wrap: wrap;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 915px) {
     .dashboard--layout {
         flex-direction: column;
     }
@@ -677,7 +677,7 @@ circle {
     }
 
     .location-input-container {
-        flex-direction: column;
+        margin: 1rem 0px;
     }
 
     .dashboard--weather-mobile {
