@@ -6,7 +6,7 @@ export const useStoredDates = (
     minDate: Date,
     maxDate: Date,
     onInvalidateResults?: () => void // Callback voor results reset
-): [Date[], (dates: (Date | DateObject)[]) => void] => {
+): [Date[], (dates: (Date | DateObject)[]) => void, () => void] => {
     const [dates, setDatesState] = useState<Date[]>([]);
 
     // Laad bij init
@@ -34,12 +34,15 @@ export const useStoredDates = (
         setDatesState(valid);
         localStorage.setItem(import.meta.env.VITE_ALLERGY_ANALYSES_DATES_KEY, JSON.stringify(valid));
 
-        // Resultaat wordt ongeldig
+        invalidateResults();
+    };
+
+    const invalidateResults = () => {
         localStorage.removeItem(import.meta.env.VITE_ALLERGY_ANALYSES_REQUESTS_KEY);
         localStorage.removeItem(import.meta.env.VITE_ANALYSIS_RESULT_KEY);
 
         onInvalidateResults?.();
     };
 
-    return [dates, setDates];
+    return [dates, setDates, invalidateResults];
 };
