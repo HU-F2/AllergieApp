@@ -233,9 +233,7 @@ button:focus-visible {
     background-color: #15803d;
 }
 
-.map-container h1 {
-    font-size: 18px;
-}
+
 
 /* Pollen Indicator */
 .pollen-indicators-container {
@@ -371,6 +369,7 @@ circle {
     color: #aaa;
 }
 
+/* education */
 .education-section {
     margin-bottom: 30px;
 }
@@ -548,6 +547,7 @@ circle {
     background-color: #d0d0d0;
 }
 
+/* flora */
 .flora-grid {
     display: grid;
     gap: 10px;
@@ -641,7 +641,7 @@ circle {
     margin-top: 0.5rem;
 }
 
-.dashboard--layout > div {
+.dashboard--layout>div {
     width: 50%;
 }
 
@@ -672,7 +672,7 @@ circle {
         flex-direction: column;
     }
 
-    .dashboard--layout > div {
+    .dashboard--layout>div {
         width: 100%;
     }
 
@@ -687,6 +687,38 @@ circle {
     .dashboard--weather-desktop {
         display: block;
     }
+}
+
+/* pollen map */
+.map-container h1 {
+    font-size: 18px;
+}
+
+.pollenLegenda {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px;
+    z-index: 1000;
+    font-size: 0.9rem;
+    width: 205px;
+    padding-top: 16px;
+}
+
+.pollenLegenda-gradient {
+    height: 20px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    border: #b1aaaa 1px solid;
+}
+
+.pollenLegenda-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
 }
 
 /* ===== Allergie Analyse Root Variabelen (Light Theme) ===== */
@@ -1060,8 +1092,8 @@ circle {
 }
 
 .flora-grid-loading {
-  padding: 2rem;
-  text-align: center;
-  font-style: italic;
-  color: #666;
+    padding: 2rem;
+    text-align: center;
+    font-style: italic;
+    color: #666;
 }
