@@ -174,6 +174,13 @@ export const PollenMap = () => {
                 style={{ height: '64vh', width: '100%', fontSize: '1.2rem' }}
                 scrollWheelZoom={true}
             >
+                <div className="time-overlay">
+                    {data && data[0] && (
+                        <div className="time-label">
+                            {data[0].hourly.time[currentTime].split("T")[1]}
+                        </div>
+                    )}
+                </div>
                 <RecenterMap center={center} />
                 <TileLayer
                     attribution="&copy; OpenStreetMap contributors"

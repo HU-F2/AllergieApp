@@ -25,7 +25,7 @@ export const TimeSlider = ({
 
     return (
         <div style={{ padding: '1rem', width: '100%' }}>
-            <input
+            <input className='custom-range'
                 type="range"
                 min={0}
                 max={times.length - 1}
@@ -33,7 +33,16 @@ export const TimeSlider = ({
                 onChange={handleChange}
                 style={{ width: '100%' }}
             />
-            <div style={{ textAlign: 'center', marginTop: '0.5rem' }}>
+            <div className="slider-lines">
+                {times.map((_, i) => (
+                    <div
+                        key={i}
+                        className={`slider-line ${i === index ? 'active' : ''}`}
+                        style={{ left: `${(i / (times.length - 1)) * 100}%` }}
+                    />
+                ))}
+            </div>
+            <div style={{ textAlign: 'center', marginTop: '-1rem' }}>
                 {new Date(times[index]).toLocaleString('nl-NL', {
                     hour: '2-digit',
                     minute: '2-digit',

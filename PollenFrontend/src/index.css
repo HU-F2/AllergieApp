@@ -698,6 +698,55 @@ circle {
     font-size: 18px;
 }
 
+.time-overlay {
+    position: absolute;
+    top: 10px;
+    left: 50px;
+    z-index: 1000;
+    color: black;
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+.slider-lines {
+    position: relative;
+    top: -25px;
+    left: 0;
+    right: 0;
+    height: 24px; /* adjust if needed */
+    display: flex;
+    justify-content: space-between;
+    z-index: 3;
+    pointer-events: none; /* lines are visual only */
+    padding-left: 9px;
+    padding-right: 5px;
+}
+
+.slider-line {
+    width: 1px;
+    height: 100%;
+    background-color: #888;
+    opacity: 0.6;
+}
+
+.slider-line.active {
+    background-color: #007bff;
+    width: 1px;
+    opacity: 1;
+}
+
+.custom-range {
+    appearance: none;
+    background: #007bff; /* volledige track blauw */
+    height: 8px;
+    margin-bottom: 9px;
+    border-radius: 12px;
+    position: relative;
+    z-index: 2;
+}
+
 .pollenLegenda {
     position: absolute;
     bottom: 20px;
