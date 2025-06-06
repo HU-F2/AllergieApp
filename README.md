@@ -26,9 +26,14 @@ To run the project, you'll need two terminal windows open—one for the backend 
 
 #### b. appsettings
 
-1. Copy `AllergieApp/PollenApi/appsettings-example.json` and rename it to `appsettings.json`.
+1. Copy `AllergieApp/PollenBackend/appsettings-example.json` and rename it to `appsettings.json`.
 2. Open the `appsettings.json` file and fill in the `Username` and `Password` fields in both connection strings.
 3. Remove the comments in the file (e.g., // Vul dit zelf in) before saving it.
+
+#### c. .env
+
+1. Copy `AllergieApp/PollenFrontend/.env.example` and renamte it to `.env`.
+2. Open the `.env` file and fill in the `VITE_LOCALSTORAGE_KEY` field to a secure key.
 
 ### 1. 🐳 Backend (Docker)
 
@@ -60,8 +65,8 @@ npm install
 
 💡 **Only run `npm install` again if:**
 
-* You deleted the `node_modules/` folder.
-* The dependencies in `package.json` where changed.
+-   You deleted the `node_modules/` folder.
+-   The dependencies in `package.json` where changed.
 
 ---
 
@@ -71,9 +76,9 @@ npm install
 npm run dev:web
 ```
 
-* Starts Vite in `web` mode.
-* Automatically opens the web app in your default browser.
-* The web app process continues running even after closing the browser tab. You must stop it manually in the terminal.
+-   Starts Vite in `web` mode.
+-   Automatically opens the web app in your default browser.
+-   The web app process continues running even after closing the browser tab. You must stop it manually in the terminal.
 
 ---
 
@@ -83,8 +88,8 @@ npm run dev:web
 npm run dev:electron
 ```
 
-* Starts Vite in `electron` mode.
-* **Automatically launches the Electron desktop app**.
+-   Starts Vite in `electron` mode.
+-   **Automatically launches the Electron desktop app**.
 
 ---
 
