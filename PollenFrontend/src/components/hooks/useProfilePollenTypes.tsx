@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { decryptData, encryptData } from '../../utils/encryptionUtils';
 
 export const useProfilePollenTypes = (): [
     string[],
@@ -9,7 +10,7 @@ export const useProfilePollenTypes = (): [
             const stored = localStorage.getItem(
                 import.meta.env.VITE_POLLEN_ALLERGY_KEY
             );
-            return stored ? JSON.parse(stored) : [];
+            return stored ? (decryptData(stored) as string[]) : [];
         } catch {
             return [];
         }
@@ -18,7 +19,7 @@ export const useProfilePollenTypes = (): [
     useEffect(() => {
         localStorage.setItem(
             import.meta.env.VITE_POLLEN_ALLERGY_KEY,
-            JSON.stringify(pollenTypes)
+            encryptData(pollenTypes)
         );
     }, [pollenTypes]);
 
