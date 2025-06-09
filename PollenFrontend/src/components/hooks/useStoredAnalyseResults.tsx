@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AnalysisResponse, PollenDataRequest } from '../../services/symptomsService';
+import { decryptData, encryptData } from '../../utils/encryptionUtils';
 
 export const useStoredResults = (requests: PollenDataRequest[]) => {
     const [results, setResults] = useState<AnalysisResponse | null>(null);
@@ -11,17 +12,17 @@ export const useStoredResults = (requests: PollenDataRequest[]) => {
                 return;
             }
 
-            const cached = localStorage.getItem(import.meta.env.VITE_ALLERGY_ANALYSES_RESULTS_KEY);
+            const cached = decryptData(localStorage.getItem(import.meta.env.VITE_ALLERGY_ANALYSES_RESULTS_KEY));
             if (!cached) {
                 setResults(null);
                 return;
             }
 
-            const parsed = JSON.parse(cached) as AnalysisResponse;
-            const cachedRequests = localStorage.getItem(import.meta.env.VITE_ALLERGY_ANALYSES_REQUESTS_KEY);
+            const parsed = cached as AnalysisResponse;
+            const cachedRequests = decryptData(localStorage.getItem(import.meta.env.VITE_ALLERGY_ANALYSES_REQUESTS_KEY));
 
             if (cachedRequests) {
-                const lastRequests = JSON.parse(cachedRequests) as PollenDataRequest[];
+                const lastRequests = cachedRequests as PollenDataRequest[];
                 const requestsMatch = lastRequests.length === requests.length &&
                     lastRequests.every((r, i) =>
                         new Date(r.date).toISOString() === requests[i].date.toISOString() &&
@@ -42,7 +43,7 @@ export const useStoredResults = (requests: PollenDataRequest[]) => {
 
     const saveResults = (res: AnalysisResponse | null) => {
         if (!res) {
-            localStorage.setItem(import.meta.env.VITE_ALLERGY_ANALYSES_RESULTS_KEY, JSON.stringify(res));
+            localStorage.setItem(import.meta.env.VITE_ALLERGY_ANALYSES_RESULTS_KEY, encryptData(res));
         }
         setResults(res);
     };

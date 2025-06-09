@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { DateObject } from 'react-multi-date-picker';
 import { getValidDates } from '../../utils/dateFunctions';
+import { decryptData, encryptData } from '../../utils/encryptionUtils';
 
 export const useStoredDates = (
     minDate: Date,
@@ -11,10 +12,10 @@ export const useStoredDates = (
 
     // Laad bij init
     useEffect(() => {
-        const stored = localStorage.getItem(import.meta.env.VITE_ALLERGY_ANALYSES_DATES_KEY);
+        const stored: any = decryptData(localStorage.getItem(import.meta.env.VITE_ALLERGY_ANALYSES_DATES_KEY));
         if (stored) {
             try {
-                const parsed: Date[] = JSON.parse(stored).map((d: string) => new Date(d));
+                const parsed: Date[] = stored.map((d: string) => new Date(d));
                 const valid = getValidDates(parsed, { minDate, maxDate, filterDuplicates: true, truncateTime: true });
                 setDatesState(valid);
             } catch {
@@ -32,7 +33,7 @@ export const useStoredDates = (
         });
 
         setDatesState(valid);
-        localStorage.setItem(import.meta.env.VITE_ALLERGY_ANALYSES_DATES_KEY, JSON.stringify(valid));
+        localStorage.setItem(import.meta.env.VITE_ALLERGY_ANALYSES_DATES_KEY, encryptData(valid));
 
         invalidateResults();
     };

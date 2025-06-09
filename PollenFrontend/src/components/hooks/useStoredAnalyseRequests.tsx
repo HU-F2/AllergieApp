@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useLocationContext } from '../../contexts/LocationContext';
 import { PollenDataRequest } from '../../services/symptomsService';
+import { decryptData, encryptData } from '../../utils/encryptionUtils';
 
 export const useAnalysisRequests = () => {
     const { location } = useLocationContext();
@@ -8,10 +9,10 @@ export const useAnalysisRequests = () => {
 
     // Laad opgeslagen requests bij init
     useEffect(() => {
-        const storedRequests = localStorage.getItem(import.meta.env.VITE_ALLERGY_ANALYSES_REQUESTS_KEY);
+        const storedRequests = decryptData(localStorage.getItem(import.meta.env.VITE_ALLERGY_ANALYSES_REQUESTS_KEY));
         if (storedRequests) {
             try {
-                const parsed = JSON.parse(storedRequests) as PollenDataRequest[];
+                const parsed = storedRequests as PollenDataRequest[];
                 setRequests(parsed.map(r => ({
                     ...r,
                     date: new Date(r.date),
@@ -29,7 +30,7 @@ export const useAnalysisRequests = () => {
     // Sla requests op bij wijziging
     useEffect(() => {
         if (requests.length > 0) {
-            localStorage.setItem(import.meta.env.VITE_ALLERGY_ANALYSES_REQUESTS_KEY, JSON.stringify(requests));
+            localStorage.setItem(import.meta.env.VITE_ALLERGY_ANALYSES_REQUESTS_KEY, encryptData(requests));
         } else {
             localStorage.removeItem(import.meta.env.VITE_ALLERGY_ANALYSES_REQUESTS_KEY);
         }
