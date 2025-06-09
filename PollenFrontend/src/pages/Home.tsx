@@ -10,35 +10,37 @@ import { useSelectedPollenContext } from '../contexts/SelectedPollenContext';
 const Home = () => {
     const { location } = useLocationContext();
     const { selectedPollenType } = useSelectedPollenContext();
-    
+
     return (
-        <div className="home-container">
+        <>
             <Navbar />
-            <div className="dashboard--layout">
-                <div className="dashboard--left">
-                    <h1 className="dashboard--current-location">
-                        Pollen in {location?.name}
-                    </h1>
-                    <WalkAdvice
-                        pollenType={selectedPollenType}
-                        location={location}
-                    />
-                    <div className="dashboard--infoWeather">
-                        <PollenInfo location={location} />
-                        <div className="dashboard--weather-mobile">
+            <div className="home-container">
+                <div className="dashboard--layout">
+                    <div className="dashboard--left">
+                        <h1 className="dashboard--current-location">
+                            Pollen in {location?.name}
+                        </h1>
+                        <WalkAdvice
+                            pollenType={selectedPollenType}
+                            location={location}
+                        />
+                        <div className="dashboard--infoWeather">
+                            <PollenInfo location={location} />
+                            <div className="dashboard--weather-mobile">
+                                <WeatherCard location={location} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="dashboard--right">
+                        <CustomLocation />
+                        <PollenMap />
+                        <div className="dashboard--weather-desktop">
                             <WeatherCard location={location} />
                         </div>
                     </div>
                 </div>
-                <div className="dashboard--right">
-                    <CustomLocation />
-                    <PollenMap />
-                    <div className="dashboard--weather-desktop">
-                        <WeatherCard location={location} />
-                    </div>
-                </div>
             </div>
-        </div>
+        </>
     );
 };
 

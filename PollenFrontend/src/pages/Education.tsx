@@ -3,11 +3,13 @@ import Navbar from '../components/common/navigation/Navbar.js';
 
 const EducationPage = () => {
     return (
-        <div className="education-container">
+        <>
             <Navbar />
-            <h1>Hooikoorts Educatie en Tips</h1>
-            <EducationTips />
-        </div>
+            <div className="education-container">
+                <h1>Hooikoorts Educatie en Tips</h1>
+                <EducationTips />
+            </div>
+        </>
     );
 };
 
