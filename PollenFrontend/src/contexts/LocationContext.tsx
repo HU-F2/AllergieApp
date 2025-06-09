@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 import LocationPermissionModal from '../components/location/locationPermission/LocationPermissionModal';
 import { LocationData, useLocation } from '../services/locationService';
+import { decryptData, encryptData } from '../utils/encryptionUtils';
 
 export type LocationPermissionType = 'allowed' | 'denied' | null;
 
@@ -25,7 +26,7 @@ type Props = {
 export const LocationProvider = ({ children }: Props) => {
     const [permission, setPermission] = useState<'allowed' | 'denied' | null>(
         () =>
-            (sessionStorage.getItem('locationPermission') as
+            (decryptData(sessionStorage.getItem(import.meta.env.VITE_LOCATION_PERMISSION_KEY)) as
                 | 'allowed'
                 | 'denied') || null
     );
@@ -41,17 +42,17 @@ export const LocationProvider = ({ children }: Props) => {
     } = useLocation({ enabled: permission === 'allowed' });
 
     const handleAllow = () => {
-        sessionStorage.setItem('locationPermission', 'allowed');
+        sessionStorage.setItem(import.meta.env.VITE_LOCATION_PERMISSION_KEY, encryptData('allowed'));
         setPermission('allowed');
     };
 
     const handleDeny = () => {
-        sessionStorage.setItem('locationPermission', 'denied');
+        sessionStorage.setItem(import.meta.env.VITE_LOCATION_PERMISSION_KEY, encryptData('denied'));
         setPermission('denied');
     };
 
     const handleResetPermission = () => {
-        sessionStorage.removeItem('locationPermission');
+        sessionStorage.removeItem(import.meta.env.VITE_LOCATION_PERMISSION_KEY);
         setPermission(null);
         setCustomLocation(undefined);
     };
