@@ -26,12 +26,20 @@ export interface ApiError {
 
 export const analyzeSymptoms = async (requests: PollenDataRequest[]): Promise<AnalysisResponse> => {
     try {
+        const invalidRequest = requests.find(req =>
+            !req.coordinate.latitude || !req.coordinate.longitude
+        );
+
+        if (invalidRequest) {
+            throw new Error('Latitude of Longitude ontbreekt in één van de requests');
+        }
+        
         const response = await axios.post<AnalysisResponse>(
             `${import.meta.env.VITE_BACKEND_API_URL}/api/AllergySuggestion/analyze`,
             requests.map(req => ({
                 Date: toDateOnlyString(req.date),
-                Latitude: req.coordinate.latitude,
-                Longitude: req.coordinate.longitude,
+                Latitude: req.coordinate.latitude.toLocaleString('en-US'),
+                Longitude: req.coordinate.longitude.toLocaleString('en-US'),
             }))
         );
 
@@ -75,7 +83,7 @@ export const analyzeSymptoms = async (requests: PollenDataRequest[]): Promise<An
 export const useAnalysisQuery = (requests: PollenDataRequest[], options?: { skip?: boolean }) =>
     useQuery<AnalysisResponse, Error>({
         queryKey: [QUERY_KEYS.pollen.analysis, ...requests.map(r =>
-            `${r.date.toISOString()}-${r.coordinate.latitude}-${r.coordinate.longitude}`
+            `${r.date.toISOString()}-${r.coordinate.latitude.toLocaleString('en-US')}-${r.coordinate.longitude.toLocaleString('en-US')}`
         )],
         queryFn: () => analyzeSymptoms(requests),
         retry: 1,
