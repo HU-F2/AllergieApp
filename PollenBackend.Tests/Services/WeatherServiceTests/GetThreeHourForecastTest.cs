@@ -1,22 +1,17 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using Moq;
-using PollenBackend.Data;
 using PollenBackend.Models;
-using PollenBackend.Services;
 using PollenBackend.Tests;
 
-namespace PollenBackend.Services.WeerServiceTests {
+namespace PollenBackend.Services.WeatherServiceTests {
     public class GetThreeHourForecastTest : MockApiCall{
         private readonly HttpClient _httpClient;
-        private WeerService _weerService;
+        private WeatherService _weatherService;
         List<Coordinate> outofbounds_coordinates;
-        List<Coordinate> withinbounds_coordinates;
 
         public GetThreeHourForecastTest(){
             _mockHandler = new Mock<HttpMessageHandler>();
             _httpClient = new HttpClient(_mockHandler.Object);
-            _weerService = new WeerService(_httpClient);
+            _weatherService = new WeatherService(_httpClient);
 
             outofbounds_coordinates = new List<Coordinate>(){
                 // Test 1 negateive out of bound coordinaat
@@ -33,7 +28,7 @@ namespace PollenBackend.Services.WeerServiceTests {
         public async Task Forecast_WithOutOfBoundsCoordinates_ShouldReturnErrorOrNull(){
             foreach (var coord in outofbounds_coordinates)
             {
-                var exception = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => _weerService.GetThreeHourForecast(coord.Latitude, coord.Longitude)); 
+                var exception = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => _weatherService.GetThreeHourForecast(coord.Latitude, coord.Longitude)); 
             }
         }
 
@@ -44,9 +39,9 @@ namespace PollenBackend.Services.WeerServiceTests {
 
             mockApiCall("TestData","WeatherApiOkReponse.json",System.Net.HttpStatusCode.OK);
 
-            var result =await _weerService.GetThreeHourForecast(latitude,longitude);
+            var result =await _weatherService.GetThreeHourForecast(latitude,longitude);
 
-            Assert.IsType<WeerData>(result);
+            Assert.IsType<WeatherData>(result);
         }
     }
 }
