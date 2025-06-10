@@ -1,17 +1,24 @@
 import Navbar from '../components/common/navigation/Navbar';
 import PollenSelector from '../components/common/Selector/PollenSelector';
+import DarkModeSwitch from '../components/DarkModeSwitch';
 
 const ProfilePage = () => {
     return (
-        <div className="home-container">
+        <>
             <Navbar />
-            <div>
+            <div className="home-container">
                 <div>
-                    <h2>Mijn Pollenallergie</h2>
-                    <PollenSelector />
+                    <div>
+                        <h2>Mijn Pollenallergie</h2>
+                        <PollenSelector />
+                    </div>
+                    <div>
+                        <h2>Donkere modus</h2>
+                        <DarkModeSwitch />
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

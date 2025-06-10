@@ -10,6 +10,7 @@ import {
 } from 'react-leaflet';
 import { useLocationContext } from '../contexts/LocationContext';
 import { useSelectedPollenContext } from '../contexts/SelectedPollenContext';
+import { useThemeContext } from '../contexts/ThemeContext';
 import { useFetchPollenMap } from '../services/pollenService';
 import { useCurrentTime } from './hooks/useCurrentTime';
 import { useThrottle } from './hooks/useThrottle';
@@ -20,15 +21,18 @@ import { TimeSlider } from './TimeSlider';
 const getColor = (
     pollen: number | null | undefined,
     pollenType: PollenTypes,
-    max: number = 30
+    max: number = 30,
+    darkMode: boolean = false
 ): string => {
-    if (pollen == null) return 'rgb(240,240,240)';
+    if (pollen == null) return darkMode ? 'rgb(80,80,80)' : 'rgb(240,240,240)';
 
     const baseColor = pollenMeta[pollenType].baseColor;
     const clampedPollen = Math.max(0, Math.min(max, pollen));
     const t = Math.pow(clampedPollen / max, 0.3);
 
-    const startColor: [number, number, number] = [240, 240, 240];
+    const startColor: [number, number, number] = darkMode
+        ? [80, 80, 80]
+        : [240, 240, 240];
     const interpolatedColor = startColor.map((start, i) =>
         Math.round(start + t * (baseColor[i] - start))
     ) as [number, number, number];
@@ -112,6 +116,7 @@ export const PollenMap = () => {
     > | null>(null);
     const controlRef = useRef<L.Control.Layers | null>(null);
     const { location } = useLocationContext();
+    const { isDarkMode } = useThemeContext();
 
     const [center, setCenter] = useState<LatLngExpression>([52.1, 5.1]);
     const [currentTime, setCurrentTime] = useCurrentTime(
@@ -125,7 +130,12 @@ export const PollenMap = () => {
         const coordinatesWithColors = data.map(({ location, hourly }) => {
             const { coordinates } = location;
             const pollenValue = hourly?.[pollenType]?.[currentTime] ?? null;
-            const color = getColor(pollenValue, pollenType);
+            const color = getColor(
+                pollenValue,
+                pollenType,
+                pollenMeta[pollenType as PollenTypes].max,
+                isDarkMode
+            );
 
             return {
                 coordinates: coordinates.map(
@@ -177,7 +187,7 @@ export const PollenMap = () => {
                 <div className="time-overlay">
                     {data && data[0] && (
                         <div className="time-label">
-                            {data[0].hourly.time[currentTime].split("T")[1]}
+                            {data[0].hourly.time[currentTime].split('T')[1]}
                         </div>
                     )}
                 </div>

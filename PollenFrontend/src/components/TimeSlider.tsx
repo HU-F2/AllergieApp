@@ -24,8 +24,9 @@ export const TimeSlider = ({
     };
 
     return (
-        <div style={{ padding: '1rem', width: '100%' }}>
-            <input className='custom-range'
+        <div className="time-slider" style={{ padding: '1rem', width: '100%' }}>
+            <input
+                className="custom-range"
                 type="range"
                 min={0}
                 max={times.length - 1}
@@ -42,7 +43,10 @@ export const TimeSlider = ({
                     />
                 ))}
             </div>
-            <div style={{ textAlign: 'center', marginTop: '-1rem' }}>
+            <div
+                className="time-slider-value"
+                style={{ textAlign: 'center', marginTop: '-1rem' }}
+            >
                 {new Date(times[index]).toLocaleString('nl-NL', {
                     hour: '2-digit',
                     minute: '2-digit',
