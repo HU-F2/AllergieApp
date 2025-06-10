@@ -26,6 +26,9 @@ namespace PollenBackend.Services
 
         public async Task<WeatherData> GetThreeHourForecast(double latitude, double longitude)
         {
+            if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180)
+                throw new ArgumentOutOfRangeException("Geef een valide latitude en longitude op.");
+            
             string baseUrl = "https://api.open-meteo.com/v1/forecast";
             string query = $"?latitude={latitude.ToString(CultureInfo.InvariantCulture)}&longitude={longitude.ToString(CultureInfo.InvariantCulture)}&hourly=temperature_2m,rain,wind_speed_10m&timezone=Europe%2FBerlin";
             string fullUrl = baseUrl + query;
