@@ -59,7 +59,7 @@ const fetchPollenByLocation = async (
     longitude: number
 ): Promise<PollenData> => {
     const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_API_URL}/api/pollen/location?latitude=${latitude}&longitude=${longitude}`
+        `${import.meta.env.VITE_BACKEND_API_URL}/api/pollen/location?latitude=${latitude.toLocaleString('en-US')}&longitude=${longitude.toLocaleString('en-US')}`
     );
     if (!response.ok) {
         throw new Error('Network response was not ok');

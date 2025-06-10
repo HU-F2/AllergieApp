@@ -17,6 +17,7 @@ export const QUERY_KEYS = {
     // Pollen-related queries
     pollen: {
         map: ['pollen', 'map'],
+        analysis: ['pollen', 'analysis'],
         location: (coordinate?: Coordinate) => [
             'pollen',
             coordinate?.latitude,
@@ -26,6 +27,11 @@ export const QUERY_KEYS = {
 
     // Weather-related queries
     weather: {
-        forecast: ['weather', 'forecast'],
+        forecast: (latitude?: number, longitude?: number) => [
+            'weather',
+            'forecast',
+            latitude,
+            longitude,
+        ],
     },
 };

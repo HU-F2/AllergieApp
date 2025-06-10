@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
 }
+
 :root {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
@@ -21,6 +22,7 @@ a {
     color: #646cff;
     text-decoration: inherit;
 }
+
 a:hover {
     color: #535bf2;
 }
@@ -50,49 +52,185 @@ button {
     background-color: #1a1a1a;
     cursor: pointer;
     transition: border-color 0.25s;
+    color: black;
 }
+
 button:hover {
     border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-    :root {
-        color: #213547;
-        background-color: #ffffff;
-    }
-    a:hover {
-        color: #747bff;
-    }
-    button {
-        background-color: #f9f9f9;
-    }
-
-    .map-title {
-        color: #1f2c38;
-    }
-
-    .flora-card {
-        background: #f0f0f0;
-    }
+.location-permission-reset-container .reset-permission-button {
+    background-color: #fff8e8;
+    border: 2px solid black;
 }
 
-@media (prefers-color-scheme: dark) {
-    button {
-        background-color: black;
-        color: white;
-    }
+.location-permission-reset-container .reset-permission-button:hover {
+    background-color: #b3a88e;
+    border: 2px solid black;
+}
 
-    .map-title {
-        color: white;
-    }
+.location-search-input {
+    background-color: #fff8e8;
+    color: #000;
+    outline: none;
+}
 
-    .flora-card {
-        background: #757575;
-    }
+html.dark .location-permission-reset-container .reset-permission-button {
+    background-color: black;
+    border: 2px solid black;
+}
+
+html.dark .location-permission-reset-container .reset-permission-button:hover {
+    background-color: #b3a88e;
+    color: #fff8e8;
+    border: 2px solid black;
+}
+
+html.dark .location-search-input {
+    background-color: var(--aa-bg-color);
+    color: #fff8e8;
+    outline: none;
+}
+
+html.dark .location-search-input::placeholder {
+    color: #fff8e8;
+}
+
+:root {
+    color: #213547;
+    background-color: #ffffff;
+}
+
+a:hover {
+    color: #747bff;
+}
+
+button {
+    background-color: #f9f9f9;
+}
+
+.map-title {
+    color: #1f2c38;
+}
+
+.flora-card {
+    background: #f0f0f0;
+}
+
+.pollen-summary,
+.weather-card,
+.walking-advice-card,
+.time-slider {
+    background-color: #fff8e8;
+    border: 2px solid rgb(232, 232, 232);
+    color: black;
+}
+
+.analysis-results-container {
+    background-color: var(--ar-container-bg);
+}
+
+html.dark button {
+    background-color: black;
+    color: white;
+}
+
+html.dark .map-title {
+    color: white;
+}
+
+html.dark .flora-card {
+    background: #757575;
+}
+
+html.dark .pollenLegenda {
+    color: #fff8e8;
+    background-color: var(--aa-bg-color);
+    border-color: #fff8e8;
+}
+
+html.dark .pollen-summary .date-text,
+html.dark .weather-card,
+html.dark .walking-advice-card,
+html.dark .time-slider {
+    color: #fff8e8;
+}
+
+html.dark .pollen-summary,
+html.dark .weather-card,
+html.dark .walking-advice-card,
+html.dark .time-slider {
+    background-color: var(--aa-bg-color);
+    border: 2px solid #646363;
+}
+
+html.dark .pollen-layer-selector {
+    color: #000;
+    background-color: #fff;
+}
+
+.selector .selectors button.add-btn {
+    background-color: #fff8e8;
+    color: black;
+    font-weight: bold;
+}
+
+html.dark .selector .selectors button.add-btn {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+}
+
+html.dark .navbar {
+    background-color: #b3a88e;
+    color: #fff8e8;
+}
+
+html.dark .nav-link {
+    color: #fff8e8;
+}
+html.dark .nav-link:hover {
+    border-radius: 0;
+}
+
+html.dark .nav-link.active {
+    border-color: #fff8e8;
+}
+
+html.dark .nav-link::after {
+    background-color: #fff8e8;
+}
+
+.weather-card,
+.walking-advice-card {
+    border-radius: 12px;
+    padding: 16px;
+    margin: 0px auto;
+}
+
+.weather-card,
+.walking-advice-card,
+.pollen-summary,
+.time-slider {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
+}
+
+.weather-card {
+    width: 300px;
+    height: 242.2px;
+    max-width: 300px;
+}
+
+.walking-advice-card {
+    max-width: 300px;
+    min-height: 100px;
+    font-family: sans-serif;
+    margin-bottom: 2rem;
 }
 
 #root {
@@ -105,7 +243,8 @@ button:focus-visible {
 .education-container,
 .flora-info-container,
 .map-container,
-.home-container {
+.home-container,
+.allergy-analysis-page {
     margin: 20px;
 }
 
@@ -133,6 +272,7 @@ button:focus-visible {
     align-items: center;
     gap: 1rem;
     justify-content: center;
+    margin-bottom: 2rem;
 }
 
 .location-search-button-container {
@@ -169,10 +309,6 @@ button:focus-visible {
     background-color: #15803d;
 }
 
-.map-container h1 {
-    font-size: 18px;
-}
-
 /* Pollen Indicator */
 .pollen-indicators-container {
     display: flex;
@@ -192,6 +328,9 @@ button:focus-visible {
     flex-wrap: nowrap;
     gap: 0px;
     padding-bottom: 1rem;
+    max-width: 300px;
+    border-radius: 12px;
+    padding: 9px;
     justify-content: center;
     flex-direction: column;
     align-items: center;
@@ -207,6 +346,14 @@ button:focus-visible {
     width: 100%;
     height: auto;
     display: block;
+}
+
+.pollenindicator-text {
+    fill: #000;
+}
+
+html.dark .pollenindicator-text {
+    fill: #fff8e8;
 }
 
 text {
@@ -234,6 +381,24 @@ circle {
     font-size: 1.2rem;
     color: #666;
     max-width: 300px;
+}
+
+.selectable-pollen-indicator {
+    position: relative;
+    padding-top: 1rem;
+}
+
+.selectable-pollen-indicator select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #dcd4c2;
+    color: #000;
+}
+
+html.dark .selectable-pollen-indicator select {
+    background-color: black;
+    color: #fff8e8;
 }
 
 /* Alert */
@@ -293,6 +458,7 @@ circle {
     color: #aaa;
 }
 
+/* education */
 .education-section {
     margin-bottom: 30px;
 }
@@ -334,17 +500,24 @@ circle {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #4a90e2;
+    background-color: #fff8e8;
+    color: black;
     padding: 10px 20px;
     height: 60px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-logo-text {
-    color: white;
-    font-size: 1.8rem;
+.navbar-logo-link {
+    color: black;
+    width: 120px;
     font-weight: bold;
     text-decoration: none;
+    display: block;
+}
+
+.navbar-logo-link img {
+    width: 100%;
+    object-fit: contain;
 }
 
 .navbar-links {
@@ -353,7 +526,7 @@ circle {
 }
 
 .nav-link {
-    color: white;
+    color: black;
     font-size: 1rem;
     text-decoration: none;
     position: relative;
@@ -365,7 +538,7 @@ circle {
     display: block;
     width: 0;
     height: 2px;
-    background: white;
+    background: black;
     transition: width 0.3s;
 }
 
@@ -375,12 +548,13 @@ circle {
 
 .navbar a:hover,
 .dropdown-menu a:hover {
-    background-color: #3b82f6;
-    color: white;
+    background-color: #b3a88e;
+    color: black;
+    border-radius: 8px;
 }
 
 .nav-link.active {
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid black;
 }
 
 /* Hamburger button */
@@ -415,18 +589,18 @@ circle {
 }
 
 /* Responsiveness */
-@media screen and (max-width: 768px) {
-    .desktop-only {
+@media screen and (max-width: 853px) {
+    .navbar-desktop-only {
         display: none;
     }
 
-    .mobile-only {
+    .navbar-mobile-only {
         display: flex;
     }
 }
 
-@media screen and (min-width: 769px) {
-    .mobile-only {
+@media screen and (min-width: 854px) {
+    .navbar-mobile-only {
         display: none;
     }
 }
@@ -470,6 +644,7 @@ circle {
     background-color: #d0d0d0;
 }
 
+/* flora */
 .flora-grid {
     display: grid;
     gap: 10px;
@@ -509,6 +684,10 @@ circle {
     border-radius: 12px;
     padding: 1rem;
     text-align: center;
+    background: #fff8e8;
+    box-shadow: 2px 2px 1px 0px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 2px 2px 1px 0px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 2px 2px 1px 0px rgba(0, 0, 0, 0.15);
 }
 
 .flora-img {
@@ -554,4 +733,662 @@ circle {
 
 .custom-marker:hover {
     transform: scale(1.2);
+}
+
+/* Dashboard layout */
+.dashboard--layout {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    color: #fff8e8;
+}
+
+.dashboard--layout > div {
+    width: 50%;
+}
+
+.dashboard--current-location {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #000;
+}
+
+html.dark .dashboard--current-location {
+    color: #fff8e8;
+}
+
+.dashboard--weather-mobile {
+    display: block;
+}
+
+.dashboard--weather-desktop {
+    display: none;
+}
+
+.dashboard--infoWeather {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 915px) {
+    .dashboard--layout {
+        flex-direction: column;
+    }
+
+    .dashboard--layout > div {
+        width: 100%;
+    }
+
+    .location-input-container {
+        margin: 1rem 0px;
+    }
+
+    .dashboard--weather-mobile {
+        display: none;
+    }
+
+    .dashboard--weather-desktop {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 1259px) {
+    .walking-advice-card {
+        margin-bottom: 0;
+    }
+}
+
+/* pollen map */
+.map-container h1 {
+    font-size: 18px;
+}
+
+.time-overlay {
+    position: absolute;
+    top: 10px;
+    left: 50px;
+    z-index: 1000;
+    color: black;
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+.slider-lines {
+    position: relative;
+    top: -25px;
+    left: 0;
+    right: 0;
+    height: 24px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 3;
+    pointer-events: none;
+    padding-left: 9px;
+    padding-right: 5px;
+}
+
+.slider-line {
+    width: 1px;
+    height: 100%;
+    background-color: #888;
+    opacity: 0.6;
+}
+
+.slider-line.active {
+    background-color: #007bff;
+    width: 1px;
+    opacity: 1;
+}
+
+.custom-range {
+    appearance: none;
+    background: #007bff;
+    height: 8px;
+    margin-bottom: 9px;
+    border-radius: 12px;
+    position: relative;
+    z-index: 2;
+}
+
+.pollenLegenda {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: #fff8e8;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px;
+    z-index: 1000;
+    font-size: 0.9rem;
+    width: 205px;
+    padding-top: 16px;
+}
+
+.pollenLegenda-gradient {
+    height: 20px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    border: #b1aaaa 1px solid;
+}
+
+.pollenLegenda-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #000;
+}
+
+html.dark .pollenLegenda-text {
+    color: #fff8e8;
+}
+
+/* ===== Allergie Analyse Root Variabelen (Light Theme) ===== */
+:root {
+    --aa-bg-color: #ffffff;
+    --aa-text-color: #2c3e50;
+    --aa-secondary-text: #7f8c8d;
+    --aa-container-bg: #f9f9f9;
+    --aa-error-bg: #fadbd8;
+    --aa-error-text: #e74c3c;
+
+    --dpf-bg-color: #ffffff;
+    --dpf-text-color: #2c3e50;
+    --dpf-label-color: #2c3e50;
+    --dpf-button-bg: #3498db;
+    --dpf-button-disabled: #bdc3c7;
+    --dpf-error-color: #e74c3c;
+    --dpf-datepicker-bg: #ffffff;
+    --dpf-datepicker-border: #ddd;
+
+    --ar-bg-color: #ffffff;
+    --ar-container-bg: #ecf0f1;
+    --ar-text-color: #2c3e50;
+    --ar-disclaimer-color: #e67e22;
+    --ar-suggestion-bg: #ffffff;
+    --ar-suggestion-title: #16a085;
+    --ar-loader-color: #3498db;
+
+    --card-bg: #f9f9f9;
+}
+
+html.dark {
+    --aa-bg-color: #1a1a1a;
+    --aa-text-color: #ecf0f1;
+    --aa-secondary-text: #bdc3c7;
+    --aa-container-bg: #2d2d2d;
+    --aa-error-bg: #5c2a2a;
+    --aa-error-text: #ff6b6b;
+
+    --dpf-bg-color: #2d2d2d;
+    --dpf-text-color: #ecf0f1;
+    --dpf-label-color: #3498db;
+    --dpf-button-bg: #2980b9;
+    --dpf-button-disabled: #7f8c8d;
+    --dpf-error-color: #ff6b6b;
+    --dpf-datepicker-bg: #3d3d3d;
+    --dpf-datepicker-border: #555;
+
+    --ar-bg-color: #1a1a1a;
+    --ar-container-bg: #2d2d2d;
+    --ar-text-color: #ecf0f1;
+    --ar-disclaimer-color: #f39c12;
+    --ar-suggestion-bg: #3d3d3d;
+    --ar-suggestion-title: #1abc9c;
+    --ar-loader-color: #2980b9;
+
+    --card-bg: #1e1e1e;
+}
+
+html.dark .location-permission-content {
+    color: black;
+}
+
+/* ===== Media Queries (Responsiveness) ===== */
+@media (max-width: 768px) {
+    .analyse-symptoms-form {
+        margin-top: 15px;
+    }
+
+    .analysis-results-container {
+        padding: 15px;
+        margin-top: 20px;
+    }
+
+    .analysis-suggestions-list {
+        grid-template-columns: 1fr;
+    }
+
+    .analysis-suggestions-grid {
+        align-items: center;
+    }
+
+    .analyse-symptoms-form .rmdp-top-class {
+        flex-direction: column;
+    }
+
+    .analyse-symptoms-form .custom-date-panel {
+        width: 100%;
+    }
+}
+
+/* ===== Allergie Analyse Algemene Stijlen ===== */
+.allergy-analysis-page {
+    background-color: var(--aa-bg-color);
+    color: var(--aa-text-color);
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.allergy-analysis-container {
+    padding: 20px;
+    background-color: #dcd4c2;
+    transition: background-color 0.3s ease;
+}
+
+html.dark .allergy-analysis-container {
+    background-color: var(--aa-container-bg);
+}
+
+.allergy-analysis-title,
+.date-picker-input-group label,
+.analysis-results-title {
+    color: var(--aa-text-color);
+    margin-bottom: 15px;
+}
+
+.analysis-results-title {
+    margin-top: 0;
+}
+
+.allergy-analysis-description {
+    color: var(--aa-secondary-text);
+    margin-bottom: 20px;
+}
+
+.allergy-analysis-error {
+    color: var(--aa-error-text);
+    margin-top: 10px;
+    padding: 10px;
+    background-color: var(--aa-error-bg);
+    border-radius: 4px;
+}
+
+.analyse-symptoms-form {
+    margin-top: 20px;
+    color: var(--dpf-text-color);
+}
+
+.analyse-symptoms-form .rmdp-panel {
+    min-width: 200px;
+}
+
+.disabled-datepicker {
+    background-color: #e5e5e5;
+}
+
+.date-picker-input-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.date-picker-input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.date-picker-error {
+    color: var(--dpf-error-color);
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: block;
+}
+
+.date-picker-submit-button {
+    background-color: var(--dpf-button-bg);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.date-picker-submit-button:disabled {
+    background-color: var(--dpf-button-disabled);
+    cursor: not-allowed;
+}
+
+.react-multi-date-picker {
+    background-color: var(--dpf-datepicker-bg);
+    border: 1px solid var(--dpf-datepicker-border);
+    border-radius: 4px;
+}
+
+.react-multi-date-picker input {
+    color: var(--dpf-text-color);
+    background-color: var(--dpf-datepicker-bg);
+}
+
+.analysis-results-container {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    color: var(--ar-text-color);
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.analysis-results-disclaimer {
+    color: var(--ar-disclaimer-color);
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.analysis-suggestions-list {
+    display: grid;
+    gap: 15px;
+}
+
+.analysis-suggestion-item {
+    padding: 15px;
+    background-color: var(--ar-suggestion-bg);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.analysis-suggestion-title {
+    color: var(--ar-suggestion-title);
+    margin-bottom: 5px;
+}
+
+.analysis-loader {
+    text-align: center;
+    padding: 20px;
+    color: var(--ar-loader-color);
+    font-size: 1.2em;
+}
+
+.analysis-suggestions-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.suggestion-card {
+    display: flex;
+    align-items: center;
+    border-radius: 2rem;
+    padding: 1rem;
+    flex: 1 1 300px;
+    max-width: 400px;
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.suggestion-number {
+    flex-shrink: 0;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+}
+
+.suggestion-content {
+    flex: 1;
+}
+
+.suggestion-title {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.suggestion-label {
+    margin: 0;
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.medical-alert-banner {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    margin: 1rem 0;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.medical-alert-banner p {
+    margin: 0;
+}
+
+.analyse-symptoms-form .rmdp-top-class {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+}
+
+.analyse-symptoms-form .custom-date-panel {
+    order: 1;
+    min-width: 200px;
+    height: 240px;
+}
+
+.rmdp-panel-body {
+    max-height: 235px;
+    position: initial;
+}
+
+/* ===== Suggestion Number Kleuren op Rang ===== */
+.rank-1 .suggestion-number {
+    background-color: #4db6e2 !important;
+}
+
+.rank-2 .suggestion-number {
+    background-color: #3399cc !important;
+}
+
+.rank-3 .suggestion-number {
+    background-color: #007bb5 !important;
+}
+
+.rank-4 .suggestion-number {
+    background-color: #006da4 !important;
+}
+
+.rank-5 .suggestion-number {
+    background-color: #005c8f !important;
+}
+
+.rank-6 .suggestion-number {
+    background-color: #004d76 !important;
+}
+
+.suggestion-number {
+    background-color: #003f5c;
+}
+
+/* Pollen layer selector */
+.pollen-layer-selector {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #fff8e8;
+    padding: 10px;
+    z-index: 1000;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    color: #000;
+}
+
+html.dark .pollen-layer-selector {
+    background-color: var(--aa-bg-color);
+    color: #fff8e8;
+}
+
+.flora-grid-loading {
+    padding: 2rem;
+    text-align: center;
+    font-style: italic;
+    color: #666;
+}
+
+/* Toggle switch */
+.theme-toggle {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.toggle-input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 30px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: background-color 0.3s;
+}
+
+.slider::before {
+    content: '';
+    position: absolute;
+    height: 26px;
+    width: 26px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+.toggle-input:checked + .slider {
+    background-color: #4a4a4a;
+}
+
+.toggle-input:checked + .slider::before {
+    transform: translateX(30px);
+}
+
+.icon {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    font-size: 20px;
+    pointer-events: none;
+}
+
+.slider .icon.moon {
+    left: auto;
+    right: 30px;
+    top: -2px;
+}
+
+.slider .icon.sun {
+    left: 30px;
+    top: -1px;
+}
+
+html.dark {
+    background-color: var(--aa-container-bg);
+    color: white;
+}
+
+html.light {
+    background-color: #dcd4c2;
+    color: black;
+}
+
+.pollenIndicator-center-circle {
+    fill: #fff8e8;
+}
+
+html.dark .pollenIndicator-center-circle {
+    fill: var(--aa-bg-color);
+}
+
+.time-slider-value {
+    color: #000;
+}
+
+html.dark .time-slider-value {
+    color: #fff8e8;
+}
+
+.time-slider {
+    background-color: #fff8e8;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.walking-advice-card--button {
+    margin-top: '12px';
+    padding: '6px 12px';
+    background-color: #dcd4c2;
+    border: '2px solid rgb(232, 232, 232)';
+    border-radius: '6px';
+    color: 'black';
+    font-weight: 'bold';
+    cursor: 'pointer';
+    margin-top: 0.5rem;
+}
+
+.walking-advice-card--button:hover {
+    background-color: #b3a88e;
+    border-color: inherit;
+}
+
+html.dark .leaflet-control-zoom-in,
+html.dark .leaflet-control-zoom-out {
+    background-color: var(--aa-container-bg);
+    color: #dcd4c2;
+}
+
+html.dark .leaflet-control-zoom-in:hover,
+html.dark .leaflet-control-zoom-out:hover {
+    background-color: var(--aa-bg-color);
+}
+
+html.dark .leaflet-control-zoom-in {
+    border-color: #000;
+}
+
+.leaflet-control-attribution.leaflet-control {
+    display: none;
+}
+
+html.light .leaflet-control-zoom-in,
+html.light .leaflet-control-zoom-out {
+    background-color: #fff8e8;
 }

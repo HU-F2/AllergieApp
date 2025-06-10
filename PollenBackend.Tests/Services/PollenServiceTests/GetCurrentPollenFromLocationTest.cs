@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -33,27 +34,27 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
             // Arrange
             var latitude = 51.5074;
             var longitude = -0.1278;
-            var cacheKey = $"PollenData-{latitude}-{longitude}";
-            
+            var cacheKey = $"PollenData-{latitude.ToString(CultureInfo.InvariantCulture)}-{longitude.ToString(CultureInfo.InvariantCulture)}";
+
             var cachedPollenData = new PollenData
             {
                 Latitude = latitude,
                 Longitude = longitude
             };
-            
+
             _memoryCache.Set(cacheKey, cachedPollenData);
 
             mockApiCall("TestData","PollenApiCurrentByLocation.json",HttpStatusCode.OK);
 
             // Act
             var result = await _pollenService.GetCurrentPollenFromLocation(latitude, longitude);
-            
+
             // Assert
             Assert.Equal(cachedPollenData, result);
             _mockHandler.Protected().Verify(
-                "SendAsync", 
-                Times.Never(), 
-                ItExpr.IsAny<HttpRequestMessage>(), 
+                "SendAsync",
+                Times.Never(),
+                ItExpr.IsAny<HttpRequestMessage>(),
                 ItExpr.IsAny<CancellationToken>()
             );
         }
@@ -64,8 +65,8 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
             // Arrange
             var latitude = 51.5074;
             var longitude = -0.1278;
-            var cacheKey = $"PollenData-{latitude}-{longitude}";
-            
+            var cacheKey = $"PollenData-{latitude.ToString(CultureInfo.InvariantCulture)}-{longitude.ToString(CultureInfo.InvariantCulture)}";
+
             mockApiCall("TestData","PollenApiCurrentByLocation.json",HttpStatusCode.OK);
 
             // Act
@@ -74,11 +75,11 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
             // Assert
             Assert.NotNull(result);
             Assert.IsType<PollenData>(result);
-            
+
             _mockHandler.Protected().Verify(
-                "SendAsync", 
-                Times.Once(), 
-                ItExpr.IsAny<HttpRequestMessage>(), 
+                "SendAsync",
+                Times.Once(),
+                ItExpr.IsAny<HttpRequestMessage>(),
                 ItExpr.IsAny<CancellationToken>()
             );
 
@@ -93,11 +94,11 @@ namespace PollenBackend.Tests.Services.PollenServiceTests
             // Arrange
             var latitude = 51.5074;
             var longitude = -0.1278;
-            
+
             mockApiCall("TestData","PollenApiBadRequest.json",HttpStatusCode.BadRequest);
 
             // Act & Assert
-            var exception = await Assert.ThrowsAsync<HttpRequestException>(() => 
+            var exception = await Assert.ThrowsAsync<HttpRequestException>(() =>
                 _pollenService.GetCurrentPollenFromLocation(latitude, longitude));
 
             Assert.StartsWith("Request to pollen API failed:", exception.Message);

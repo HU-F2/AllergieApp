@@ -25,12 +25,12 @@ namespace PollenBackend.Data
                 .Property(l => l.Coordinates)
                 .HasConversion(
                     v => JsonConvert.SerializeObject(v),
-                    v => JsonConvert.DeserializeObject<List<Coordinate>>(v) ?? new List<Coordinate>{}
+                    v => JsonConvert.DeserializeObject<List<Coordinate>>(v) ?? new List<Coordinate> { }
                 )
                 .Metadata.SetValueComparer(new ValueComparer<List<Coordinate>>(
                     (c1, c2) => (c1 == null && c2 == null) || (c1 != null && c2 != null && c1.SequenceEqual(c2)),
-                    c => c == null 
-                        ? 0 
+                    c => c == null
+                        ? 0
                         : c.Aggregate(0, (a, v) => HashCode.Combine(a, v.Latitude.GetHashCode(), v.Longitude.GetHashCode())),
                     c => c == null
                         ? new List<Coordinate>()

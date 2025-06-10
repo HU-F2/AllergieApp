@@ -83,18 +83,41 @@ const PollenIndicator = ({
                     );
                 })}
 
-                <circle cx={centerX} cy={centerY} r={radius - 10} fill="#fff" />
+                <circle
+                    className="pollenIndicator-center-circle"
+                    cx={centerX}
+                    cy={centerY}
+                    r={radius - 10}
+                />
 
                 <circle cx={pointerX} cy={pointerY} r="10" fill="#fff" />
                 <circle cx={pointerX} cy={pointerY} r="6" fill="#000" />
 
-                <text x="150" y="110" textAnchor="middle" fontSize="24">
+                <text
+                    className="pollenindicator-text"
+                    x="150"
+                    y="110"
+                    textAnchor="middle"
+                    fontSize="24"
+                >
                     {value.toFixed(1)}/m³
                 </text>
-                <text x="150" y="140" textAnchor="middle" fontSize="24">
+                <text
+                    className="pollenindicator-text"
+                    x="150"
+                    y="140"
+                    textAnchor="middle"
+                    fontSize="24"
+                >
                     {name}
                 </text>
-                <text x="150" y="170" textAnchor="middle" fontSize="16">
+                <text
+                    className="pollenindicator-text"
+                    x="150"
+                    y="170"
+                    textAnchor="middle"
+                    fontSize="16"
+                >
                     {label}
                 </text>
             </svg>

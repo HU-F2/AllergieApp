@@ -1,9 +1,10 @@
+import { ReactNode } from 'react';
 import './Modal.css';
 
 type Props = {
     isOpen: boolean;
     onClose: () => void;
-    children: React.ReactNode;
+    children: ReactNode;
     closeOnOverlayClick?: boolean;
 };
 

@@ -5,7 +5,9 @@ interface LocationPermissionResetProps {
 const LocationPermissionReset = ({ onClick }: LocationPermissionResetProps) => {
     return (
         <div className="location-permission-reset-container">
-            <button onClick={onClick}>Wijzig Locatie Toestemming</button>
+            <button className="reset-permission-button" onClick={onClick}>
+                Wijzig Locatie Toestemming
+            </button>
         </div>
     );
 };
