@@ -9,14 +9,14 @@ using PollenBackend.Tests;
 namespace PollenBackend.Services.WeerServiceTests {
     public class GetThreeHourForecastTest : MockApiCall{
         private readonly HttpClient _httpClient;
-        private WeerService _weerService;
+        private WeatherService _weerService;
         List<Coordinate> outofbounds_coordinates;
         List<Coordinate> withinbounds_coordinates;
 
         public GetThreeHourForecastTest(){
             _mockHandler = new Mock<HttpMessageHandler>();
             _httpClient = new HttpClient(_mockHandler.Object);
-            _weerService = new WeerService(_httpClient);
+            _weerService = new WeatherService(_httpClient);
 
             outofbounds_coordinates = new List<Coordinate>(){
                 // Test 1 negateive out of bound coordinaat
@@ -46,7 +46,7 @@ namespace PollenBackend.Services.WeerServiceTests {
 
             var result =await _weerService.GetThreeHourForecast(latitude,longitude);
 
-            Assert.IsType<WeerData>(result);
+            Assert.IsType<WeatherService>(result);
         }
     }
 }

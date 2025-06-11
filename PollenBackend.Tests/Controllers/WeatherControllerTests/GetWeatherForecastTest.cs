@@ -10,13 +10,13 @@ namespace PollenBackend.Tests.Controllers.WeatherControllerTests
 {
     public class GetThreeHourForecastTest
     {
-        private readonly Mock<IWeerService> _mockWeerService;
+        private readonly Mock<IWeatherService> _mockWeerService;
         private readonly IMemoryCache _memoryCache;
         private readonly WeatherController _controller;
 
         public GetThreeHourForecastTest()
         {
-            _mockWeerService = new Mock<IWeerService>();
+            _mockWeerService = new Mock<IWeatherService>();
             _memoryCache = new MemoryCache(new MemoryCacheOptions());
             _controller = new WeatherController(_mockWeerService.Object, _memoryCache);
         }
@@ -28,7 +28,7 @@ namespace PollenBackend.Tests.Controllers.WeatherControllerTests
             var latitude = 52.0;
             var longitude = 4.0;
             
-            var mockWeatherData = new WeerData
+            var mockWeatherData = new WeatherData
             {
                 AverageTemperature = 16.0,
                 AverageRain = 0.2,
@@ -44,7 +44,7 @@ namespace PollenBackend.Tests.Controllers.WeatherControllerTests
 
             // Kijk of het klopt
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnedData = Assert.IsType<WeerData>(okResult.Value);
+            var returnedData = Assert.IsType<WeatherData>(okResult.Value);
             Assert.Equal(mockWeatherData.AverageTemperature, returnedData.AverageTemperature);
             Assert.Equal(mockWeatherData.AverageRain, returnedData.AverageRain);
             Assert.Equal(mockWeatherData.AverageWind, returnedData.AverageWind);
