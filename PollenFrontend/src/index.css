@@ -671,6 +671,11 @@ html.dark .selectable-pollen-indicator select {
     color: #1a1acb;
 }
 
+.location-suggestions {
+    color: #000;
+    background-color: #fff8e8;
+}
+
 .flora-title,
 .map-title {
     flex: 1;
