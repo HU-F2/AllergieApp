@@ -37,14 +37,32 @@ export const useAnalysisRequests = () => {
     }, [requests]);
 
     const updateRequests = useCallback((dates: Date[]) => {
-        const newRequests: PollenDataRequest[] = dates.map(date => ({
-            date,
-            coordinate: {
-                latitude: location!.latitude,
-                longitude: location!.longitude
+        try {
+            const invalidRequest = requests.find(req =>
+                !req.coordinate.latitude || !req.coordinate.longitude
+            );
+
+            if (invalidRequest) {
+                throw new Error('Latitude of Longitude ontbreekt in één van de requests');
             }
-        }));
-        setRequests(newRequests);
+            const newRequests: PollenDataRequest[] = dates.map(date => ({
+                date,
+                coordinate: {
+                    latitude: location!.latitude,
+                    longitude: location!.longitude
+                }
+            }));
+            setRequests(newRequests);
+        }
+        catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error(error.message);
+                throw error;
+            } else {
+                console.error('Onbekende fout updaten requests:', error);
+                throw new Error('Er is een onbekende fout opgetreden tijdens updaten requests.');
+            }
+        }
     }, [location]);
 
     const clearRequests = useCallback(() => {

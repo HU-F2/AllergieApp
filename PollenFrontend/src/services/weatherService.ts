@@ -12,7 +12,7 @@ export async function getThreeHourForecast(
     longitude: Number
 ): Promise<WeatherData> {
     const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_API_URL}/api/weather/forecast?latitude=${latitude}&longitude=${longitude}`
+        `${import.meta.env.VITE_BACKEND_API_URL}/api/weather/forecast?latitude=${latitude.toLocaleString('en-US')}&longitude=${longitude.toLocaleString('en-US')}`
     );
     if (!res.ok) {
         throw new Error(`Weather fetch failed: ${res.status}`);
