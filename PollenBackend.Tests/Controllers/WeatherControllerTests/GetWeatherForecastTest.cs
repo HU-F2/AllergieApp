@@ -27,7 +27,7 @@ namespace PollenBackend.Tests.Controllers.WeatherControllerTests
             // Test data
             var latitude = 52.0;
             var longitude = 4.0;
-            
+
             var mockWeatherData = new WeatherData
             {
                 AverageTemperature = 16.0,
@@ -69,7 +69,10 @@ namespace PollenBackend.Tests.Controllers.WeatherControllerTests
             // Assert
             var objectResult = Assert.IsType<ObjectResult>(result.Result);
             Assert.Equal((int)HttpStatusCode.BadGateway, objectResult.StatusCode);
-            Assert.Contains("Data niet bereikbaar", objectResult.Value.ToString());
+
+            string? valueString = objectResult.Value?.ToString();
+            Assert.NotNull(valueString);
+            Assert.Contains("Data niet bereikbaar", valueString ?? string.Empty);
         }
 
         [Fact]
